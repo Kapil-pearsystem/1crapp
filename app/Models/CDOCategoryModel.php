@@ -1,0 +1,14 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class CDOCategoryModel extends Model
+{
+    use HasFactory;
+    protected $table = 'tbl_cdo_category';
+    public $timestamps = true;
+    protected $fillable = ['id', 'name', 'slug', 'status', 'created_at', 'created_by', 'updated_at'];
+}

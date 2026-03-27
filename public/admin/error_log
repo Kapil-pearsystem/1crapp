@@ -1,0 +1,1 @@
+[07-Jul-2025 04:50:11 UTC] PHP Fatal error:  Trait "App\Models\HasFactory" not found in /home/cqlecibx/public_html/public/admin/app/Models/PropertyCategoryModel.php on line 8
