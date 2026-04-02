@@ -194,11 +194,6 @@ Route::get('/contact-list', function () {
 Route::get('/contact-list-create', function () {
     return view('front.contact-list-create');
 });
-Route::get('/lead-magnet1', function () {
-    return view('front.lead-magnet1');
-});
-Route::post('/lead-magnet1/store', [WebController::class, 'lead_magenet1'])->name('leadstore');
-
 Route::get('/personal-financial-freedom-journey', function () {
     return view('front.personal-financial-freedom-journey');
 });
@@ -451,9 +446,22 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/my-profile', [AuthController::class, 'my_profile'])->name('my-profile');
     Route::get('/wallet', [HomeController::class, 'wallet'])->name('wallet');
     
+    Route::get('/lets-connect/{page_url}', [HomeController::class, 'letsconnect'])->name('lets-connect');
     Route::get('/lead-magnet', [HomeController::class, 'lead_magnet'])->name('lead-magnet');
     Route::post('/lead-magnet/store', [WebController::class, 'lead_magnet'])->name('leadmagnet.store');
     Route::get('/lead-magnet-form', [HomeController::class, 'lead_magnet_form'])->name('lead-magnet-form');
+    Route::get('/mail-template-form', [HomeController::class, 'mail_template_form'])->name('mail-template-form');
+    Route::post('/mail-template/store', [HomeController::class, 'mail_template_store'])->name('mail-template.store');
+    Route::get('/popup-form', [HomeController::class, 'popup_form'])->name('popup-form');
+    Route::post('/popup-form/store', [HomeController::class, 'popup_form_store'])->name('popup-form.store');
+    Route::post('/save-lets-connect', [HomeController::class, 'save_lets_connect'])->name('save-lets-connect');
+    Route::get('/lead-magnet-list', [HomeController::class, 'lead_magnet_list'])->name('lead-magnet-list');
+
+    Route::get('/lead-magnet1', function () {
+        return view('front.lead-magnet1');
+    });
+    Route::post('/lead-magnet1/store', [WebController::class, 'lead_magenet1'])->name('leadstore');
+
     Route::get('/setting', [AuthController::class, 'setting'])->name('setting');
 
     Route::get('/user-home', [UserController::class, 'user_home'])->name('user-home');

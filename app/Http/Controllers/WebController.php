@@ -618,10 +618,12 @@ class WebController extends Controller
  
     public function lead_magnet(Request $request)
     {
+        // dd($request->post_headline_visible);
         // Validation (optional but recommended)
         $request->validate([
-            'pre_headline' => 'nullable|string|max:255',
-            'headline' => 'nullable|string|max:255',
+            'page_url' => 'required|string|max:255',
+            'pre_headline' => 'required|string|max:255',
+            'headline' => 'required|string|max:255',
             'post_headline' => 'nullable|string|max:255',
             'bullet1' => 'nullable|string|max:255',
             'bullet2' => 'nullable|string|max:255',
@@ -632,10 +634,20 @@ class WebController extends Controller
             'media_type' => 'nullable|string|max:50',
             'countdown_datetime' => 'nullable|date',
             'pre_cta' => 'nullable|string|max:255',
+            'pre_cta_visible' => 'nullable',
             'ps_text' => 'nullable|string|max:255',
+            'ps_text_visible' => 'nullable',
+
             'page_cta_url' => 'nullable|string|max:255',
+            'popup_type' => 'nullable|in:1,2',
+            'custom_form_id' => 'nullable|integer',
+            'form_embed_code' => 'nullable|string',
+
             'enter_cta_url' => 'nullable|string|max:255',
             'cta_title' => 'nullable|string|max:255',
+            'cta_sub_title' => 'nullable|string|max:255',
+
+            'public_type' => 'nullable|in:pre-login,post-login',
         ]);
  
         // Checkbox handling: agar unchecked ho toh 0 set karo
@@ -651,17 +663,92 @@ class WebController extends Controller
             'ps_text_visible',
             'popup_enable',
             'page_cta_url_visible',
+            'page_new_tab',
+            'is_public',
         ];
- 
+        if ($request->hasFile('media_path')) {
+            // 👉 If updating, delete old file first
+            if ($request->id) {
+                $lead_data = LeadMagnetModel::find($request->id);
+                if ($lead_data && $lead_data->media_path && file_exists(public_path($lead_data->media_path))) {
+                    unlink(public_path($lead_data->media_path)); // 🔥 delete old file
+                }
+            }
+            // 👉 Upload new file
+            $uploadPath = public_path('uploads/lead_magnets');
+            if (!file_exists($uploadPath)) {
+                mkdir($uploadPath, 0755, true);
+            }
+            $file = $request->file('media_path');
+            $filename = time() . '_' . $file->getClientOriginalName();
+            $file->move($uploadPath, $filename);
+            $logoPath = 'uploads/lead_magnets/' . $filename;
+        }
         foreach ($checkboxes as $cb) {
             $data[$cb] = $request->has($cb) ? 1 : 0;
         }
- 
+        $data['media_path'] = $logoPath ?? $request->media_path ?? null;
+        $data['user_id'] = auth()->id();
+        $data['agent_id'] = app('currentAgent')->id;
+        // dd($data);
         // Save data to database
-        LeadMagnetModel::create($data);
- 
+        if ($request->id) {
+            $lead = LeadMagnetModel::find($request->id);
+
+            if ($lead) {
+                $lead->update($data);
+            }
+
+        } else {
+            $lead = LeadMagnetModel::create($data);
+        }
+        // company details save
+        
+        $companylogoPath = null;
+        if ($request->hasFile('company_logo')) {
+            if ($request->id) {
+                $company_details = LeadMagenetModel1::where('lead_magnet_id', $request->id)->first();
+                if ($company_details && $company_details->company_logo && file_exists(public_path($company_details->company_logo))) {
+                    unlink(public_path($company_details->company_logo)); // 🔥 delete old file
+                }
+            }
+            // Make sure the uploads/company_logo folder exists
+            $uploadPath = public_path('uploads/lead_magnets');
+            if (!file_exists($uploadPath)) {
+                mkdir($uploadPath, 0755, true); // recursive create
+            }
+     
+            $file = $request->file('company_logo');
+            $filename = time() . '_' . $file->getClientOriginalName();
+            $file->move($uploadPath, $filename);
+     
+            $companylogoPath = 'uploads/lead_magnets/' . $filename; // store relative path in DB
+        }else{
+            $company_details = LeadMagenetModel1::where('lead_magnet_id', $request->id)->first();
+            $companylogoPath = $company_details->company_logo ?? null;
+        }
+        $company_details = LeadMagenetModel1::updateOrCreate(
+            [
+                'lead_magnet_id' => $lead->id // 🔥 condition
+            ],
+            [
+                'company_name' => $request->company_name,
+                'company_email' => $request->company_email,
+                'company_phone' => $request->company_phone,
+                'company_address' => $request->company_address,
+                'company_website' => $request->company_website,
+                'company_logo'    => $companylogoPath ?? null,
+                'header_footer_bg_color' => $request->header_footer_bg_color,
+                'button_bg_color' => $request->button_bg_color,
+                'header_footer_text_color' => $request->header_footer_text_color,
+                'button_text_color' => $request->button_text_color,
+            ]
+        );
+
+
+
         // Redirect back with success message
-        return redirect()->back()->with('success', 'Lead Magnet Created Successfully!');
+        return redirect()->route('lead-magnet-form')->with('success', 'Lead Magnet Saved Successfully!');
     }
     public function lead_magenet1(Request $request)
     {
@@ -672,9 +759,7 @@ class WebController extends Controller
         $request->validate([
             'company_name' => 'required|string|max:255',
             'company_email' => 'required|email|max:255',
-            'company_email_type' => 'required',
             'company_phone' => 'nullable|string|max:20',
-            'company_phone_type' => 'nullable',
             'company_address' => 'nullable|string|max:500',
             'company_website' => 'nullable|string|max:255',
             'company_logo' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
@@ -685,7 +770,7 @@ class WebController extends Controller
         ]);
      
         // ================= File Upload =================
-        $logoPath = null;
+        
         if ($request->hasFile('company_logo')) {
      
             // Make sure the uploads/company_logo folder exists
@@ -699,6 +784,8 @@ class WebController extends Controller
             $file->move($uploadPath, $filename);
      
             $logoPath = 'uploads/company_logo/' . $filename; // store relative path in DB
+        }else{
+            $logoPath = null;
         }
      
         // ================= Save Data =================

@@ -23,15 +23,15 @@ class LeadMagnetModel extends Model
 
     // Mass assignable fields
     protected $fillable = [
+        'user_id',
+        'agent_id',
+        'page_url',
         'pre_headline',
         'pre_headline_visible',
-
         'headline',
         'headline_visible',
-
         'post_headline',
         'post_headline_visible',
-
         'bullet1',
         'bullet2',
         'bullet3',
@@ -39,10 +39,9 @@ class LeadMagnetModel extends Model
         'bullet5',
         'bullet6',
         'bullet_status',
-
         'media_type',
+        'media_path',
         'media_visible',
-
         'countdown_datetime',
         'countdown_visible',
 
@@ -53,14 +52,20 @@ class LeadMagnetModel extends Model
         'ps_text_visible',
 
         'popup_enable',
+        'page_new_tab',
         'page_cta_url',
-        'enter_cta_url',
-
         'popup_type',
+        'custom_form_id',
+        'form_embed_code',
+
         'price_select_form',
         'enable_form_custom',
 
-        'cta_title'
+        'cta_title',
+        'cta_sub_title',
+
+        'is_public',
+        'public_type'
     ];
 
     // Optional: cast toggle fields as boolean

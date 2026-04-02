@@ -14,6 +14,7 @@ class LeadMagenetModel1 extends Model
 
     // Fillable fields (jo mass assignable hain)
     protected $fillable = [
+        'lead_magnet_id',
         'company_name',
         'company_email',
         'company_email_type',

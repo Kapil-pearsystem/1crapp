@@ -20,7 +20,11 @@ use App\Models\CDOModel;
 use App\Models\ProductEnquiry;
 use App\Models\CdbTransactionModel;
 use App\Models\CdbPlanFeature;;
-use App\Models\Payment;;
+use App\Models\Payment;
+use App\Models\LeadMagnetModel;
+use App\Models\CdbMailTemp;
+use App\Models\CdbPopupForm;
+use Illuminate\Support\Facades\Log;
 
 class HomeController extends Controller
 {
@@ -157,12 +161,265 @@ class HomeController extends Controller
         ));
     }
 
-
+    public function letsconnect($page_url){
+        // $res = $this->testLetsConnectMail();
+        // dd($res);
+        $page = LeadMagnetModel::where(['page_url' => $page_url, 'is_public' => '1'])
+        ->select('tbl_lead_magnet.*', 'lead_magenet1.company_name', 'lead_magenet1.company_email', 'lead_magenet1.company_email_type', 'lead_magenet1.company_phone', 'lead_magenet1.company_phone_type', 'lead_magenet1.company_address', 'lead_magenet1.company_website', 'lead_magenet1.company_logo', 'lead_magenet1.header_footer_bg_color', 'lead_magenet1.button_bg_color', 'lead_magenet1.header_footer_text_color', 'lead_magenet1.button_text_color')
+        ->leftjoin('lead_magenet1', 'lead_magenet1.lead_magnet_id', 'tbl_lead_magnet.id')
+        ->first();
+        if(!$page){
+            abort(404);
+        }
+        if($page->public_type == 'post-login' && !auth()->check()){
+            return redirect()->route('login')->with('error', 'Please login to access this page.');
+        }
+        $formdata = CdbPopupForm::where('user_id', auth()->id())->first();
+        // dd($formdata);
+        return view('front.lets-connect', compact('page', 'formdata'));
+    }
     public function lead_magnet(){
-        return view('front.lead-magnet');
+        $page = LeadMagnetModel::where(['user_id' => auth()->id()])
+        ->select('tbl_lead_magnet.*', 'lead_magenet1.company_name', 'lead_magenet1.company_email', 'lead_magenet1.company_email_type', 'lead_magenet1.company_phone', 'lead_magenet1.company_phone_type', 'lead_magenet1.company_address', 'lead_magenet1.company_website', 'lead_magenet1.company_logo', 'lead_magenet1.header_footer_bg_color', 'lead_magenet1.button_bg_color', 'lead_magenet1.header_footer_text_color', 'lead_magenet1.button_text_color')
+        ->leftjoin('lead_magenet1', 'lead_magenet1.lead_magnet_id', 'tbl_lead_magnet.id')
+        ->first();
+        $formdata = CdbPopupForm::where('user_id', auth()->id())->first();
+        if(!$page){
+            return redirect()->back()->with('error', 'Please create a lead magnet page first.');
+        }
+        return view('dashboard.lead-magnet-view', compact('page', 'formdata'));
     }
     public function lead_magnet_form(){
-        return view('dashboard.lead-magnet-form');
+        $details = LeadMagnetModel::where('user_id', auth()->id())
+        ->select('tbl_lead_magnet.*', 'lead_magenet1.company_name', 'lead_magenet1.company_email', 'lead_magenet1.company_email_type', 'lead_magenet1.company_phone', 'lead_magenet1.company_phone_type', 'lead_magenet1.company_address', 'lead_magenet1.company_website', 'lead_magenet1.company_logo', 'lead_magenet1.header_footer_bg_color', 'lead_magenet1.button_bg_color', 'lead_magenet1.header_footer_text_color', 'lead_magenet1.button_text_color')
+        ->leftjoin('lead_magenet1', 'lead_magenet1.lead_magnet_id', 'tbl_lead_magnet.id')
+        ->first();
+        // dd($details);
+        
+        $custom_form = CdbPopupForm::where('user_id', auth()->id())->first();
+        return view('dashboard.lead-magnet-form', compact('details', 'custom_form'));
+    }
+    public function popup_form(){
+        $details = CdbPopupForm::where('user_id', auth()->id())->first();
+        $mailtemp = CdbMailTemp::where('user_id', auth()->id())->first();
+        return view('dashboard.popup-form', compact('details', 'mailtemp'));
+    }
+    public function save_lets_connect(Request $request)
+    {
+        try {
+            $request->validate([
+                'form_id' => 'required',
+                'name' => 'required|string|max:255',
+                'email' => 'required|email',
+                'phone' => 'nullable|string|max:20',
+                'message' => 'nullable|string',
+            ]);
+
+            DB::table('cdb_lets_connect')->insert([
+                'form_id' => base64_decode($request->form_id),
+                'name' => $request->name,
+                'email' => $request->email,
+                'phone' => $request->phone,
+                'message' => $request->message,
+                'ip_address' => $request->ip(),
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now()
+            ]);
+            $form_details = CdbPopupForm::where('id', base64_decode($request->form_id))->first();
+            $mail_data = CdbMailTemp::where('id', $form_details->mail_temp_id)->first();
+            if ($mail_data && $mail_data->status == 1) {
+
+                $data = [
+                    'title' => $mail_data->title,
+                    'celebration_text' => $mail_data->celebration_text,
+                    'content' => $mail_data->content, // template content
+                    'logo' => $mail_data->logo,
+
+                    // ✅ dynamic enquiry data
+                    'name' => $request->name,
+                    'email' => $request->email,
+                    'phone' => $request->phone,
+                    'user_message' => $request->message,
+                ];
+                // dd($data);
+                // return view('front.Mail.cdb-letsconnect-mail', $data);
+                Mail::send('front.Mail.cdb-letsconnect-mail', $data, function ($message) use ($request, $mail_data) {
+                    $message->to($request->email)
+                            ->subject($mail_data->subject);
+                });
+            }
+
+            return redirect()->back()
+                ->with('success', 'Your Enquiry has been submitted successfully!')
+                ->with('open_modal', true);
+
+        } catch (\Illuminate\Validation\ValidationException $e) {
+
+            return redirect()->back()
+                ->withErrors($e->validator)
+                ->withInput()
+                ->with('open_modal', true);
+
+        } catch (\Exception $e) {
+
+            Log::error($e);
+
+            return redirect()->back()
+                ->with('error', 'Something went wrong. Please try again!')
+                ->with('open_modal', true);
+        }
+    }
+    public function lead_magnet_list(){
+        $lists = DB::table('cdb_lets_connect')->select('cdb_lets_connect.*','cdb_popup_form.title as form_name','tbl_lead_magnet.page_url as page_name')
+        ->join('cdb_popup_form', 'cdb_popup_form.id', 'cdb_lets_connect.form_id')
+        ->leftjoin('tbl_lead_magnet', 'tbl_lead_magnet.custom_form_id', 'cdb_popup_form.id')
+        ->where('cdb_popup_form.user_id', auth()->id())->paginate(10);
+        // dd($lists);
+        return view('dashboard.lead-magnet-enquiry-list', compact('lists'));
+    }
+    public function testLetsConnectMail()
+    {
+        try {
+
+            $mail_data = CdbMailTemp::first();
+
+            if (!$mail_data || $mail_data->status != 1) {
+                return "Mail template not active!";
+            }
+
+            // ✅ Dummy/Test Data
+            $data = [
+                'title' => $mail_data->title,
+                'celebration_text' => $mail_data->celebration_text,
+                'content' => $mail_data->content,
+                'logo' => $mail_data->logo,
+
+                'name' => 'Test User',
+                'email' => 'test@example.com',
+                'phone' => '9999999999',
+                'user_message' => 'This is a test enquiry message.',
+            ];
+
+            // Optional: preview before sending
+            // return view('emails.cdb-letsconnect-mail', $data);
+
+            Mail::send('front.Mail.cdb-letsconnect-mail', $data, function ($message) use ($mail_data) {
+                $message->to('test10012@yopmail.com') // 👈 change to your email
+                        ->subject('[TEST] ' . $mail_data->subject);
+            });
+
+            return "Test mail sent successfully!";
+
+        } catch (\Exception $e) {
+            return $e->getMessage();
+        }
+    }
+    public function popup_form_store(Request $request){
+        // dd($request->all());
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'mail_temp_id' => 'required|integer|exists:cdb_mail_temp,id',
+            'form_source' => 'required|string|max:255',
+            'content' => 'nullable|string',
+            'cta_btn_text' => 'nullable|string',
+            'thankyou_message' => 'nullable|string',
+        ]);
+        $logoPath = null;
+        if ($request->hasFile('file_path')) {
+            if ($request->id) {
+                $form_details = CdbPopupForm::where('user_id', auth()->id())->first();
+                if ($form_details && $form_details->file_path && file_exists(public_path($form_details->file_path))) {
+                    unlink(public_path($form_details->file_path)); // 🔥 delete old file
+                }
+            }
+            // Make sure the uploads/company_logo folder exists
+            $uploadPath = public_path('uploads/lead_magnets');
+            if (!file_exists($uploadPath)) {
+                mkdir($uploadPath, 0755, true); // recursive create
+            }
+     
+            $file = $request->file('file_path');
+            $filename = time() . '_' . $file->getClientOriginalName();
+            $file->move($uploadPath, $filename);
+     
+            $logoPath = 'uploads/lead_magnets/' . $filename; // store relative path in DB
+        }else{
+            $form_details = CdbPopupForm::where('user_id', auth()->id())->first();
+            $logoPath = $form_details->file_path ?? null;
+        }
+        $formdata = CdbPopupForm::updateOrCreate(
+            ['user_id' => auth()->id()],
+            [
+                'title' => $request->title,
+                'mail_temp_id' => $request->mail_temp_id,
+                'form_source' => $request->form_source,
+                'contact_field' => $request->contact_field??0,
+                'msg_field' => $request->msg_field??0,
+                'content' => $request->content,
+                'cta_btn_text' => $request->cta_btn_text,
+                'thankyou_message' => $request->thankyou_message,
+                'file_path' => $logoPath,
+            ]
+        );
+
+        if ($formdata) {
+            return redirect()->back()->with('success', 'Popup Form saved successfully.');
+        } else {
+            return redirect()->back()->with('error', 'Failed to save Popup Form. Please try again.');
+        }
+    }
+    public function mail_template_form(){
+        $details = CdbMailTemp::where('user_id', auth()->id())->first();
+        return view('dashboard.mail-template-form', compact('details'));
+    }
+    public function mail_template_store(Request $request){
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'celebration_text' => 'required|string|max:255',
+            'subject' => 'required|string|max:255',
+            'content' => 'nullable|string',
+            'status' => 'required|in:0,1',
+        ]);
+        $logoPath = null;
+        if ($request->hasFile('logo')) {
+            if ($request->id) {
+                $mail_details = CdbMailTemp::where('user_id', auth()->id())->first();
+                if ($mail_details && $mail_details->logo && file_exists(public_path($mail_details->logo))) {
+                    unlink(public_path($mail_details->logo)); // 🔥 delete old file
+                }
+            }
+            // Make sure the uploads/company_logo folder exists
+            $uploadPath = public_path('uploads/lead_magnets');
+            if (!file_exists($uploadPath)) {
+                mkdir($uploadPath, 0755, true); // recursive create
+            }
+     
+            $file = $request->file('logo');
+            $filename = time() . '_' . $file->getClientOriginalName();
+            $file->move($uploadPath, $filename);
+     
+            $logoPath = 'uploads/lead_magnets/' . $filename; // store relative path in DB
+        }else{
+            $mail_details = CdbMailTemp::where('user_id', auth()->id())->first();
+            $logoPath = $mail_details->logo ?? null;
+        }
+        $mailTemp = CdbMailTemp::updateOrCreate(
+            ['user_id' => auth()->id()],
+            [
+                'title' => $request->title,
+                'celebration_text' => $request->celebration_text,
+                'subject' => $request->subject,
+                'content' => $request->content,
+                'status' => $request->status,
+                'logo' => $logoPath,
+            ]
+        );
+
+        if ($mailTemp) {
+            return redirect()->back()->with('success', 'Mail Template saved successfully.');
+        } else {
+            return redirect()->back()->with('error', 'Failed to save Mail Template. Please try again.');
+        }
     }
     public function services_for_you(){
         $categories = ProductServiceCategory::where('status', 1)->get();

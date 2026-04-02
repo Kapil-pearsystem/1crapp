@@ -132,10 +132,43 @@ $package = CdbPlanModel::where('id', $user_data->package_id)->first();
                 <a href="{{ route('notifications') }}" class="@if($firstSegment === 'notifications') actet @endif"><img src="{{ url('home/img/earn.png')}}" alt="" /> Updates</a>
             </li>
 
-            <li>
+            <!-- <li>
                 <a href="{{ route('lead-magnet-form') }}" class="@if($firstSegment === 'lead-magnet') actet @endif"><img src="{{ url('home/img/earn.png')}}" alt="" /> Get Lead Magnet ( New)</a>
+            </li> -->
+             <li class="dropdown custom-dropdown">
+                <a href="javascript:void(0);" 
+                   class="dropdown-toggle @if(in_array($firstSegment, ['lead-magnet','mail-template-form', 'popup-form', 'lead-magnet-list'])) actet @endif">
+                   
+                   <img src="{{ url('home/img/earn.png')}}" alt="" /> Lead Magnet Management
+                </a>
+            
+                <ul class="dropdown-menu custom-dropdown-menu">
+                    <li>
+                        <a class="@if($firstSegment === 'lead-magnet') actet @endif" 
+                           href="{{ route('lead-magnet') }}">
+                           Get Lead Magnet ( New )
+                        </a>
+                    </li>
+                    <li>
+                        <a class="@if($firstSegment === 'mail-template-form') actet @endif" 
+                           href="{{ route('mail-template-form') }}">
+                           Create Mail Template
+                        </a>
+                    </li>
+                    <li>
+                        <a class="@if($firstSegment === 'popup-form') actet @endif" 
+                           href="{{ route('popup-form') }}">
+                           Create Popup Form
+                        </a>
+                    </li>
+                    <li>
+                        <a class="@if($firstSegment === 'lead-magnet-list') actet @endif" 
+                           href="{{ route('lead-magnet-list') }}">
+                           Enquiry List
+                        </a>
+                    </li>
+                </ul>
             </li>
-
             <li>
                 <a href="javascript:void(0);"><img src="{{ url('home/img/earn.png')}}" alt="" /> Rewards, Coupons & Credit</a>
             </li>
