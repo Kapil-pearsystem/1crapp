@@ -23,6 +23,9 @@ class CdbPopupForm extends Model
         'file_path',
         'cta_btn_text',
         'thankyou_message',
+        'image_visible',
+        'thankyou_cta_link',
+        'thankyou_cta_text'
     ];
 
     // 🔥 Relation with Mail Template

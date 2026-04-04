@@ -206,6 +206,7 @@ class HomeController extends Controller
     }
     public function save_lets_connect(Request $request)
     {
+        // dd($request->all());
         try {
             $request->validate([
                 'form_id' => 'required',
@@ -243,14 +244,31 @@ class HomeController extends Controller
                 ];
                 // dd($data);
                 // return view('front.Mail.cdb-letsconnect-mail', $data);
-                Mail::send('front.Mail.cdb-letsconnect-mail', $data, function ($message) use ($request, $mail_data) {
+                $cc_email = $mail_data->cc_mailid;
+                $attachment = $mail_data->attachment;
+
+                Mail::send('front.Mail.cdb-letsconnect-mail', $data, function ($message) use ($request, $mail_data, $cc_email, $attachment) {
+
                     $message->to($request->email)
                             ->subject($mail_data->subject);
+
+                    // ✅ CC Email
+                    if (!empty($cc_email)) {
+                        // multiple emails support (comma separated)
+                        $message->cc(explode(',', $cc_email));
+                    }
+
+                    // ✅ Attachment
+                    if (!empty($attachment)) {
+                        $message->attach($attachment); 
+                        // OR if full URL:
+                        // $message->attach($attachment);
+                    }
                 });
             }
 
             return redirect()->back()
-                ->with('success', 'Your Enquiry has been submitted successfully!')
+                ->with('success', $form_details->thankyou_message ?? 'Thank you for connecting with us! We will get back to you soon.')
                 ->with('open_modal', true);
 
         } catch (\Illuminate\Validation\ValidationException $e) {
@@ -269,11 +287,138 @@ class HomeController extends Controller
                 ->with('open_modal', true);
         }
     }
+    public function resend_mail(Request $request)
+    {
+        $request->validate([
+            'id' => 'required|integer|exists:cdb_lets_connect,id',
+        ]);
+        try {
+            $lead = DB::table('cdb_lets_connect')->where('id', $request->id)->first();
+            if (!$lead) {
+                return back()->with('error', 'Lead not found');
+            }
+            $form_details = CdbPopupForm::where('id', $lead->form_id)->first();
+            $mail_data = CdbMailTemp::where('id', $form_details->mail_temp_id ?? null)->first();
+            if (!$mail_data || $mail_data->status != 1) {
+                return back()->with('error', 'Mail template inactive or not found');
+            }
+            // ✅ Prepare data
+            $data = [
+                'title' => $mail_data->title,
+                'celebration_text' => $mail_data->celebration_text,
+                'content' => $mail_data->content,
+                'logo' => $mail_data->logo,
+                'name' => $lead->name,
+                'email' => $lead->email,
+                'phone' => $lead->phone,
+                'user_message' => $lead->message,
+            ];
+            $cc_email = $mail_data->cc_mailid;
+            $attachment = $mail_data->attachment;
+            // ✅ Send Mail
+            Mail::send('front.Mail.cdb-letsconnect-mail', $data, function ($message) use ($lead, $mail_data, $cc_email, $attachment) {
+                $message->to($lead->email) // ❗ FIXED (was request email)
+                        ->subject($mail_data->subject);
+                // ✅ CC
+                if (!empty($cc_email)) {
+                    $message->cc(array_map('trim', explode(',', $cc_email)));
+                }
+                // ✅ Attachment
+                if (!empty($attachment)) {
+                    // if stored in public folder
+                    if (file_exists(public_path($attachment))) {
+                        $message->attach(public_path($attachment));
+                    } else {
+                        // fallback (if URL)
+                        $message->attach($attachment);
+                    }
+                }
+            });
+            return redirect()->back()->with('success', 'Mail resent successfully!');
+
+        } catch (\Exception $e) {
+            \Log::error('Resend Mail Error', [
+                'message' => $e->getMessage(),
+                'line' => $e->getLine(),
+                'file' => $e->getFile(),
+            ]);
+            return redirect()->back()->with('error', 'Failed to resend mail. Please try again.');
+        }
+    }
+    public function mail_preview(Request $request)
+    {
+        $request->validate([
+            'id' => 'required|integer|exists:cdb_lets_connect,id',
+        ]);
+        try {
+            $lead = DB::table('cdb_lets_connect')->where('id', $request->id)->first();
+            if (!$lead) {
+                return response()->json(['error' => 'Lead not found'], 404);
+            }
+            $form_details = CdbPopupForm::where('id', $lead->form_id)->first();
+            $mail_data = CdbMailTemp::where('id', $form_details->mail_temp_id ?? null)->first();
+            if (!$mail_data || $mail_data->status != 1) {
+                return response()->json(['error' => 'Mail template inactive or not found'], 404);
+            }
+            // Prepare data
+            $data = [
+                'title' => $mail_data->title,
+                'celebration_text' => $mail_data->celebration_text,
+                'content' => $mail_data->content,
+                'logo' => $mail_data->logo,
+                'name' => $lead->name,
+                'email' => $lead->email,
+                'phone' => $lead->phone,
+                'user_message' => $lead->message,
+            ];
+            // Render mail preview HTML
+            $html = view('front.Mail.cdb-letsconnect-mail', $data)->render();
+            return response()->json(['status' => 'success', 'data' => $html], 200);
+
+        } catch (\Exception $e) {
+            \Log::error('Mail Preview Error', [
+                'message' => $e->getMessage(),
+                'line' => $e->getLine(),
+                'file' => $e->getFile(),
+            ]);
+            return response()->json(['status' => 'error', 'message' => 'Failed to load mail preview. Please try again.'], 500);
+        }
+
+    }
+    public function get_whatsapp_link(Request $request)
+    {
+        $link = $request->link;
+        $lead = DB::table('cdb_lets_connect')->where('id', $request->id)->first();
+        if (!$lead) {
+            return response()->json(['status' => false, 'msg' => 'Lead not found!'], 404);
+        }
+        $whatsAppNumber = $lead->phone;
+        $message = urlencode($request->message);
+        $whatsAppLink = "https://wa.me/{$whatsAppNumber}?text={$message}";
+        $html = '
+            <div class="text-center text-primary border border-secondary bg-light p-3 rounded" style="max-width: 600px; margin: auto;">
+                <p class="mb-3" style="font-size: 14px; font-weight: bold;">Scan to Share:</p>
+                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=' . urlencode($whatsAppLink) . '" alt="QR Code" />
+                <p class="mt-3 mb-3" style="font-size: 16px; font-weight: bold;">Your Link:</p>
+                <div class="bg-white p-2 border rounded text-info" style="word-wrap: break-word;">
+                    ' . $link . '
+                </div>
+            </div>
+            <div class="text-center mt-4">
+                <a href="' . $whatsAppLink . '" target="_blank" class="btn btn-success d-flex align-items-center justify-content-center" style="font-size: 14px; padding: 10px 20px; border-radius: 5px;">
+                    <i class="fa fa-whatsapp" style="margin-right: 8px;"></i> Send Link via WhatsApp
+                </a>
+            </div>';
+
+
+
+        return response()->json(['status' => true, 'msg' => 'WhatsApp link generated successfully!', 'data' => $html], 200);
+    }
     public function lead_magnet_list(){
         $lists = DB::table('cdb_lets_connect')->select('cdb_lets_connect.*','cdb_popup_form.title as form_name','tbl_lead_magnet.page_url as page_name')
         ->join('cdb_popup_form', 'cdb_popup_form.id', 'cdb_lets_connect.form_id')
         ->leftjoin('tbl_lead_magnet', 'tbl_lead_magnet.custom_form_id', 'cdb_popup_form.id')
-        ->where('cdb_popup_form.user_id', auth()->id())->paginate(10);
+        ->where('cdb_popup_form.user_id', auth()->id())->orderBy('id', 'desc')->paginate(10);
         // dd($lists);
         return view('dashboard.lead-magnet-enquiry-list', compact('lists'));
     }
@@ -358,6 +503,9 @@ class HomeController extends Controller
                 'content' => $request->content,
                 'cta_btn_text' => $request->cta_btn_text,
                 'thankyou_message' => $request->thankyou_message,
+                'image_visible' => $request->image_visible??0,
+                'thankyou_cta_link' => $request->thankyou_cta_link,
+                'thankyou_cta_text' => $request->thankyou_cta_text,
                 'file_path' => $logoPath,
             ]
         );
@@ -412,6 +560,8 @@ class HomeController extends Controller
                 'content' => $request->content,
                 'status' => $request->status,
                 'logo' => $logoPath,
+                'attachment' => $request->attachment,
+                'cc_mailid' => $request->cc_mailid,
             ]
         );
 
@@ -477,5 +627,99 @@ class HomeController extends Controller
         $enquiry->save();
      
         return response()->json(['success' => true, 'message' => 'Enquiry submitted successfully']);
+    }
+    // ... other methods ...
+    public function update_lead(Request $request){
+        $request->validate([
+            'id' => 'required|integer|exists:cdb_lets_connect,id',
+            'name' => 'required|string|max:255',
+            'email' => 'required|email',
+            'phone' => 'nullable|string|max:20',
+            'message' => 'nullable|string',
+        ]);
+        DB::table('cdb_lets_connect')->where('id', $request->id)->update([
+            'name' => $request->name,
+            'email' => $request->email,
+            'phone' => $request->phone,
+            'message' => $request->message,
+            'updated_at' => Carbon::now()
+        ]);
+        return redirect()->back()->with('success', 'Lead updated successfully.');
+    }
+    public function update_status(Request $request){
+        $request->validate([
+            'id' => 'required|integer|exists:cdb_lets_connect,id',
+            'status' => 'required|in:0,1,2,3,4,5',
+        ]);
+        DB::table('cdb_lets_connect')->where('id', $request->id)->update([
+            'status' => $request->status,
+            'updated_at' => Carbon::now()
+        ]);
+        return response()->json(['success' => true, 'message' => 'Status updated successfully']);
+    }
+    public function delete_lead($id){
+        DB::table('cdb_lets_connect')->where('id', $id)->delete();
+        return redirect()->back()->with('success', 'Lead deleted successfully.');
+    }
+    
+    public function export_leads()
+    {
+        $status = [
+            0 => 'Rejected',
+            1 => 'Pending',
+            2 => 'In Progress',
+            3 => 'Closed',
+            4 => 'Not Related',
+            5 => 'Accelerated'
+        ];
+
+        $fileName = 'cdb_lets_connect_' . date('Y-m-d_H-i-s') . '.csv';
+
+        $headers = [
+            "Content-type"        => "text/csv",
+            "Content-Disposition" => "attachment; filename=$fileName",
+            "Pragma"              => "no-cache",
+            "Cache-Control"       => "must-revalidate",
+            "Expires"             => "0"
+        ];
+
+        $columns = [
+            'Name',
+            'Email',
+            'Phone',
+            'Message',
+            'Date',
+            'Status'
+        ];
+
+        // ✅ PASS $status here
+        $callback = function () use ($columns, $status) {
+
+            $file = fopen('php://output', 'w');
+
+            // Header
+            fputcsv($file, $columns);
+
+            DB::table('cdb_lets_connect')
+                ->orderBy('id', 'desc')
+                ->chunk(500, function ($rows) use ($file, $status) {
+
+                    foreach ($rows as $row) {
+                        fputcsv($file, [
+                            $row->name,
+                            $row->email,
+                            $row->phone,
+                            strip_tags($row->message), // optional clean
+                            $row->created_at,
+                            $status[$row->status] ?? 'Unknown',
+                        ]);
+                    }
+
+                });
+
+            fclose($file);
+        };
+
+        return response()->stream($callback, 200, $headers);
     }
 }

@@ -755,12 +755,12 @@
                 <p>{{ $formdata->content ?? '' }}</p>
                 @endif
                 <div class="row">
-                    @if($formdata && $formdata->file_path)
+                    @if($formdata && $formdata->image_visible && $formdata->file_path)
                     <div class="col-lg-6">
                         <div class="mdl_mg_arar"><img src="{{ asset($formdata->file_path)}}" alt="" /></div>
                     </div>
                     @endif
-                    @if($formdata && $formdata->file_path)
+                    @if($formdata && $formdata->image_visible && $formdata->file_path)
                     <div class="col-lg-6 mt-4">
                         @else
                     <div class="col-lg-12 mt-4">

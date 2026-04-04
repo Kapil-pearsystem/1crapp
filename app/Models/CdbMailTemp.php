@@ -19,6 +19,8 @@ class CdbMailTemp extends Model
         'subject',
         'content',
         'logo',
+        'attachment',
+        'cc_mailid',
         'status',
     ];
 }

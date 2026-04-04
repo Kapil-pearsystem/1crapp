@@ -731,6 +731,159 @@
     .shadow .top_menuues .top_sec_menu.cnt_parts li a{
         color: {{ !empty($page->header_footer_text_color) ? $page->header_footer_text_color : '#ffffff' }};
     }
+    .thankyou-overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0,0,0,0.6);
+        z-index: 99999;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .thankyou-box {
+        background: #fff;
+        padding: 30px 25px;
+        width: 380px;
+        border-radius: 12px;
+        text-align: center;
+        position: relative;
+        animation: popupFade 0.3s ease;
+    }
+
+    /* Close Button */
+    .thankyou-close {
+        position: absolute;
+        right: 12px;
+        top: 10px;
+        cursor: pointer;
+        font-size: 18px;
+        color: #999;
+    }
+
+    /* Icon */
+    .thankyou-icon {
+        font-size: 40px;
+        color: #16a34a;
+        margin-bottom: 10px;
+    }
+
+    /* Title */
+    .thankyou-title {
+        font-size: 22px;
+        font-weight: bold;
+        margin-bottom: 10px;
+        color: #111;
+    }
+
+    /* Message */
+    .thankyou-text {
+        font-size: 14px;
+        color: #555;
+        margin-bottom: 20px;
+    }
+
+    /* Button */
+    .thankyou-btn {
+        background: #2563eb;
+        color: #fff;
+        padding: 10px 18px;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 14px;
+        transition: 0.3s;
+    }
+
+    .thankyou-btn:hover {
+        background: #1d4ed8;
+    }
+
+    /* Animation */
+    @keyframes popupFade {
+        from {
+            transform: scale(0.8);
+            opacity: 0;
+        }
+        to {
+            transform: scale(1);
+            opacity: 1;
+        }
+    }
+    .error-overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0,0,0,0.6);
+        z-index: 99999;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .error-box {
+        background: #fff;
+        padding: 30px 25px;
+        width: 380px;
+        border-radius: 12px;
+        text-align: center;
+        position: relative;
+        animation: popupFade 0.3s ease;
+    }
+
+    /* Close */
+    .error-close {
+        position: absolute;
+        right: 12px;
+        top: 10px;
+        cursor: pointer;
+        font-size: 18px;
+        color: #999;
+    }
+
+    /* Icon */
+    .error-icon {
+        font-size: 40px;
+        color: #dc2626;
+        margin-bottom: 10px;
+    }
+
+    /* Title */
+    .error-title {
+        font-size: 22px;
+        font-weight: bold;
+        margin-bottom: 10px;
+        color: #dc2626;
+    }
+
+    /* Message */
+    .error-text {
+        font-size: 14px;
+        color: #555;
+        margin-bottom: 20px;
+    }
+
+    /* Button */
+    .error-btn {
+        background: #dc2626;
+        color: #fff;
+        padding: 10px 18px;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 14px;
+        transition: 0.3s;
+    }
+
+    .error-btn:hover {
+        background: #b91c1c;
+    }
 </style>
 <!-- Form Modal -->
  @if($page && $page->popup_enable)
@@ -748,12 +901,12 @@
                 <p>{{ $formdata->content ?? '' }}</p>
                 @endif
                 <div class="row">
-                    @if($formdata && $formdata->file_path)
+                    @if($formdata && $formdata->image_visible && $formdata->file_path)
                     <div class="col-lg-6">
                         <div class="mdl_mg_arar"><img src="{{ asset($formdata->file_path)}}" alt="" /></div>
                     </div>
                     @endif
-                    @if($formdata && $formdata->file_path)
+                    @if($formdata && $formdata->image_visible && $formdata->file_path)
                     <div class="col-lg-6 mt-4">
                         @else
                     <div class="col-lg-12 mt-4">
@@ -859,18 +1012,14 @@
                                             {{-- ✅ IMAGE --}}
                                             @if(($page->media_type ?? '') == 'image' && !empty($page->media_path))
                                                 <img src="{{ asset($page->media_path) }}" width="100%" height="100%" style="border-radius:8px;">
-
                                             {{-- ✅ VIDEO --}}
                                             @elseif(($page->media_type ?? '') == 'video' && !empty($page->media_path))
-                                                
                                                 <video width="100%" height="100%" controls style="border-radius:8px;">
                                                     <source src="{{ asset($page->media_path) }}" type="video/mp4">
                                                     Your browser does not support video.
                                                 </video>
-
                                             {{-- ✅ LINK (YouTube / Embed) --}}
                                             @elseif(($page->media_type ?? '') == 'link' && !empty($page->media_path))
-
                                                 <iframe
                                                     width="100%"
                                                     height="100%"
@@ -879,9 +1028,7 @@
                                                     allowfullscreen
                                                     style="border-radius:8px;">
                                                 </iframe>
-
                                             @endif
-
                                     @endif
                                 </div>
                             </div>
@@ -927,7 +1074,6 @@
                                         @else
                                             <a href="{{ $page->page_cta_url }}" @if($page && $page->page_new_tab) target="_blank" @endif>
                                         @endif
-                                        
                                             <h5>{{ $page->cta_title }}</h5>
                                             <span>{{ $page->cta_sub_title }}</span>
                                         </a>
@@ -946,7 +1092,6 @@
                             <img class="logo" src="{{ asset($page->company_logo) }}" alt="Logo" />
                         </div>
                         @endif
-
                         <table class="table table-bordered">
                             <tr class="bg-dark text-white">
                                 <th>Company Name</th>
@@ -959,9 +1104,7 @@
                                 <td>{{ $page->company_website ?? 'N/A' }}</td>
                                 <td>{{ $page->company_email ?? 'N/A' }}</td>
                                 <td>{{ $page->company_phone ?? 'N/A' }}</td>
-                                
                             </tr>
-
                         </table>
                         <div class="ads_boxx_araessa">Address</div>
                         <p class="text-center">{{ $page->company_address ?? 'N/A' }}</p>
@@ -983,6 +1126,42 @@
                     </section>
                 </div>
             </div>
+        </div>
+    </div>
+    <div id="messageModal" class="thankyou-overlay" style="display:none;">
+        <div class="thankyou-box">
+            <!-- Close Button -->
+            <span class="thankyou-close" onclick="closeModal()">✖</span>
+            <!-- Icon -->
+            <div class="thankyou-icon">✔</div>
+            <!-- Title -->
+            <h3 class="thankyou-title">Thank You!</h3>
+            <!-- Message -->
+            <p id="fullMessage" class="thankyou-text">
+                {{ $formdata->thankyou_message ?? 'Thank you for connecting with us! We will get back to you soon.' }}
+            </p>
+            <!-- Button -->
+            <a href="{{ $formdata->thankyou_cta_link ?? '#' }}">
+                <button class="thankyou-btn">
+                    {{ $formdata->thankyou_cta_text ?? 'Go Back' }}
+                </button>
+            </a>
+        </div>
+    </div>
+    <div id="errorModal" class="error-overlay" style="display:none;">
+        <div class="error-box">
+            <!-- Close -->
+            <span class="error-close" onclick="closeErrorModal()">✖</span>
+            <!-- Icon -->
+            <div class="error-icon">✖</div>
+            <!-- Title -->
+            <h3 class="error-title">Something Went Wrong!</h3>
+            <!-- Message -->
+            <p id="errorMessage" class="error-text">
+                Please try again later.
+            </p>
+            <!-- Button -->
+            <button class="error-btn" onclick="closeErrorModal()">Close</button>
         </div>
     </div>
     <script src='https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js'></script>
@@ -1012,49 +1191,35 @@
         });
     </script>
     @if($page && $page->countdown_visible && $page->countdown_datetime && \Carbon\Carbon::parse($page->countdown_datetime)->isFuture())
-
     <script>
         const countdownDate = "{{ $page->countdown_datetime }}";
     </script>
     <script>
     (function () {
-
         const second = 1000,
             minute = second * 60,
             hour   = minute * 60,
             day    = hour * 24;
-
         // ✅ Convert Laravel datetime to JS format
         let countDown = new Date(countdownDate.replace(' ', 'T')).getTime();
-
         let x = setInterval(function () {
-
             let now = new Date().getTime();
             let distance = countDown - now;
-
             if (distance <= 0) {
                 clearInterval(x);
-
                 document.getElementById("headline").innerText = "Time's up!";
                 document.getElementById("countdown").style.display = "none";
-
                 return;
             }
-
             document.getElementById("days").innerText =
                 Math.floor(distance / day);
-
             document.getElementById("hours").innerText =
                 Math.floor((distance % day) / hour);
-
             document.getElementById("minutes").innerText =
                 Math.floor((distance % hour) / minute);
-
             document.getElementById("seconds").innerText =
                 Math.floor((distance % minute) / second);
-
         }, 1000); // ✅ update every second
-
     })();
     </script>
     @endif
@@ -1113,31 +1278,40 @@
             $('#sub_m_al_frms').modal('show');
         @endif
     });
-    
     $(document).on('click', '.close', function () {
         $('#sub_m_al_frms').modal('hide');
     });
-
     $(document).ready(function () {
-
         @if(session('success'))
-
-            // Hide title if needed
-            $('.modal-title').hide();
-
-            // Show modal
-            
-
-            // Show success message immediately
-            const alertHtml = `<div class="alert alert-success">{{ session('success') }}</div>`;
-            $('#othr_ledss').html(alertHtml); // FIX: class selector
-            $('#sub_m_al_frms').modal('show');
-            // Auto close modal after 5 sec
-            setTimeout(function () {
-                $('#sub_m_al_frms').modal('hide');
-            }, 5000);
-
+            $('#sub_m_al_frms').modal('hide');
+            successPopup();
         @endif
-
     });
+</script>
+
+<script>
+function successPopup() {
+    document.getElementById('messageModal').style.display = 'flex';
+}
+function errorPopup() {
+    document.getElementById('messageModal').style.display = 'flex';
+}
+function closeModal() {
+    document.getElementById('messageModal').style.display = 'none';
+}
+// Optional: close on outside click
+document.getElementById('messageModal').addEventListener('click', function(e) {
+    if (e.target === this) {
+        closeModal();
+    }
+});
+
+function openErrorModal(message = "Something went wrong!") {
+    document.getElementById('errorMessage').innerText = message;
+    document.getElementById('errorModal').style.display = 'flex';
+}
+
+function closeErrorModal() {
+    document.getElementById('errorModal').style.display = 'none';
+}
 </script>

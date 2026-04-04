@@ -72,6 +72,23 @@
                                         <small id="user_msg"></small>
                                     </div>
                                 </div>
+                                
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label>CC Mail</label>
+                                        <input type="email" placeholder="Enter CC Mail" class="inp_araea" name="cc_mailid" value="{{ isset($details->cc_mailid) ? $details->cc_mailid : '' }}" required="" />
+                                        <small id="user_msg" class="form-text text-muted">multiple emails support (comma separated)</small>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6" >
+                                    <div class="form-group">
+                                        <label>Attachment Link</label>
+                                        <input type="url" 
+                                            class="inp_araea" 
+                                            name="attachment" 
+                                            id="attachment" placeholder="Enter Attachment Link" value="{{ isset($details->attachment) ? $details->attachment : '' }}">
+                                    </div>
+                                </div>
                                 <!-- FILE INPUT -->
                                 <div class="col-lg-6" >
                                     <div class="form-group">
@@ -88,6 +105,7 @@
                                         </div>
                                     @endif
                                 </div>
+
                                 <div class="col-lg-6">
                                     <div class="form-group">
                                         <label>Status </label>

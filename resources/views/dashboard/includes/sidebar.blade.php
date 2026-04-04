@@ -115,6 +115,12 @@ $package = CdbPlanModel::where('id', $user_data->package_id)->first();
                            Billing
                         </a>
                     </li>
+                    <li>
+                        <a class="" 
+                           href="#">
+                           Rewards, Coupons & Credit
+                        </a>
+                    </li>
                 </ul>
             </li>
             <li>
@@ -124,9 +130,7 @@ $package = CdbPlanModel::where('id', $user_data->package_id)->first();
                 <a href="{{ route('earn-with-us') }}"  class="@if($firstSegment === 'earn-with-us') actet @endif"><img src="{{ url('home/img/earn.png')}}" alt="" /> Earn With Us</a>
             </li>
 
-            <li>
-                <a href="{{ route('services-for-you') }}"  class="@if($firstSegment === 'services-for-you') actet @endif"><img src="{{ url('home/img/earn.png')}}" alt="" /> Services & Products</a>
-            </li>
+           
 
             <li>
                 <a href="{{ route('notifications') }}" class="@if($firstSegment === 'notifications') actet @endif"><img src="{{ url('home/img/earn.png')}}" alt="" /> Updates</a>
@@ -168,9 +172,6 @@ $package = CdbPlanModel::where('id', $user_data->package_id)->first();
                         </a>
                     </li>
                 </ul>
-            </li>
-            <li>
-                <a href="javascript:void(0);"><img src="{{ url('home/img/earn.png')}}" alt="" /> Rewards, Coupons & Credit</a>
             </li>
 
             <li>

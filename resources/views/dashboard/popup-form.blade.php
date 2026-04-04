@@ -95,7 +95,20 @@
                                         <small id="user_msg"></small>
                                     </div>
                                 </div>
-                                
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label>Thankyou page CTA Text</label>
+                                        <input type="text" placeholder="Enter CTA Text" class="inp_araea" name="thankyou_cta_text" value="{{ isset($details->thankyou_cta_text) ? $details->thankyou_cta_text : '' }}"/>
+                                        <small id="user_msg"></small>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label>Thankyou page CTA Link</label>
+                                        <input type="url" placeholder="Enter CTA Link" class="inp_araea" name="thankyou_cta_link" value="{{ isset($details->thankyou_cta_link) ? $details->thankyou_cta_link : '' }}"/>
+                                        <small id="user_msg"></small>
+                                    </div>
+                                </div>
                                 <div class="col-lg-12">
                                     <div class="form-group">
                                         <label>Thankyou Message</label>
@@ -104,7 +117,7 @@
                                     </div>
                                 </div>
                                 <!-- FILE INPUT -->
-                                <div class="col-lg-6" >
+                                <div class="col-lg-5" >
                                     <div class="form-group">
                                         <label>Popup Image/Video </label>
                                         <input type="file" 
@@ -132,6 +145,16 @@
                                             @endif
                                         </div>
                                     @endif
+                                </div>
+                                
+                                <div class="col-lg-1 swich_bntts">
+                                    <label>Image Visible</label>
+                                    <div class="block_araea">
+                                        <label class="switch">
+                                            <input type="checkbox" name="image_visible" value="1" @if(isset($details->image_visible) && $details->image_visible == 1) checked @endif/>
+                                            <small></small>
+                                        </label>
+                                    </div>
                                 </div>
                                 <div class="col-lg-6">
                                     <div class="form-group">

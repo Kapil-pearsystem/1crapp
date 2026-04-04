@@ -456,6 +456,13 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/popup-form/store', [HomeController::class, 'popup_form_store'])->name('popup-form.store');
     Route::post('/save-lets-connect', [HomeController::class, 'save_lets_connect'])->name('save-lets-connect');
     Route::get('/lead-magnet-list', [HomeController::class, 'lead_magnet_list'])->name('lead-magnet-list');
+    Route::post('/lead/update', [HomeController::class, 'update_lead'])->name('lead.update');
+    Route::post('/lead/update-status', [HomeController::class, 'update_status'])->name('lead.update-status');
+    Route::post('/lead/resend-mail', [HomeController::class, 'resend_mail'])->name('lead.resend-mail');
+    Route::post('/lead/mail-preview', [HomeController::class, 'mail_preview'])->name('lead.mail-preview');
+    Route::post('/lead/get-whatsapp-link', [HomeController::class, 'get_whatsapp_link'])->name('lead.get-whatsapp-link');
+    Route::get('/lead/export', [HomeController::class, 'export_leads'])->name('lead.export');
+    Route::get('/lead/delete/{id}', [HomeController::class, 'delete_lead'])->name('lead.delete');
 
     Route::get('/lead-magnet1', function () {
         return view('front.lead-magnet1');
