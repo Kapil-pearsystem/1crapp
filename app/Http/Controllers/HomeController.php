@@ -185,7 +185,7 @@ class HomeController extends Controller
         ->first();
         $formdata = CdbPopupForm::where('user_id', auth()->id())->first();
         if(!$page){
-            return redirect()->back()->with('error', 'Please create a lead magnet page first.');
+            return redirect()->route('lead-magnet-form')->with('error', 'Please create a lead magnet page first.');
         }
         return view('dashboard.lead-magnet-view', compact('page', 'formdata'));
     }
