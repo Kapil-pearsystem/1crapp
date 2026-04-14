@@ -599,6 +599,17 @@ if($user){
                             <li><a href="{{ route('project-category.index') }}"> Project Category</a></li>
                             <li><a href="{{ route('project.index') }}"> Project </a></li>
                             <li><a href="{{ route('booking-event.index') }}"> Booking Event </a></li>
+                    </div>
+				</div>
+		    </div>
+			<div class="man_boxx">
+				<div class="accordion_head"><i class="fas fa-list"></i>Appointment Booking<span class="plusminus">+</span></div>
+				<div class="accordion_body" style="display: none;">
+					<div class="user_listst_links">
+					   <ul>
+                            <li><a href="{{ route('booking-calender.index') }}">Booking </a></li>
+                            <li><a href="{{ route('appointment-homework.index') }}">Homework </a></li>
+                            <li><a href="{{ route('appointment-booking.index') }}">Thankyou </a></li>
 					   </ul>
                     </div>
 				</div>
