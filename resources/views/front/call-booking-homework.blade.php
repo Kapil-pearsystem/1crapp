@@ -1,19 +1,13 @@
 
 @php
 use App\Models\BookingEventModel;
-$steps = BookingEventModel::where('status', 1)
-                ->where('step', 2)
-                ->first();
-                
-   
-
-
-
+$steps = BookingEventModel::where('status', 1)->where('step', 2)->first();
 @endphp
 <html lang="en" >
 <head>
   <meta charset="UTF-8">
   <title>Call Booking Homework</title>
+  <link rel="shortcut icon" type="image/jpg" href="https://admin.1crapp.com/images/icon.png"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.min.css'>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
@@ -509,7 +503,7 @@ margin-right: 10px;
 		</h2>
         <h3>
 		 <label class="custom-checkbox">
-		  <input type="checkbox" value="checkbox1" checked="checked"> YOUR CALL IS RESERVED!</label>
+		  <input type="checkbox" value="checkbox1" checked="checked"> {!! $homework->title !!}</label>
 		</h3>
     </div>
 </div>
@@ -518,7 +512,7 @@ margin-right: 10px;
 <!---- Step ----->
 <div class="container">	
  <div class="st_p_cntss call_bk">	
-  <h3>STEP 2:</h3><p>{{ $steps->title }}</p>
+  <h3>STEP 2:</h3><p> {!! $homework->sub_title !!}</p>
  </div>
 </div>
 <!---- End Step ----->
@@ -526,17 +520,64 @@ margin-right: 10px;
 <!---- Special Deal ----->
 <div class="container mt-4">
     <div class="v_part_liststs opt_in_pg call_bk">
-        <div class="you_tb_arra">
-            <iframe
-                width="100%"
-                height="400"
-                src="{{ $steps->video_link }}"
-                title="YouTube video player"
-                frameborder="0"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                referrerpolicy="strict-origin-when-cross-origin"
-                allowfullscreen
-            ></iframe>
+       <div class="you_tb_arra">
+            @php
+                $type = $homework->media_type;
+                $url  = $homework->media_path;
+                $ext  = strtolower(pathinfo($url, PATHINFO_EXTENSION));
+            @endphp
+            {{-- 🔥 EMBED (YouTube / iframe) --}}
+            @if($type == 'embed_code')
+                <iframe
+                    width="100%"
+                    height="400"
+                    src="{{ $url }}"
+                    frameborder="0"
+                    allowfullscreen
+                ></iframe>
+
+            {{-- 🎥 VIDEO --}}
+            @elseif($type == 'video' || in_array($ext, ['mp4','webm','ogg']))
+                <video width="100%" height="400" controls controlsList="nodownload" oncontextmenu="return false;">
+                    <source src="{{ $url }}" type="video/{{ $ext }}">
+                    Your browser does not support video.
+                </video>
+
+            {{-- 🎧 AUDIO --}}
+            @elseif($type == 'audio' || in_array($ext, ['mp3','wav','ogg']))
+                <audio controls style="width:100%;">
+                    <source src="{{ $url }}" type="audio/{{ $ext }}">
+                    Your browser does not support audio.
+                </audio>
+
+            {{-- 🖼 IMAGE --}}
+            @elseif(in_array($ext, ['jpg','jpeg','png','gif','webp']))
+                <img src="{{ $url }}" alt="image" class="w-full rounded-lg" />
+
+            {{-- 📄 PDF --}}
+            @elseif($ext == 'pdf')
+                <iframe 
+                    src="{{ $url }}#toolbar=0" 
+                    width="100%" 
+                    height="500px" 
+                    style="border:none;">
+                </iframe>
+
+            {{-- 📁 DOC / DOCX / XLS / PPT --}}
+            @elseif(in_array($ext, ['doc','docx','xls','xlsx','ppt','pptx']))
+                <iframe 
+                    src="https://docs.google.com/gview?url={{ urlencode($url) }}&embedded=true" 
+                    width="100%" 
+                    height="500px">
+                </iframe>
+
+            {{-- 📦 DEFAULT DOWNLOAD --}}
+            @else
+                <a href="{{ $url }}" target="_blank"
+                class="inline-block px-4 py-2 bg-blue-600 text-white rounded-lg">
+                    Download File
+                </a>
+            @endif
         </div>
     </div>
 </div>
@@ -545,7 +586,7 @@ margin-right: 10px;
 <!--- YOUR CALL IS RESERVED! ---->
 <div class="container">
     <div class="new_ar_tring mt_50 call_bk">
-        <h3>Please Complete this Short Fun Based Survey to help us to help you best. </h3>
+        <h3>{!! $homework->sort_description !!}</h3>
     </div>
 	
 	<div class="arow_downss">
@@ -553,8 +594,19 @@ margin-right: 10px;
      <span class="ar_bntss"><i class="fa fa-long-arrow-down"></i></span>
      <span class="ar_bntss"><i class="fa fa-long-arrow-down"></i></span>
     </div>
-	
-	{!! $steps->description !!}
+    <div class="new_ar_tring mt_50 call_bk mt-4" style="border: #e18181 dashed 2px;">
+        @if($homework->ec_visible)
+        {!! $homework->embed_code !!}
+        @endif
+        @if($homework->fd_visible)
+            <div class="arow_downss">
+                <a class="btn btn-info mx-auto text-center" href="{{ $homework->file_path }}" download> Download {{ $homework->file_name }} Now</a>
+            </div>
+        @endif
+        @if($homework->form_visible)
+            {!! $form_data??'' !!}
+        @endif
+    </div>
 </div>
 <!--- End YOUR CALL IS RESERVED! ---->	
 
@@ -587,16 +639,17 @@ margin-right: 10px;
 </section>
 
 
-  		<script src='https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js'></script>
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+<script src='https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js'></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 
-        <script src="https://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.6/dist/jquery.fancybox.min.js"></script>
-        <!--  -->
-		  <script src='https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js'></script> 
-        <script src="{{ url('home/js/menu_js.js')}}"></script>
-	    <script src="{{ url('home/js/responsive.js')}}"></script>
+<script src="https://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.6/dist/jquery.fancybox.min.js"></script>
+
+
+<script src='https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js'></script> 
+<script src="{{ url('home/js/menu_js.js')}}"></script>
+<script src="{{ url('home/js/responsive.js')}}"></script>
 	
 <script src='https://cdnjs.cloudflare.com/ajax/libs/echarts/5.2.2/echarts.min.js'></script>	
 
@@ -605,118 +658,61 @@ margin-right: 10px;
 
 
 <script>
- const progressContainer = document.querySelector('.progress-container');
-
-// initial call
-setPercentage();
-
-function setPercentage() {
-  const percentage = progressContainer.getAttribute('data-percentage') + '%';
-  
-  const progressEl = progressContainer.querySelector('.progress');
-  const percentageEl = progressContainer.querySelector('.percentage');
-  
-  progressEl.style.width = percentage;
-  percentageEl.innerText = percentage;
-  percentageEl.style.left = percentage;
-}
+    const progressContainer = document.querySelector('.progress-container');
+    // initial call
+    setPercentage();
+    function setPercentage() {
+        const percentage = progressContainer.getAttribute('data-percentage') + '%';
+        const progressEl = progressContainer.querySelector('.progress');
+        const percentageEl = progressContainer.querySelector('.percentage');
+        progressEl.style.width = percentage;
+        percentageEl.innerText = percentage;
+        percentageEl.style.left = percentage;
+    }
 </script>
 
 <script>
-(function () {
-  const second = 1000,
-        minute = second * 60,
-        hour = minute * 60,
-        day = hour * 24;
-
-  //I'm adding this section so I don't have to keep updating this pen every year :-)
-  //remove this if you don't need it
-  let today = new Date(),
-      dd = String(today.getDate()).padStart(2, "0"),
-      mm = String(today.getMonth() + 1).padStart(2, "0"),
-      yyyy = today.getFullYear(),
-      nextYear = yyyy + 1,
-      dayMonth = "09/30/",
-      birthday = dayMonth + yyyy;
-  
-  today = mm + "/" + dd + "/" + yyyy;
-  if (today > birthday) {
-    birthday = dayMonth + nextYear;
-  }
-  //end
-  
-  const countDown = new Date(birthday).getTime(),
-      x = setInterval(function() {    
-
-        const now = new Date().getTime(),
-              distance = countDown - now;
-
-        document.getElementById("days").innerText = Math.floor(distance / (day)),
-          document.getElementById("hours").innerText = Math.floor((distance % (day)) / (hour)),
-          document.getElementById("minutes").innerText = Math.floor((distance % (hour)) / (minute)),
-          document.getElementById("seconds").innerText = Math.floor((distance % (minute)) / second);
-
-        //do something later when date is reached
-        if (distance < 0) {
-          document.getElementById("headline").innerText = "It's my birthday!";
-          document.getElementById("countdown").style.display = "none";
-          document.getElementById("content").style.display = "block";
-          clearInterval(x);
-        }
-        //seconds
-      }, 0)
-  }());
-</script>
-
-<script>
-var owl = $('#testimonials');
-              owl.owlCarousel({
-                margin: 30,
-				loop: true,
-                dots:false,
-                nav:true,
-                navText: [
-                  "<i class='fa fa-chevron-left'></i>",
-                  "<i class='fa fa-chevron-right'></i>"
-                ],
-                autoplay: false,
-                autoplayHoverPause: true,
-                responsive: {
-                  0: {
-                    items: 1
-                  },
-                  600: {
-                    items: 1
-                  },
-                  1000: {
-                    items:3
-                  },
-                  1200: {
-                    items:3
-                  }
+    document.addEventListener("DOMContentLoaded", function () {
+        const form = document.getElementById('leadForm');
+        form.addEventListener('submit', function (e) {
+            e.preventDefault();
+            let formData = new FormData(form);
+            fetch("{{ url('/admin/api/save-leads') }}", {
+                method: "POST",
+                body: formData,
+                headers: {
+                    'Accept': 'application/json'
                 }
-  });
+            })
+            .then(async response => {
+                let data = await response.json();
+                if (!response.ok) {
+                    throw data;
+                }
+                return data;
+            })
+            .then(data => {
+                if (data.status) {
+                    alert(data.msg || "Lead submitted successfully!");
+                    form.reset();
+                    // ✅ redirect if needed
+                    // if (data.redirect) {
+                        // window.location.href = data.redirect;
+                    // }
+                } else {
+                    alert(data.msg || "Something went wrong");
+                }
+            })
+            .catch(error => {
+                console.error(error);
+                // ✅ Validation errors (Laravel 422)
+                if (error.errors) {
+                    let messages = Object.values(error.errors).flat().join("\n");
+                    alert(messages);
+                } else {
+                    alert(error.msg || "Server Error");
+                }
+            });
+        });
+    });
 </script>
-
-
-
-		<script>
-		$(document).ready(function () {
-			//toggle the component with class accordion_body
-			$(".accordion_head").click(function () {				
-				if ($('.accordion_body').is(':visible')) {
-					$(".accordion_body").slideUp(300);
-					$(".plusminus").text('+');
-					$('.accordion_head').removeClass('clr_tx');
-				}
-				if ($(this).next(".accordion_body").is(':visible')) {
-					$(this).next(".accordion_body").slideUp(300);
-					$(this).children(".plusminus").text('+');
-				} else {
-					$(this).next(".accordion_body").slideDown(300);
-					$(this).addClass('clr_tx').siblings().removeClass('clr_tx');
-					$(this).children(".plusminus").text('-');
-				}
-			});
-		});
-		</script>

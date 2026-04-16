@@ -57,7 +57,7 @@ use App\Http\Controllers\FeedbackController;
 use App\Http\Controllers\ReviewsController;
 use App\Http\Controllers\CDBPlansController;
 use App\Http\Controllers\PlanTypeController;
-use App\Http\Controllers\BookingCalenderController;
+use App\Http\Controllers\AppointmentThankyouController;
 use App\Http\Controllers\AppointmentBookingHomeworkController;
 use App\Http\Controllers\AppointmentBookingController;
 
@@ -880,12 +880,23 @@ Route::middleware(['auth', 'plan_permission'])->prefix('plan-type')->name('plan-
     Route::get('/delete/{id}', [PlanTypeController::class, 'delete'])->name('delete');
 });
 
-Route::middleware('auth')->prefix('booking-calender')->name('booking-calender.')->group(function(){
-    Route::get('/', [BookingCalenderController::class, 'index'])->name('index');
-    Route::get('/create', [BookingCalenderController::class, 'create'])->name('create');
-    Route::post('/store', [BookingCalenderController::class, 'store'])->name('store');
-    Route::get('/edit/{id}', [BookingCalenderController::class, 'edit'])->name('edit');
-    Route::get('/delete/{id}', [BookingCalenderController::class, 'destroy'])->name('delete');
+Route::middleware('auth')->prefix('appointment-booking')->name('appointment-booking.')->group(function(){
+    Route::get('/', [AppointmentBookingController::class, 'index'])->name('index');
+    Route::get('/create', [AppointmentBookingController::class, 'create'])->name('create');
+    Route::post('/store', [AppointmentBookingController::class, 'store'])->name('store');
+    Route::get('/edit/{id}', [AppointmentBookingController::class, 'edit'])->name('edit');
+    Route::get('/delete/{id}', [AppointmentBookingController::class, 'destroy'])->name('delete');
+    Route::get('/status/{id}/{status}', [AppointmentBookingController::class, 'updateStatus'])->name('updateStatus');    
+});
+Route::middleware('auth')->prefix('appointment-thankyou')->name('appointment-thankyou.')->group(function(){
+    Route::get('/', [AppointmentThankyouController::class, 'index'])->name('index');
+    Route::get('/create', [AppointmentThankyouController::class, 'create'])->name('create');
+    Route::post('/store', [AppointmentThankyouController::class, 'store'])->name('store');
+    Route::get('/edit/{id}', [AppointmentThankyouController::class, 'edit'])->name('edit');
+    Route::get('/delete/{id}', [AppointmentThankyouController::class, 'destroy'])->name('delete');
+    Route::get('/sm-status/{id}/{status}', [AppointmentThankyouController::class, 'updateSmStatus'])->name('updateSmStatus'); 
+    Route::get('/nf-status/{id}/{status}', [AppointmentThankyouController::class, 'updateNfStatus'])->name('updateNfStatus'); 
+    
 });
 Route::middleware('auth')->prefix('appointment-homework')->name('appointment-homework.')->group(function(){
     Route::get('/', [AppointmentBookingHomeworkController::class, 'index'])->name('index');
@@ -893,13 +904,7 @@ Route::middleware('auth')->prefix('appointment-homework')->name('appointment-hom
     Route::post('/store', [AppointmentBookingHomeworkController::class, 'store'])->name('store');
     Route::get('/edit/{id}', [AppointmentBookingHomeworkController::class, 'edit'])->name('edit');
     Route::get('/delete/{id}', [AppointmentBookingHomeworkController::class, 'destroy'])->name('delete');
-});
-Route::middleware('auth')->prefix('appointment-booking')->name('appointment-booking.')->group(function(){
-    Route::get('/', [AppointmentBookingController::class, 'index'])->name('index');
-    Route::get('/create', [AppointmentBookingController::class, 'create'])->name('create');
-    Route::post('/store', [AppointmentBookingController::class, 'store'])->name('store');
-    Route::get('/edit/{id}', [AppointmentBookingController::class, 'edit'])->name('edit');
-    Route::get('/delete/{id}', [AppointmentBookingController::class, 'destroy'])->name('delete');
+    Route::get('/fd-status/{id}/{status}', [AppointmentBookingHomeworkController::class, 'updateFdStatus'])->name('updateFdStatus');    
 });
 
 

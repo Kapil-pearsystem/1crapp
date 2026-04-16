@@ -14,7 +14,7 @@ $step4 = BookingEventModel::where('status', 1)
 <html lang="en" >
 <head>
   <meta charset="UTF-8">
-  <title>Calendar Booking Typ</title>
+  <title>Calendar Booking Thankyou</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.min.css'>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
@@ -606,10 +606,10 @@ margin-right: 10px;
 
 <body>
 <!--- Header Part ---->
-<section class="shadow othr_pgss_lde" id="myHeader">
-    <div class="top_menuues">
-        <div class="container">
-		  <div class="row">
+<section class="shadow othr_pgss_lde" id="myHeader" >
+    <div class="top_menuues" style="background-color:{{ $data->header_footer_cta_bg_color}}; color:{{ $data->header_footer_cta_text_color}};">
+        <div class="container" >
+		  <div class="row" >
 		   <div class="col-lg-2 col-2">
 		    <div class="othr_logges">
 			 <a class="nav-brand" href="javascript:void(0);"><img class="logo" src="{{ url('home/img/logo 1.png')}}" alt="Logo" /></a>
@@ -635,7 +635,7 @@ margin-right: 10px;
 <!--- YOUR CALL IS RESERVED! ---->
 <div class="container">
     <div class="new_ar_tring cal_bkk_typ mt_50p">
-	    <h2>You Are Done!  Excited to See You.
+	    <h2>{{ $data->title }}
 		 <div class="progress-container" data-percentage='100'>
 		  <div class="progress"></div>
 		  <div class="percentage">0%</div>
@@ -644,12 +644,16 @@ margin-right: 10px;
 	
 	
         <div class="digitalss_c">
-		  <img class="usr_lgo" src="{{ url('home/img/logo 1.png')}}" alt="" />		  
-		  <h6>XXXXXXXX</h4>
+            @if($data->logo)
+                <img class="usr_lgo" src="{{ $data->logo }}" alt="" />	
+            @else	  
+                <img class="usr_lgo" src="{{ url('home/img/logo 1.png')}}" alt="" />
+            @endif	
+		  <h6 style="color:{{ $data->sub_title_color}}; ">{{ $data->sub_title }}</h4>
 		</div>
         <h3>
 		 <label class="custom-checkbox">
-		  <input type="checkbox" value="checkbox1" checked="checked"> <span class="full_araa">{{ $steps->title }}</span></label>
+		  <input type="checkbox" value="checkbox1" checked="checked"> <span class="full_araa">{{ $data->sortdescription }}</span></label>
 		</h3>
     </div>
 </div>
@@ -659,24 +663,62 @@ margin-right: 10px;
 
 <!---- Special Deal ----->
 <div class="container mt-4">
-    {!! $steps->description !!}
+    <div class="v_part_liststs opt_in_pg call_bk_typ">
+        @if($data->des_is_visible1)
+            {!! $data->description1 !!}
+        @endif
+        @if($data->des_is_visible2)
+            {!! $data->description2 !!}
+        @endif
+        @if($data->des_is_visible3)
+        {!! $data->description3 !!}
+        @endif
+    </div>
 </div>
 <!---- End Special Deal ----->
 
 <!--- YOUR CALL IS RESERVED! ---->
 <div class="container">
     <div class="new_ar_tring mt_50 call_bk">
-        <h3>{{ $step4->title }}: </h3>
+        <h3>Please join us at: </h3>
     </div>
-	
-	{!! $step4->description !!}
+	<div class="v_part_liststs opt_in_pg call_bk_typ">
+	 <div class="shr_links">
+	  <ul>
+        @php 
+        $s_bg = array(
+                '0'=>'blue_bg',
+                '1'=>'red_bg',
+                '2'=>'parpal_bg',
+                '3'=>'red_bg',
+                '4'=>'skyc_bg',
+            ); 
+        @endphp
+        @foreach($social_links as $skey=>$s_links)
+	        <li><a href="{{ $s_links->url }}" class="{{ $s_bg[$skey] }}">{{ $s_links->title }}</a></li>
+        @endforeach
+		<!-- <li><a href="javascript:void(0);" class="{{ $s_bg[$skey] }}">Share on youtube</a></li>
+		<li><a href="javascript:void(0);" class="parpal_bg">Share on instagram</a></li>
+		<li><a href="javascript:void(0);" class="red_bg">Share on linkedin</a></li>
+		<li><a href="javascript:void(0);" class="skyc_bg">Share on twitter</a></li> -->
+	  </ul>
+	 </div> 
+	  
+	  <div class="dhr_partss">
+	   <p>{{ $data->join_title }}</p>
+       <p>{{ $data->join_subtitle }}</p>
+       <h3>{{ $data->cta_text }}</h3>
+	   
+	   <div class="lnkees"><a href="{{ url('page').'/'.$data->page_slug }}"  style="background-color:{{ $data->header_footer_cta_bg_color}}; color:{{ $data->header_footer_cta_text_color}};"><i class="fa fa-arrow-circle-right"></i>{{ $data->page_name }}</a></div>
+	  </div>
+	</div>
 </div>
 <!--- End YOUR CALL IS RESERVED! ---->	
 
  
-<section class="ftr_new_other">
- <div class="container">
-  <div class="ftr_content">
+<section class="ftr_new_other" >
+ <div class="container"style="background-color:{{ $data->header_footer_cta_bg_color}}; color:{{ $data->header_footer_cta_text_color}};">
+  <div class="ftr_content" style="background-color:{{ $data->header_footer_cta_bg_color}}; color:{{ $data->header_footer_cta_text_color}};">
    <div class="lgo">
     <a href="javascript:void(0);"><img class="logo" src="{{ url('home/img/logo 1.png')}}" alt="Logo" /></a>
    </div>

@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\AppointmentBookingModel;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\DB;
 
 class AppointmentBookingController extends Controller
 {
@@ -61,6 +63,7 @@ class AppointmentBookingController extends Controller
         // ⭐ SAVE DATA
         $record->title = $request->title;
         $record->subtitle = $request->subtitle;
+        $record->calendar_app_name = $request->calendar_app_name;
         $record->sort_description = $request->sort_description;
 
         $record->step_title = $request->step_title;
@@ -105,5 +108,31 @@ class AppointmentBookingController extends Controller
 
         return redirect()->route('appointment-booking.index')
             ->with('success', 'Record deleted successfully.');
+    }
+    public function updateStatus($id, $status)
+    {
+        $validate = Validator::make([
+            'user_id'   => $id,
+            'status'    => $status
+        ], [
+            'user_id'   =>  'required|exists:tbl_appointment_booking,id',
+            'status'    =>  'required|in:0,1',
+        ]);
+        // If Validations Fails
+        if($validate->fails()){
+            return 0;
+        }
+        try {
+            DB::beginTransaction();
+            // Update Status with reason
+            AppointmentBookingModel::whereId($id)->update(['test_visible' => $status]);
+            // Commit And Redirect on index with Success Message
+            DB::commit();
+            return 1;
+        } catch (\Throwable $th) {
+            // Rollback & Return Error Message
+            DB::rollBack();
+            return redirect()->back()->with('error', $th->getMessage());
+        }
     }
 }

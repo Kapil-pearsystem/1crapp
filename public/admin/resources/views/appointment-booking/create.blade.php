@@ -27,99 +27,94 @@
 
                     {{-- Page Name --}}
                     <div class="col-sm-6 mb-3">
-                        <label>Page Name *</label>
+                        <label>Page Name <span style="color: red;">*</span> </label>
                         <input type="text" name="page_name" class="form-control"
+                        placeholder="Enter Page Name"
                             value="{{ old('page_name', $details->page_name ?? '') }}" required>
                     </div>
 
                     {{-- Title --}}
                     <div class="col-sm-6 mb-3">
-                        <label>Title *</label>
-                        <input type="text" name="title" class="form-control"
+                        <label>Title <span style="color: red;">*</span> </label>
+                        <input type="text" name="title" class="form-control" placeholder="Enter Title"
                             value="{{ old('title', $details->title ?? '') }}" required>
                     </div>
 
                     {{-- Subtitle --}}
-                    <div class="col-sm-6 mb-3">
+                    <div class="col-sm-12 mb-3">
                         <label>Subtitle</label>
-                        <input type="text" name="subtitle" class="form-control"
+                        <input type="text" name="subtitle" class="form-control" placeholder="Enter Subtitle"
                             value="{{ old('subtitle', $details->subtitle ?? '') }}">
                     </div>
-
+                    {{-- Description --}}
+                    <div class="col-sm-12 mb-3">
+                        <label>Short Description</label>
+                        <textarea name="sort_description" placeholder="Enter Short Description"
+                            class="form-control">{{ old('sort_description', $details->sort_description ?? '') }}</textarea>
+                    </div>
                     {{-- Step Title --}}
                     <div class="col-sm-6 mb-3">
                         <label>Step Title</label>
-                        <input type="text" name="step_title" class="form-control"
+                        <input type="text" name="step_title" class="form-control" placeholder="Enter Step Title"
                             value="{{ old('step_title', $details->step_title ?? '') }}">
                     </div>
-
-                    {{-- Left Section 1 --}}
-                    <div class="col-sm-6 mb-3">
-                        <label>Left Title 1</label>
-                        <input type="text" name="left_title" class="form-control"
-                            value="{{ old('left_title', $details->left_title ?? '') }}">
-                    </div>
-
                     
-
-                    {{-- Left Section 2 --}}
                     <div class="col-sm-6 mb-3">
-                        <label>Left Title 2</label>
-                        <input type="text" name="left_title2" class="form-control"
-                            value="{{ old('left_title2', $details->left_title2 ?? '') }}">
+                        <label>Calendar App Name</label>
+                        <input type="text" name="calendar_app_name" class="form-control" placeholder="Enter Calendar App Name"
+                            value="{{ old('calendar_app_name', $details->calendar_app_name ?? '') }}">
                     </div>
-                    {{-- Left Section 3 --}}
-                    <div class="col-sm-6 mb-3">
-                        <label>Left Title 3</label>
-                        <input type="text" name="left_title3" class="form-control"
-                            value="{{ old('left_title3', $details->left_title3 ?? '') }}">
+                    {{-- Left Section 1 --}}
+                    <div class="col-sm-12 mb-3">
+                        <label>Left Title 1</label>
+                        <input type="text" name="left_title1" class="form-control" placeholder="Enter Left Title 1"
+                            value="{{ old('left_title1', $details->left_title1 ?? '') }}">
                     </div>
                     <div class="col-sm-12 mb-3">
                         <label>Left Description 1</label>
-                        <textarea name="left_description1" id="description_editor1" class="form-control">
+                        <textarea name="left_description1" id="description_editor1" class="form-control" placeholder="Enter Left Description 1">
                             {{ old('left_description1', $details->left_description1 ?? '') }}
                         </textarea>
                     </div>
-
+                    {{-- Left Section 2 --}}
+                    <div class="col-sm-12 mb-3">
+                        <label>Left Title 2</label>
+                        <input type="text" name="left_title2" class="form-control" placeholder="Enter Left Title 2"
+                            value="{{ old('left_title2', $details->left_title2 ?? '') }}">
+                    </div>
                     <div class="col-sm-12 mb-3">
                         <label>Left Description 2</label>
-                        <textarea name="left_description2" id="description_editor2" class="form-control">
+                        <textarea name="left_description2" id="description_editor2" class="form-control" placeholder="Enter Left Description 2">
                             {{ old('left_description2', $details->left_description2 ?? '') }}
                         </textarea>
                     </div>
-
-                    
-
+                    {{-- Left Section 3 --}}
+                    <div class="col-sm-12 mb-3">
+                        <label>Left Title 3</label>
+                        <input type="text" name="left_title3" class="form-control"  placeholder="Enter Left Title 3"
+                            value="{{ old('left_title3', $details->left_title3 ?? '') }}">
+                    </div>
                     <div class="col-sm-12 mb-3">
                         <label>Left Description 3</label>
-                        <textarea name="left_description3" id="description_editor3" class="form-control">
+                        <textarea name="left_description3" id="description_editor3" class="form-control" placeholder="Enter Left Description 3">
                             {{ old('left_description3', $details->left_description3 ?? '') }}
                         </textarea>
                     </div>
 
                     {{-- Embed Title --}}
-                    <div class="col-sm-6 mb-3">
+                    <div class="col-sm-12 mb-3">
                         <label>Embed Title</label>
-                        <input type="text" name="embed_title" class="form-control"
+                        <input type="text" name="embed_title" class="form-control" placeholder="Enter Embed Title"
                             value="{{ old('embed_title', $details->embed_title ?? '') }}">
                     </div>
 
                     {{-- Embed Code --}}
-                    <div class="col-sm-6 mb-3">
+                    <div class="col-sm-12 mb-3">
                         <label>Embed Code</label>
-                        <textarea name="embed_code"
+                        <textarea name="embed_code" rows="3" placeholder="Enter Embed Code"
                             class="form-control">{{ old('embed_code', $details->embed_code ?? '') }}</textarea>
                     </div>
-
-                    {{-- Testimonial Title --}}
-                    <div class="col-sm-6 mb-3">
-                        <label>Testimonial Title</label>
-                        <input type="text" name="testimonial_title" class="form-control"
-                            value="{{ old('testimonial_title', $details->testimonial_title ?? '') }}">
-                    </div>
-
                     {{-- Testimonial Visible --}}
-                    
                      <div class="col-sm-3 mb-3 swich_bntts">
                          <label>Testimonial Visible</label>
                         <div class="block_araea mt-1">
@@ -130,7 +125,12 @@
                             </label>
                         </div>
                     </div>
-
+                    {{-- Testimonial Title --}}
+                    <div class="col-sm-6 mb-3">
+                        <label>Testimonial Title</label>
+                        <input type="text" name="testimonial_title" class="form-control" placeholder="Enter Testimonial Title"
+                            value="{{ old('testimonial_title', $details->testimonial_title ?? '') }}">
+                    </div>
                     {{-- Testimonial Title Visible --}}
                     
                     <div class="col-sm-3 mb-3 swich_bntts">
@@ -143,14 +143,6 @@
                             </label>
                         </div>
                     </div>
-
-                    {{-- Description --}}
-                    <div class="col-sm-12 mb-3">
-                        <label>Description</label>
-                        <textarea name="sort_description"
-                            class="form-control">{{ old('sort_description', $details->sort_description ?? '') }}</textarea>
-                    </div>
-
                     {{-- Status --}}
                     <div class="col-sm-6 mb-3">
                         <label>Status</label>

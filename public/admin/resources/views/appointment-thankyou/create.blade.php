@@ -10,7 +10,7 @@
             {{ isset($details) ? 'Edit' : 'Add' }} Appointment Booking
         </h1>
 
-        <a href="{{ route('booking-calender.index') }}" class="btn btn-sm btn-primary">
+        <a href="{{ route('appointment-thankyou.index') }}" class="btn btn-sm btn-primary">
             <i class="fas fa-arrow-left"></i> Back
         </a>
     </div>
@@ -18,7 +18,7 @@
     @include('common.alert')
 
     <div class="card shadow mb-4">
-        <form method="POST" action="{{ route('booking-calender.store') }}" enctype="multipart/form-data">
+        <form method="POST" action="{{ route('appointment-thankyou.store') }}" enctype="multipart/form-data">
             @csrf
             <input type="hidden" name="id" value="{{ $details->id ?? '' }}">
 
@@ -150,11 +150,17 @@
                         <input type="text" name="join_title" class="form-control" placeholder="Enter Join Title"
                             value="{{ old('join_title', $details->join_title ?? '') }}">
                     </div>
+                    {{-- Join Title --}}
+                    <div class="col-sm-6 mb-3">
+                        <label>Assets Title</label>
+                        <input type="text" name="assets_title" class="form-control" placeholder="Enter Assets Title"
+                            value="{{ old('assets_title', $details->assets_title ?? '') }}">
+                    </div>
 
                     {{-- Join Subtitle --}}
                     <div class="col-sm-6 mb-3">
-                        <label>Join Subtitle</label>
-                        <input type="text" name="join_subtitle" class="form-control" placeholder="Enter Join Subtitle"
+                        <label>Assets Subtitle</label>
+                        <input type="text" name="join_subtitle" class="form-control" placeholder="Enter Assets Subtitle"
                             value="{{ old('join_subtitle', $details->join_subtitle ?? '') }}">
                     </div>
 
@@ -167,17 +173,17 @@
 
                     {{-- CTA Page ID --}}
                     <div class="col-sm-6 mb-3">
-    <label>CTA Page</label>
-    <select name="cta_page_id" class="form-control" placeholder="Select Page">
-        <option value="">Select Page</option>
-        @foreach($pages as $id => $name)
-            <option value="{{ $id }}"
-                {{ old('cta_page_id', $details->cta_page_id ?? '') == $id ? 'selected' : '' }}>
-                {{ $name }}
-            </option>
-        @endforeach
-    </select>
-</div>
+                        <label>CTA Page</label>
+                        <select name="cta_page_id" class="form-control" placeholder="Select Page">
+                            <option value="">Select Page</option>
+                            @foreach($pages as $id => $name)
+                                <option value="{{ $id }}"
+                                    {{ old('cta_page_id', $details->cta_page_id ?? '') == $id ? 'selected' : '' }}>
+                                    {{ $name }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
 
                     {{-- CTA BG Color --}}
                     <div class="col-sm-6 mb-3">
@@ -200,6 +206,27 @@
                             <option value="1" {{ old('status', $details->status ?? 1) == 1 ? 'selected' : '' }}>Active</option>
                             <option value="0" {{ old('status', $details->status ?? 1) == 0 ? 'selected' : '' }}>Inactive</option>
                         </select>
+                    </div>
+
+                    <div class="col-sm-6 mb-3 swich_bntts">
+                        <label>Social Media Visible</label>
+                        <div class="block_araea mt-1">
+                            <label class="switch">
+                                <input type="checkbox" name="sm_visible" value="1"
+                                    {{ (old('sm_visible', $details->sm_visible ?? 0) == 1) ? 'checked' : '' }}>
+                                <small></small>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 mb-3 swich_bntts">
+                        <label>Next Funnel Visible</label>
+                        <div class="block_araea mt-1">
+                            <label class="switch">
+                                <input type="checkbox" name="nf_visible" value="1"
+                                    {{ (old('nf_visible', $details->nf_visible ?? 0) == 1) ? 'checked' : '' }}>
+                                <small></small>
+                            </label>
+                        </div>
                     </div>
 
                 </div>
@@ -241,14 +268,15 @@
                 </div>
 
                 <button type="button" class="btn btn-primary mt-2" id="addSocial">+ Add More</button>
-
+                
+                
             </div>
-
+            
             <div class="card-footer">
                 <button type="submit" class="btn btn-success float-right">
                     {{ isset($details) ? 'Update' : 'Add' }}
                 </button>
-                <a href="{{ route('booking-calender.index') }}" class="btn btn-secondary float-right mr-2">Cancel</a>
+                <a href="{{ route('appointment-thankyou.index') }}" class="btn btn-secondary float-right mr-2">Cancel</a>
             </div>
 
         </form>

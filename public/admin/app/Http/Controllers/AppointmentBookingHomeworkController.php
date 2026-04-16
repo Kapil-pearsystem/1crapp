@@ -7,13 +7,16 @@ use App\Models\AppointmentBookingHomeworkModel;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
 
 class AppointmentBookingHomeworkController extends Controller
 {
     // ⭐ List
     public function index()
     {
-        $lists = AppointmentBookingHomeworkModel::where('created_by', auth()->id())->get();
+        $lists = AppointmentBookingHomeworkModel::select('tbl_appointment_booking_homework.*', 'tbl_form.form_name')
+        ->leftjoin('tbl_form', 'tbl_form.id', '=', 'tbl_appointment_booking_homework.form_id')
+        ->where('tbl_appointment_booking_homework.created_by', auth()->id())->get();
         return view('appointment-homework.index', compact('lists'));
     }
 
@@ -154,5 +157,31 @@ if ($request->media_type === 'embed_code') {
 
         return redirect()->route('appointment-homework.index')
             ->with('success', 'Homework deleted successfully.');
+    }
+    public function updateFdStatus($id, $status)
+    {
+        $validate = Validator::make([
+            'user_id'   => $id,
+            'status'    => $status
+        ], [
+            'user_id'   =>  'required|exists:tbl_appointment_booking_homework,id',
+            'status'    =>  'required|in:0,1',
+        ]);
+        // If Validations Fails
+        if($validate->fails()){
+            return 0;
+        }
+        try {
+            DB::beginTransaction();
+            // Update Status with reason
+            AppointmentBookingHomeworkModel::whereId($id)->update(['fd_visible' => $status]);
+            // Commit And Redirect on index with Success Message
+            DB::commit();
+            return 1;
+        } catch (\Throwable $th) {
+            // Rollback & Return Error Message
+            DB::rollBack();
+            return redirect()->back()->with('error', $th->getMessage());
+        }
     }
 }

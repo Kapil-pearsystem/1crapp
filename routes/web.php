@@ -21,6 +21,7 @@ use App\Http\Controllers\PropertyMarketController;
 use App\Http\Controllers\PntController;
 use App\Http\Controllers\PbmController;
 use App\Http\Controllers\CdbFeaturesController;
+use App\Http\Controllers\AppointmentsController;
 use App\Models\BannerModel;
 use App\Models\ServiceCategoryModel;
 use App\Models\ServiceModel;
@@ -120,12 +121,22 @@ Route::get('/opt-in-page', function () {
 Route::get('/aa-page', function () {
     return view('front.aa-page');
 });
-Route::get('/calendar-booking', function () {
-    return view('front.calendar-booking');
+
+Route::prefix('appointment/')->name('appointment.')->group(function () {
+    Route::get('/{any}', [AppointmentsController::class, 'index'])
+        ->name('index');
 });
-Route::get('/call-booking-homework', function () {
-    return view('front.call-booking-homework');
+Route::prefix('homework/')->name('homework.')->group(function () {
+    Route::get('/{any}', [AppointmentsController::class, 'homework'])
+        ->name('index');
 });
+Route::prefix('appointments/thankyou/')->name('homework.thankyou.')->group(function () {
+    Route::get('/{any}', [AppointmentsController::class, 'thankyou'])
+        ->name('index');
+});
+// Route::get('/call-booking-homework', function () {
+//     return view('front.call-booking-homework');
+// });
 Route::get('/calendar-booking-typ', function () {
     return view('front.calendar-booking-typ');
 });

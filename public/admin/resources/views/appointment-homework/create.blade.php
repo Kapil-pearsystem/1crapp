@@ -24,25 +24,23 @@
 
             <div class="card-body">
                 <div class="row">
-
-                    {{-- Title --}}
-                    <div class="col-sm-6 mb-3">
-                        <label>Title *</label>
-                        <input type="text" name="title" class="form-control"
-                            value="{{ old('title', $details->title ?? '') }}" required>
-                    </div>
-
                     {{-- Page Name --}}
                     <div class="col-sm-6 mb-3">
-                        <label>Page Name *</label>
-                        <input type="text" name="page_name" class="form-control"
+                        <label>Page Name <span style="color: red;">*</span></label>
+                        <input type="text" name="page_name" class="form-control" placeholder="Enter Page Name"
                             value="{{ old('page_name', $details->page_name ?? '') }}" required>
+                    </div>
+                    {{-- Title --}}
+                    <div class="col-sm-6 mb-3">
+                        <label>Title <span style="color: red;">*</span></label>
+                        <input type="text" name="title" class="form-control" placeholder="Enter Title"
+                            value="{{ old('title', $details->title ?? '') }}" required>
                     </div>
 
                     {{-- Sub Title --}}
                     <div class="col-sm-6 mb-3">
                         <label>Sub Title</label>
-                        <input type="text" name="sub_title" class="form-control"
+                        <input type="text" name="sub_title" class="form-control" placeholder="Enter Sub Title"
                             value="{{ old('sub_title', $details->sub_title ?? '') }}">
                     </div>
 
@@ -57,7 +55,7 @@
                     </div>
 
                     {{-- Media Upload --}}
-                    <div class="col-sm-6 mb-3 mediaBox">
+                    <div class="col-sm-10 mb-3 mediaBox">
                         <label>Upload File</label>
                         <input type="file" name="media_path" class="form-control" accept="image/*,video/*">
 
@@ -66,15 +64,15 @@
                             <a href="{{ $details->media_path }}" target="_blank">View File</a>
                         @endif
                     </div>
-                    <div class="col-sm-6 mb-3 embedBox">
-    <label>Embed URL</label>
-    <input type="text" name="embed_url" class="form-control"
-        placeholder="Enter YouTube / Vimeo URL"
-        value="{{ old('embed_url', (isset($details) && $details->media_type == 'embed_code') ? $details->media_path : '') }}">
-</div>
+                    <div class="col-sm-10 mb-3 embedBox">
+                        <label>Embed URL</label>
+                        <input type="text" name="embed_url" class="form-control"
+                            placeholder="Enter YouTube / Vimeo URL"
+                            value="{{ old('embed_url', (isset($details) && $details->media_type == 'embed_code') ? $details->media_path : '') }}">
+                    </div>
 
                     {{-- Media Visible (Switch) --}}
-                    <div class="col-sm-6 mb-3 swich_bntts">
+                    <div class="col-sm-2 mb-3 swich_bntts">
                          <label>Media Visible</label>
                         <div class="block_araea mt-1">
                             <label class="switch">
@@ -84,15 +82,19 @@
                             </label>
                         </div>
                     </div>
-
+                    {{-- Description --}}
+                    <div class="col-sm-12 mb-3">
+                        <label>Short Description</label>
+                        <textarea name="sort_description" id="editor" class="form-control">{{ old('sort_description', $details->sort_description ?? '') }}</textarea>
+                    </div>
                     {{-- Embed Code --}}
-                    <div class="col-sm-12 mb-3 embedBox">
-                        <label>Embed Code</label>
-                        <textarea name="embed_code" class="form-control">{{ old('embed_code', $details->embed_code ?? '') }}</textarea>
+                    <div class="col-sm-10 mb-3 embedBox">
+                        <label>Survey Embed Code</label>
+                        <textarea name="embed_code" class="form-control" placeholder="Enter Survey Embed Code">{{ old('embed_code', $details->embed_code ?? '') }}</textarea>
                     </div>
 
                     {{-- Embed Visible --}}
-                    <div class="col-sm-6 mb-3 swich_bntts">
+                    <div class="col-sm-2 mb-3 swich_bntts">
                          <label>Embed Visible</label>
                         <div class="block_araea mt-1">
                             <label class="switch">
@@ -104,21 +106,21 @@
                     </div>
 
                     {{-- File Drive ID --}}
-                    <div class="col-sm-6 mb-3 fileBox">
-    <label>Select File</label>
-    <select name="file_drive_id" class="form-control">
-        <option value="">Select File</option>
-        @foreach($fileDrives as $id => $title)
-            <option value="{{ $id }}"
-                {{ old('file_drive_id', $details->file_drive_id ?? '') == $id ? 'selected' : '' }}>
-                {{ $title }}
-            </option>
-        @endforeach
-    </select>
-</div>
+                    <div class="col-sm-10 mb-3 fileBox">
+                        <label>Select File</label>
+                        <select name="file_drive_id" class="form-control">
+                            <option value="">Select File</option>
+                            @foreach($fileDrives as $id => $title)
+                                <option value="{{ $id }}"
+                                    {{ old('file_drive_id', $details->file_drive_id ?? '') == $id ? 'selected' : '' }}>
+                                    {{ $title }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
 
                     {{-- File Visible --}}
-                    <div class="col-sm-6 mb-3 swich_bntts">
+                    <div class="col-sm-2 mb-3 swich_bntts">
                          <label>File Visible</label>
                         <div class="block_araea mt-1">
                             <label class="switch">
@@ -130,20 +132,20 @@
                     </div>
 
                     {{-- Form ID --}}
-                    <div class="col-sm-6 mb-3">
-    <label>Select Form</label>
-    <select name="form_id" class="form-control">
-        <option value="">Select Form</option>
-        @foreach($forms as $id => $name)
-            <option value="{{ $id }}"
-                {{ old('form_id', $details->form_id ?? '') == $id ? 'selected' : '' }}>
-                {{ $name }}
-            </option>
-        @endforeach
-    </select>
-</div>
+                    <div class="col-sm-10 mb-3">
+                        <label>Select Form</label>
+                        <select name="form_id" class="form-control">
+                            <option value="">Select Form</option>
+                            @foreach($forms as $id => $name)
+                                <option value="{{ $id }}"
+                                    {{ old('form_id', $details->form_id ?? '') == $id ? 'selected' : '' }}>
+                                    {{ $name }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
                     {{-- Form Visible --}}
-                    <div class="col-sm-6 mb-3 swich_bntts">
+                    <div class="col-sm-2 mb-3 swich_bntts">
                          <label>Form Visible</label>
                         <div class="block_araea mt-1">
                             <label class="switch">
@@ -154,11 +156,7 @@
                         </div>
                     </div>
 
-                    {{-- Description --}}
-                    <div class="col-sm-12 mb-3">
-                        <label>Description</label>
-                        <textarea name="sort_description" id="editor" class="form-control">{{ old('sort_description', $details->sort_description ?? '') }}</textarea>
-                    </div>
+                    
 
                     {{-- Status --}}
                     <div class="col-sm-6 mb-3">

@@ -3,26 +3,27 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\BookingCalenderModel;
+use App\Models\AppointmentThankyouModel;
 use App\Models\BookingClSocialLinkModel;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 
-class BookingCalenderController extends Controller
+class AppointmentThankyouController extends Controller
 {
     // ⭐ List
     public function index()
     {
-        $lists = BookingCalenderModel::where('created_by', auth()->id())->get();
-        return view('booking-calender.index', compact('lists'));
+        $lists = AppointmentThankyouModel::where('created_by', auth()->id())->get();
+        return view('appointment-thankyou.index', compact('lists'));
     }
 
     // ⭐ Create Page
     public function create()
     {
         $pages = DB::table('tbl_page')->pluck('page_name', 'id'); 
-        return view('booking-calender.create', compact('pages'));
+        return view('appointment-thankyou.create', compact('pages'));
     }
 
     // ⭐ Add + Edit
@@ -44,7 +45,7 @@ class BookingCalenderController extends Controller
 
             // delete old
             if ($request->id) {
-                $old = BookingCalenderModel::find($request->id);
+                $old = AppointmentThankyouModel::find($request->id);
                 if ($old && $old->logo) {
                     $oldFile = public_path(str_replace(url('/').'/', '', $old->logo));
                     if (File::exists($oldFile)) {
@@ -58,10 +59,10 @@ class BookingCalenderController extends Controller
 
         // ⭐ Add / Update
         if ($request->id) {
-            $record = BookingCalenderModel::findOrFail($request->id);
+            $record = AppointmentThankyouModel::findOrFail($request->id);
             $message = "Calender updated successfully!";
         } else {
-            $record = new BookingCalenderModel();
+            $record = new AppointmentThankyouModel();
             $message = "Calender created successfully!";
         }
 
@@ -78,7 +79,7 @@ $slug = $baseSlug;
 $count = 1;
 
 while (
-    BookingCalenderModel::where('slug', $slug)
+    AppointmentThankyouModel::where('slug', $slug)
     ->when($request->id, function ($q) use ($request) {
         return $q->where('id', '!=', $request->id); // edit case ignore current
     })
@@ -117,6 +118,10 @@ $record->slug = $slug;
 
         $record->header_footer_cta_bg_color = $request->header_footer_cta_bg_color;
         $record->header_footer_cta_text_color = $request->header_footer_cta_text_color;
+        
+        $record->assets_title = $request->assets_title;
+        $record->sm_visible = $request->sm_visible ?? 0;
+        $record->nf_visible = $request->nf_visible ?? 0;
 
         $record->status = $request->status ?? 1;
         $record->created_by = auth()->id();
@@ -143,21 +148,21 @@ $record->slug = $slug;
             }
         }
 
-        return redirect()->route('booking-calender.index')->with('success', $message);
+        return redirect()->route('appointment-thankyou.index')->with('success', $message);
     }
 
     // ⭐ Edit
     public function edit($id)
     {
-        $details = BookingCalenderModel::with('socialLinks')->findOrFail($id);
+        $details = AppointmentThankyouModel::with('socialLinks')->findOrFail($id);
         $pages = DB::table('tbl_page')->pluck('page_name', 'id'); 
-        return view('booking-calender.create', compact('details', 'pages'));
+        return view('appointment-thankyou.create', compact('details', 'pages'));
     }
 
     // ⭐ Delete
     public function destroy($id)
     {
-        $record = BookingCalenderModel::findOrFail($id);
+        $record = AppointmentThankyouModel::findOrFail($id);
 
         // delete logo
         if ($record->logo) {
@@ -172,16 +177,69 @@ $record->slug = $slug;
 
         $record->delete();
 
-        return redirect()->route('booking-calender.index')
+        return redirect()->route('appointment-thankyou.index')
             ->with('success', 'Calender deleted successfully.');
     }
     private function generateUniqueCode()
-{
-    do {
-        $code = str_pad(mt_rand(0, 99999999), 8, '0', STR_PAD_LEFT);
-    } while (BookingCalenderModel::where('calender_code', $code)->exists());
+    {
+        do {
+            $code = str_pad(mt_rand(0, 99999999), 8, '0', STR_PAD_LEFT);
+        } while (AppointmentThankyouModel::where('calender_code', $code)->exists());
 
-    return $code;
-}
+        return $code;
+    }
+    
+    public function updateSmStatus($id, $status)
+    {
+        $validate = Validator::make([
+            'user_id'   => $id,
+            'status'    => $status
+        ], [
+            'user_id'   =>  'required|exists:tbl_appointment_thankyou,id',
+            'status'    =>  'required|in:0,1',
+        ]);
+        // If Validations Fails
+        if($validate->fails()){
+            return 0;
+        }
+        try {
+            DB::beginTransaction();
+            // Update Status with reason
+            AppointmentThankyouModel::whereId($id)->update(['sm_visible' => $status]);
+            // Commit And Redirect on index with Success Message
+            DB::commit();
+            return 1;
+        } catch (\Throwable $th) {
+            // Rollback & Return Error Message
+            DB::rollBack();
+            return redirect()->back()->with('error', $th->getMessage());
+        }
+    }
+    public function updateNfStatus($id, $status)
+    {
+        $validate = Validator::make([
+            'user_id'   => $id,
+            'status'    => $status
+        ], [
+            'user_id'   =>  'required|exists:tbl_appointment_thankyou,id',
+            'status'    =>  'required|in:0,1',
+        ]);
+        // If Validations Fails
+        if($validate->fails()){
+            return 0;
+        }
+        try {
+            DB::beginTransaction();
+            // Update Status with reason
+            AppointmentThankyouModel::whereId($id)->update(['nf_visible' => $status]);
+            // Commit And Redirect on index with Success Message
+            DB::commit();
+            return 1;
+        } catch (\Throwable $th) {
+            // Rollback & Return Error Message
+            DB::rollBack();
+            return redirect()->back()->with('error', $th->getMessage());
+        }
+    }
 
 }

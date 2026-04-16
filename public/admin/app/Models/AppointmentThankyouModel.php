@@ -4,9 +4,9 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class BookingCalenderModel extends Model
+class AppointmentThankyouModel extends Model
 {
-    protected $table = 'tbl_booking_calender';
+    protected $table = 'tbl_appointment_thankyou';
 
     protected $primaryKey = 'id';
 
@@ -32,6 +32,9 @@ class BookingCalenderModel extends Model
         'join_subtitle',
         'cta_text',
         'cta_page_id',
+        'assets_title',
+        'sm_visible',
+        'nf_visible',
         'header_footer_cta_bg_color',
         'header_footer_cta_text_color',
         'status',

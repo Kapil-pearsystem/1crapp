@@ -539,7 +539,23 @@ if($user){
         </div>
     </li>
 	@endif
-		@if(in_array('purchase-criteria',$access_module_array) )
+		@if(in_array('ticket-list',$access_module_array)  )
+	<li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#appointmentDropDown"
+            aria-expanded="true" aria-controls="appointmentDropDown">
+            <i class="fas fa-tasks"></i>
+            <span>Appointment Booking</span>
+        </a>
+        <div id="appointmentDropDown" class="collapse" aria-labelledby="headingTwo" data-parent="#appointmentDropDown">
+            <div class="bg-white py-2 collapse-inner rounded">
+                <a class="collapse-item" href="{{ route('appointment-booking.index') }}">Booking Page</a>
+                <a class="collapse-item" href="{{ route('appointment-homework.index') }}">Homework Page</a>
+                <a class="collapse-item" href="{{ route('appointment-thankyou.index') }}">Thankyou Page</a>
+            </div>
+        </div>
+    </li>
+	@endif
+    @if(in_array('purchase-criteria',$access_module_array) )
 	<li class="nav-item">
         <a class="nav-link" href="{{ route('purchasecretirea.mnpurchasecretirea') }}">
             <i class="fas fa-address-book"></i>
@@ -602,18 +618,7 @@ if($user){
                     </div>
 				</div>
 		    </div>
-			<div class="man_boxx">
-				<div class="accordion_head"><i class="fas fa-list"></i>Appointment Booking<span class="plusminus">+</span></div>
-				<div class="accordion_body" style="display: none;">
-					<div class="user_listst_links">
-					   <ul>
-                            <li><a href="{{ route('booking-calender.index') }}">Booking </a></li>
-                            <li><a href="{{ route('appointment-homework.index') }}">Homework </a></li>
-                            <li><a href="{{ route('appointment-booking.index') }}">Thankyou </a></li>
-					   </ul>
-                    </div>
-				</div>
-		    </div>
+			
 			<div class="man_boxx">
 				<div class="accordion_head"><i class="fas fa-list"></i> Post Login Pages<span class="plusminus">+</span></div>
 				<div class="accordion_body" style="display: none;">

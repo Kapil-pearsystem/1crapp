@@ -115,8 +115,10 @@ class FormLeadsController extends Controller
             }else{
                 Mail::to($agent->email)->send(new AgentLeadMail($maildata));
             }
-            if (!empty($form->success_destination)) {
-                return redirect()->to($form->success_destination);
+            if ($request->form_type != 'appointment') {
+                if (!empty($form->success_destination)) {
+                    return redirect()->to($form->success_destination);
+                }
             }
             return response()->json([
                 'status' => true,

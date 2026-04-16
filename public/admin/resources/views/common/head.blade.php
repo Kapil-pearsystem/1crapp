@@ -526,7 +526,7 @@
 
             <div class="modal-body text-center">
 
-             <p>Market Status Updated Successfully!</p>
+             <p>Status Updated Successfully!</p>
 
 
 
