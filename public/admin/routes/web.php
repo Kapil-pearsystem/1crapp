@@ -60,7 +60,8 @@ use App\Http\Controllers\PlanTypeController;
 use App\Http\Controllers\AppointmentThankyouController;
 use App\Http\Controllers\AppointmentBookingHomeworkController;
 use App\Http\Controllers\AppointmentBookingController;
-
+use App\Http\Controllers\CalenderController;
+use App\Http\Controllers\ScheduleAppointmentController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -906,5 +907,18 @@ Route::middleware('auth')->prefix('appointment-homework')->name('appointment-hom
     Route::get('/delete/{id}', [AppointmentBookingHomeworkController::class, 'destroy'])->name('delete');
     Route::get('/fd-status/{id}/{status}', [AppointmentBookingHomeworkController::class, 'updateFdStatus'])->name('updateFdStatus');    
 });
-
+Route::middleware('auth')->prefix('calender')->name('calender.')->group(function(){
+    Route::get('/', [CalenderController::class, 'index'])->name('index');
+    Route::get('/create', [CalenderController::class, 'create'])->name('create');
+    Route::post('/store', [CalenderController::class, 'store'])->name('store');
+    Route::get('/edit/{id}', [CalenderController::class, 'edit'])->name('edit');
+    Route::get('/delete/{id}', [CalenderController::class, 'destroy'])->name('delete');
+});
+Route::middleware('auth')->prefix('schedule-appointment')->name('schedule-appointment.')->group(function(){
+    Route::get('/', [ScheduleAppointmentController::class, 'index'])->name('index');
+    Route::get('/create', [ScheduleAppointmentController::class, 'create'])->name('create');
+    Route::post('/store', [ScheduleAppointmentController::class, 'store'])->name('store');
+    Route::get('/edit/{id}', [ScheduleAppointmentController::class, 'edit'])->name('edit');
+    Route::get('/delete/{id}', [ScheduleAppointmentController::class, 'destroy'])->name('delete');
+});
 
