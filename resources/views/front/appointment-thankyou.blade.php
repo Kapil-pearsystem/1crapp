@@ -15,6 +15,7 @@ $step4 = BookingEventModel::where('status', 1)
 <head>
   <meta charset="UTF-8">
   <title>Calendar Booking Thankyou</title>
+  <link rel="shortcut icon" type="image/jpg" href="https://admin.1crapp.com/images/icon.png"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.min.css'>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
@@ -678,41 +679,42 @@ margin-right: 10px;
 <!---- End Special Deal ----->
 
 <!--- YOUR CALL IS RESERVED! ---->
+@if($data->nf_visible)
 <div class="container">
+    @if($data->sm_visible)
     <div class="new_ar_tring mt_50 call_bk">
-        <h3>Please join us at: </h3>
+        <h3>{{ $data->join_title }}: </h3>
     </div>
+    @endif
 	<div class="v_part_liststs opt_in_pg call_bk_typ">
+    @if($data->sm_visible)
 	 <div class="shr_links">
-	  <ul>
-        @php 
-        $s_bg = array(
-                '0'=>'blue_bg',
-                '1'=>'red_bg',
-                '2'=>'parpal_bg',
-                '3'=>'red_bg',
-                '4'=>'skyc_bg',
-            ); 
-        @endphp
-        @foreach($social_links as $skey=>$s_links)
-	        <li><a href="{{ $s_links->url }}" class="{{ $s_bg[$skey] }}">{{ $s_links->title }}</a></li>
-        @endforeach
-		<!-- <li><a href="javascript:void(0);" class="{{ $s_bg[$skey] }}">Share on youtube</a></li>
-		<li><a href="javascript:void(0);" class="parpal_bg">Share on instagram</a></li>
-		<li><a href="javascript:void(0);" class="red_bg">Share on linkedin</a></li>
-		<li><a href="javascript:void(0);" class="skyc_bg">Share on twitter</a></li> -->
-	  </ul>
+        <ul>
+            @php 
+            $s_bg = array(
+                    '0'=>'blue_bg',
+                    '1'=>'red_bg',
+                    '2'=>'parpal_bg',
+                    '3'=>'red_bg',
+                    '4'=>'skyc_bg',
+                ); 
+            @endphp
+            @foreach($social_links as $skey=>$s_links)
+                <li><a href="{{ $s_links->url }}" class="{{ $s_bg[$skey] }}">{{ $s_links->title }}</a></li>
+            @endforeach
+        </ul>
 	 </div> 
-	  
+    @endif
 	  <div class="dhr_partss">
-	   <p>{{ $data->join_title }}</p>
-       <p>{{ $data->join_subtitle }}</p>
-       <h3>{{ $data->cta_text }}</h3>
-	   
-	   <div class="lnkees"><a href="{{ url('page').'/'.$data->page_slug }}"  style="background-color:{{ $data->header_footer_cta_bg_color}}; color:{{ $data->header_footer_cta_text_color}};"><i class="fa fa-arrow-circle-right"></i>{{ $data->page_name }}</a></div>
+        <p>{{ $data->assets_title }}</p>
+        <p>{{ $data->join_subtitle }}</p>
+        <h3>{{ $data->cta_text }}</h3>
+        
+        <div class="lnkees"><a href="{{ url('page').'/'.$data->page_slug }}"  style="background-color:{{ $data->header_footer_cta_bg_color}}; color:{{ $data->header_footer_cta_text_color}};"><i class="fa fa-arrow-circle-right"></i>{{ $data->page_name }}</a></div>
 	  </div>
 	</div>
 </div>
+@endif
 <!--- End YOUR CALL IS RESERVED! ---->	
 
  

@@ -673,6 +673,7 @@ margin-right: 10px;
 
 <script>
     document.addEventListener("DOMContentLoaded", function () {
+        const redirect_path = "{{ url('appointments/thankyou') }}/{{ $homework->thankyou_path }}";
         const form = document.getElementById('leadForm');
         form.addEventListener('submit', function (e) {
             e.preventDefault();
@@ -696,9 +697,9 @@ margin-right: 10px;
                     alert(data.msg || "Lead submitted successfully!");
                     form.reset();
                     // ✅ redirect if needed
-                    // if (data.redirect) {
-                        // window.location.href = data.redirect;
-                    // }
+                    if (redirect_path) {
+                        window.location.href = redirect_path;
+                    }
                 } else {
                     alert(data.msg || "Something went wrong");
                 }

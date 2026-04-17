@@ -551,6 +551,8 @@ if($user){
                 <a class="collapse-item" href="{{ route('appointment-booking.index') }}">Booking Page</a>
                 <a class="collapse-item" href="{{ route('appointment-homework.index') }}">Homework Page</a>
                 <a class="collapse-item" href="{{ route('appointment-thankyou.index') }}">Thankyou Page</a>
+                <a class="collapse-item" href="{{ route('calender.index') }}"> Calender </a>
+                <a class="collapse-item" href="{{ route('schedule-appointment.index') }}"> Schedule Appointment </a>
             </div>
         </div>
     </li>

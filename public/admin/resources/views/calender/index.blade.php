@@ -27,12 +27,12 @@
                     <thead>
                         <tr>
                             <th>Sr No.</th>
-                            <th>Page Name</th>
+                            <th>Title</th>
                             <!-- <th>Slug</th> -->
-                            <th>LP</th>
-                            <th>AA Page</th>
+                            <th>LP Page Name</th>
+                            <th>AA Page Name</th>
                             <th>Booking Page</th>
-                            <th>Booking Homework Page</th>
+                            <th>Homework Page</th>
                             <th>Thank You Page</th>
                             <th>Status</th>
                             <th>Created Date</th>
@@ -45,7 +45,7 @@
                         <tr>
                             <td>{{ ++$key }}</td>
 
-                            <td>{{ $item->page_name }}</td>
+                            <td>{{ $item->title }}</td>
 
                             <!-- <td>
                                 <code>{{ $item->slug }}</code>
@@ -53,13 +53,13 @@
 
                             <td>{{ $pages[$item->select_lp_id] ?? '—' }}</td>
 
-<td>{{ $pages[$item->aa_page_id] ?? '—' }}</td>
+                            <td>{{ $pages[$item->aa_page_id] ?? '—' }}</td>
 
-<td>{{ $appointmentbooking[$item->select_booking_page_id] ?? '—' }}</td>
+                            <td>{{ $appointmentbooking[$item->select_booking_page_id] ?? '—' }}</td>
 
-<td>{{ $appointmenthomework[$item->homework_page_id] ?? '—' }}</td>
+                            <td>{{ $appointmenthomework[$item->homework_page_id] ?? '—' }}</td>
 
-<td>{{ $thankyou[$item->thank_you_id] ?? '—' }}</td>
+                            <td>{{ $thankyou[$item->thank_you_id] ?? '—' }}</td>
                             <td>
                                 @if ($item->status == 1)
                                     <span class="badge badge-success">Active</span>
@@ -72,16 +72,16 @@
 
                             <td>
                                 <!-- View -->
-<button class="btn btn-info btn-sm viewBtn"
-    data-page_name="{{ $item->page_name }}"
-    data-lp="{{ $pages[$item->select_lp_id] ?? '-' }}"
-    data-aa="{{ $pages[$item->aa_page_id] ?? '-' }}"
-    data-booking="{{ $appointmentbooking[$item->select_booking_page_id] ?? '-' }}"
-    data-homework="{{ $appointmenthomework[$item->homework_page_id] ?? '-' }}"
-    data-thankyou="{{ $thankyou[$item->thank_you_id] ?? '-' }}"
-    data-status="{{ $item->status == 1 ? 'Active' : 'Inactive' }}">
-    <i class="fa fa-eye"></i>
-</button>
+                            <button class="btn btn-info btn-sm viewBtn"
+                                data-title="{{ $item->title }}"
+                                data-lp="{{ $pages[$item->select_lp_id] ?? '-' }}"
+                                data-aa="{{ $pages[$item->aa_page_id] ?? '-' }}"
+                                data-booking="{{ $appointmentbooking[$item->select_booking_page_id] ?? '-' }}"
+                                data-homework="{{ $appointmenthomework[$item->homework_page_id] ?? '-' }}"
+                                data-thankyou="{{ $thankyou[$item->thank_you_id] ?? '-' }}"
+                                data-status="{{ $item->status == 1 ? 'Active' : 'Inactive' }}">
+                                <i class="fa fa-eye"></i>
+                            </button>
                                 <!-- Edit -->
                                 <a href="{{ route('calender.edit', $item->id) }}"
                                    class="btn btn-primary btn-sm">
@@ -119,7 +119,7 @@
             </div>
 
             <div class="modal-body">
-                <p><b>Page Name:</b> <span id="v_page_name"></span></p>
+                <p><b>Title:</b> <span id="v_page_name"></span></p>
                 <p><b>LP:</b> <span id="v_lp"></span></p>
                 <p><b>AA Page:</b> <span id="v_aa"></span></p>
                 <p><b>Booking Page:</b> <span id="v_booking"></span></p>
@@ -144,7 +144,7 @@
 <script>
 $(document).on('click', '.viewBtn', function () {
 
-    $('#v_page_name').text($(this).data('page_name'));
+    $('#v_page_name').text($(this).data('title'));
     $('#v_lp').text($(this).data('lp'));
     $('#v_aa').text($(this).data('aa'));
     $('#v_booking').text($(this).data('booking'));
