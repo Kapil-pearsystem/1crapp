@@ -459,6 +459,10 @@ margin-right: 10px;
 .iv-player_responsive_padding {padding: 250% 0 0 0 !important;}
 
 }
+.text-end{
+  position: absolute;
+  right: 15%;
+}
 </style>
 
 
@@ -607,8 +611,14 @@ margin-right: 10px;
             {!! $form_data??'' !!}
         @endif
     </div>
-    
+
 </div>
+    @if($homework->typ_visible)
+        <div class="arow_downss">
+            <a class="btn btn-info mx-auto text-end" href="{{ url('appointments/thankyou') }}/{{ $homework->thankyou_path }}"> {{ $homework->typ_cta_text }} -></a>
+        </div>
+        <br>
+    @endif
 <!--- End YOUR CALL IS RESERVED! ---->	
 
  

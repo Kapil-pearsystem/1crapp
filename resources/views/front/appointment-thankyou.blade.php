@@ -716,6 +716,7 @@ margin-right: 10px;
       @endif
 	</div>
 </div>
+    
 <!--- End YOUR CALL IS RESERVED! ---->	
 
  
@@ -860,23 +861,23 @@ var owl = $('#testimonials');
 
 
 
-		<script>
-		$(document).ready(function () {
-			//toggle the component with class accordion_body
-			$(".accordion_head").click(function () {				
-				if ($('.accordion_body').is(':visible')) {
-					$(".accordion_body").slideUp(300);
-					$(".plusminus").text('+');
-					$('.accordion_head').removeClass('clr_tx');
-				}
-				if ($(this).next(".accordion_body").is(':visible')) {
-					$(this).next(".accordion_body").slideUp(300);
-					$(this).children(".plusminus").text('+');
-				} else {
-					$(this).next(".accordion_body").slideDown(300);
-					$(this).addClass('clr_tx').siblings().removeClass('clr_tx');
-					$(this).children(".plusminus").text('-');
-				}
-			});
-		});
-		</script>
+    <script>
+    $(document).ready(function () {
+        //toggle the component with class accordion_body
+        $(".accordion_head").click(function () {				
+            if ($('.accordion_body').is(':visible')) {
+                $(".accordion_body").slideUp(300);
+                $(".plusminus").text('+');
+                $('.accordion_head').removeClass('clr_tx');
+            }
+            if ($(this).next(".accordion_body").is(':visible')) {
+                $(this).next(".accordion_body").slideUp(300);
+                $(this).children(".plusminus").text('+');
+            } else {
+                $(this).next(".accordion_body").slideDown(300);
+                $(this).addClass('clr_tx').siblings().removeClass('clr_tx');
+                $(this).children(".plusminus").text('-');
+            }
+        });
+    });
+    </script>
