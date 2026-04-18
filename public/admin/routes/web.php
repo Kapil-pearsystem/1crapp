@@ -914,7 +914,7 @@ Route::middleware('auth')->prefix('calender')->name('calender.')->group(function
     Route::get('/edit/{id}', [CalenderController::class, 'edit'])->name('edit');
     Route::get('/delete/{id}', [CalenderController::class, 'destroy'])->name('delete');
 });
-Route::middleware('auth')->prefix('schedule-appointment')->name('schedule-appointment.')->group(function(){
+Route::middleware('auth')->prefix('appointments')->name('appointments.')->group(function(){
     Route::get('/', [ScheduleAppointmentController::class, 'index'])->name('index');
     Route::get('/create', [ScheduleAppointmentController::class, 'create'])->name('create');
     Route::post('/store', [ScheduleAppointmentController::class, 'store'])->name('store');

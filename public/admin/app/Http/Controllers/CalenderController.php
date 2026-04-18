@@ -12,7 +12,10 @@ class CalenderController extends Controller
     // ⭐ List
     public function index()
     {
-        $lists = CalenderModel::where('created_by', auth()->id())->get();
+        $lists = CalenderModel::select('tbl_calender.*', 'tbl_page.slug as page_path')
+        ->where('tbl_calender.created_by', auth()->id())
+        ->join('tbl_page', 'tbl_page.id', '=', 'tbl_calender.select_lp_id')
+        ->get();
 
         $pages = DB::table('tbl_page')->pluck('page_name', 'id');
         $appointmentbooking = DB::table('tbl_appointment_booking')->pluck('page_name', 'id'); 

@@ -17,12 +17,12 @@ class ScheduleAppointmentController extends Controller
     }
     //  Create Page
     public function create()
-{
-    $calenders = DB::table('tbl_appointment_booking')->pluck('title', 'id');
-    $tags = DB::table('tbl_tags')->where('status',1)->pluck('name','id');
-    $contacts = DB::table('tbl_contact')->where('status',1)->pluck('name','id');
-    return view('schedule-appointment.create', compact('calenders','tags','contacts'));
-}
+    {
+        $calenders = DB::table('tbl_calender')->pluck('title', 'id');
+        $tags = DB::table('tbl_tags')->where('status',1)->pluck('name','id');
+        $contacts = DB::table('tbl_contact')->where('status',1)->pluck('name','id');
+        return view('schedule-appointment.create', compact('calenders','tags','contacts'));
+    }
     //  Store / Update
     public function store(Request $request)
     {
@@ -37,10 +37,10 @@ class ScheduleAppointmentController extends Controller
         // Add / Update
         if ($request->id) {
             $record = ScheduleAppointmentModel::findOrFail($request->id);
-            $message = "Schedule updated successfully!";
+            $message = "Appointment updated successfully!";
         } else {
             $record = new ScheduleAppointmentModel();
-            $message = "Schedule created successfully!";
+            $message = "Appointment created successfully!";
         }
         // Basic Fields
         $record->title = $request->title;
@@ -51,6 +51,7 @@ class ScheduleAppointmentController extends Controller
         $record->duration = $request->duration;
         $record->calendar_product_id = $request->calender_id;
         $record->location_url = $request->meeting_url;
+        $record->meeting_source = $request->meeting_source;
         $record->contact_list_id = $request->contacts_list 
         ? implode(',', $request->contacts_list) 
         : null;
@@ -83,10 +84,10 @@ class ScheduleAppointmentController extends Controller
         $record->created_by = auth()->id();
         // dd($record);
         $record->save();
-        return redirect()->route('schedule-appointment.index')->with('success', $message);
+        return redirect()->route('appointments.index')->with('success', $message);
     }
     //  Edit
-        public function edit($id)
+    public function edit($id)
     {
         $details = ScheduleAppointmentModel::findOrFail($id);
         $details->tags = $details->tags ? json_decode($details->tags, true) : [];
@@ -96,12 +97,12 @@ class ScheduleAppointmentController extends Controller
         $contacts = DB::table('tbl_contact')->where('status',1)->pluck('name','id');
         return view('schedule-appointment.create', compact('details','calenders','tags','contacts'));
     }
-        //  Delete
-        public function destroy($id)
-        {
-            $record = ScheduleAppointmentModel::findOrFail($id);
-            $record->delete();
-            return redirect()->route('schedule-appointment.index')
-                ->with('success', 'Schedule deleted successfully.');
-        }
+    //  Delete
+    public function destroy($id)
+    {
+        $record = ScheduleAppointmentModel::findOrFail($id);
+        $record->delete();
+        return redirect()->route('appointments.index')
+            ->with('success', 'Appointment deleted successfully.');
+    }
 }

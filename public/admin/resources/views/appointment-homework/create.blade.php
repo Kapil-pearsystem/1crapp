@@ -166,6 +166,22 @@
                             <option value="0" {{ old('status', $details->status ?? 1) == 0 ? 'selected' : '' }}>Inactive</option>
                         </select>
                     </div>
+                    {{-- Sub Title --}}
+                    <div class="col-sm-4 mb-3">
+                        <label>Thankyou Button CTA Text</label>
+                        <input type="text" name="typ_cta_text" class="form-control" placeholder="Enter Thankyou Button CTA Text"
+                            value="{{ old('typ_cta_text', $details->typ_cta_text ?? '') }}">
+                    </div>
+                    {{-- Thankyou Page button visible --}}
+                    <div class="col-sm-2 mb-3 swich_bntts">
+                         <label>Visible</label>
+                        <div class="block_araea mt-1">
+                            <label class="switch">
+                                <input type="checkbox" name="typ_visible" value="1" {{ (old('typ_visible', $details->typ_visible ?? 1) == 1) ? 'checked' : '' }}>
+                                <small></small>
+                            </label>
+                        </div>
+                    </div>
 
                 </div>
             </div>

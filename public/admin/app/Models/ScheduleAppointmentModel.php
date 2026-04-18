@@ -27,6 +27,7 @@ class ScheduleAppointmentModel extends Model
 
         'contact_list_id',
         'location_url',
+        'meeting_source',
 
         'tags',
         'excluded_tags',

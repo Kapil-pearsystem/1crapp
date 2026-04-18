@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Appointment Booking List')
+@section('title', 'Appointment Thank You List')
 
 <link href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css" rel="stylesheet">
 
@@ -9,11 +9,11 @@
 
     <!-- Page Heading -->
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-        <h1 class="h3 mb-0 text-gray-800">Appointment Booking List</h1>
+        <h1 class="h3 mb-0 text-gray-800">Appointment Thank You List</h1>
         <div class="row">
             <div class="col-md-12">
                 <a href="{{ route('appointment-thankyou.create') }}" class="btn btn-sm btn-primary">
-                    <i class="fas fa-plus"></i> Add Appointment Booking
+                    <i class="fas fa-plus"></i> Add 
                 </a>
             </div>
         </div>
@@ -46,7 +46,10 @@
                         @foreach($lists as $key => $item)
                         <tr>
                             <td>{{ ++$key }}</td>
-                            <td>{{ $item->page_name }}</td>
+                            <td>{{ $item->page_name }}
+                                   |&ensp;  
+                                <i class="fa fa-copy copy-icon" data-url="{{ request()->getSchemeAndHttpHost() }}/appointments/thankyou/{{ $item->slug }}" aria-hidden="true" style="cursor:pointer;"></i>&ensp; |&ensp; <a href="{{ request()->getSchemeAndHttpHost() }}/appointments/thankyou/{{ $item->slug }}"> <i aria-hidden="true" class="fas fa-external-link-alt"></i></a>
+                            </td>
                             <td>
                                 @if($item->logo)
                                     <img src="{{ $item->logo }}" style="max-width:70px;">
@@ -121,51 +124,32 @@
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
             </div>
             <div class="modal-body text-left">
-
                 <p><strong>Sub Title:</strong> <span id="sub_title"></span></p>
                 <p><strong>Sub Title Color:</strong> <span id="sub_title_color"></span></p>
-
                 <hr>
-
                 <p><strong>Short Description:</strong> <span id="sortdescription"></span></p>
-
                 <hr>
-
                 <p><strong>Description 1:</strong> <span id="description1"></span></p>
                 <p><strong>Visible 1:</strong> <span id="des_is_visible1"></span></p>
-
                 <p><strong>Description 2:</strong> <span id="description2"></span></p>
                 <p><strong>Visible 2:</strong> <span id="des_is_visible2"></span></p>
-
                 <p><strong>Description 3:</strong> <span id="description3"></span></p>
                 <p><strong>Visible 3:</strong> <span id="des_is_visible3"></span></p>
-
                 <hr>
-
                 <p><strong>Join Title:</strong> <span id="join_title"></span></p>
                 <p><strong>Join Subtitle:</strong> <span id="join_subtitle"></span></p>
-
                 <hr>
-
                 <p><strong>CTA Text:</strong> <span id="cta_text"></span></p>
                 <p><strong>CTA Page:</strong> <span id="cta_page_id"></span></p>
-
                 <hr>
-
                 <p><strong>CTA BG Color:</strong> <span id="cta_bg_color"></span></p>
                 <p><strong>CTA Text Color:</strong> <span id="cta_text_color"></span></p>
-
                 <hr>
-
                 <p><strong>Assets Title:</strong> <span id="assets_title"></span></p>
-
                 <p><strong>Social Media Visible:</strong> <span id="sm_visible"></span></p>
                 <p><strong>Newsletter Visible:</strong> <span id="nf_visible"></span></p>
-
                 <hr>
-
                 <p><strong>Status:</strong> <span id="status"></span></p>
-
             </div>
         </div>
     </div>
@@ -245,5 +229,27 @@
     // 🔥 Open modal
         $('#detailsModal_btn').click();
     }
+</script>
+
+
+<script>
+    // Select all elements with the 'copy-icon' class
+    document.querySelectorAll('.copy-icon').forEach(function(icon) {
+        icon.addEventListener('click', function() {
+            const urlToCopy = this.getAttribute('data-url'); // Get URL from the data attribute
+            navigator.clipboard.writeText(urlToCopy).then(() => {
+                this.classList.remove('fa-copy'); // Remove copy icon class
+                this.classList.add('fa-check', 'text-success'); // Add checkmark icon class
+
+                // Optional: Reset the icon after a few seconds
+                setTimeout(() => {
+                    this.classList.remove('fa-check', 'text-success'); // Remove checkmark icon class
+                    this.classList.add('fa-copy'); // Add copy icon class back
+                }, 10000);
+            }).catch(err => {
+                console.error('Error copying text: ', err);
+            });
+        });
+    });
 </script>
 @endsection

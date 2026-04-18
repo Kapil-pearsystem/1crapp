@@ -32,7 +32,7 @@ class AppointmentsController extends Controller
         ->join('tbl_calender', 'tbl_calender.homework_page_id','=','tbl_appointment_booking_homework.id')
         ->join('tbl_appointment_thankyou', 'tbl_appointment_thankyou.id','=','tbl_calender.thank_you_id')
         ->leftjoin('tbl_filedrive', 'tbl_filedrive.id','=','tbl_appointment_booking_homework.file_drive_id')
-        ->where(['tbl_appointment_booking_homework.status'=>1, 'tbl_appointment_booking_homework.slug'=>$page, 'created_by'=>$agent_id])->first();
+        ->where(['tbl_appointment_booking_homework.status'=>1, 'tbl_appointment_booking_homework.slug'=>$page, 'tbl_appointment_booking_homework.created_by'=>$agent_id])->first();
         if(is_null($homework)){
             abort(404);
         }
@@ -47,7 +47,7 @@ class AppointmentsController extends Controller
     public function thankyou($page){
         $data = DB::table('tbl_appointment_thankyou')->select('tbl_appointment_thankyou.*', 'tbl_page.page_name', 'tbl_page.slug as page_slug')
         ->leftjoin('tbl_page', 'tbl_page.id','=','tbl_appointment_thankyou.cta_page_id')
-        ->where(['tbl_appointment_thankyou.slug'=> $page, 'created_by'=>app('currentAgent')->id])->first();
+        ->where(['tbl_appointment_thankyou.slug'=> $page, 'tbl_appointment_thankyou.created_by'=>app('currentAgent')->id])->first();
         if(is_null($data)){
             abort(404);
         }

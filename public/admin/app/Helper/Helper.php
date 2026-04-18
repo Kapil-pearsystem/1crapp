@@ -91,5 +91,16 @@ class Helper
         // return in_array($permission, $permissions);
 
     }
+    public static function getTagUsers($tag_ids)
+    {
+        if (empty($tag_ids)) {
+            return collect(); // return empty collection
+        }
+
+        return \App\Models\Customer::select('name', 'email', 'mobile')
+            ->whereIn('tag_id', $tag_ids)
+            ->where('agent_id', auth()->id())
+            ->get();
+    }
 
 }

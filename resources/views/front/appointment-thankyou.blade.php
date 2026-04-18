@@ -679,7 +679,7 @@ margin-right: 10px;
 <!---- End Special Deal ----->
 
 <!--- YOUR CALL IS RESERVED! ---->
-@if($data->nf_visible)
+
 <div class="container">
     @if($data->sm_visible)
     <div class="new_ar_tring mt_50 call_bk">
@@ -705,6 +705,7 @@ margin-right: 10px;
         </ul>
 	 </div> 
     @endif
+    @if($data->nf_visible)
 	  <div class="dhr_partss">
         <p>{{ $data->assets_title }}</p>
         <p>{{ $data->join_subtitle }}</p>
@@ -712,9 +713,9 @@ margin-right: 10px;
         
         <div class="lnkees"><a href="{{ url('page').'/'.$data->page_slug }}"  style="background-color:{{ $data->header_footer_cta_bg_color}}; color:{{ $data->header_footer_cta_text_color}};"><i class="fa fa-arrow-circle-right"></i>{{ $data->page_name }}</a></div>
 	  </div>
+      @endif
 	</div>
 </div>
-@endif
 <!--- End YOUR CALL IS RESERVED! ---->	
 
  

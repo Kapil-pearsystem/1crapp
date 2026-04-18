@@ -1,13 +1,13 @@
 @extends('layouts.app')
 
-@section('title', isset($details) ? 'Edit Appointment Booking' : 'Appointment Booking')
+@section('title', isset($details) ? 'Edit Appointment Thank You Page' : 'Appointment Thank You Page')
 
 @section('content')
 <div class="container-fluid">
 
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
         <h1 class="h3 mb-0 text-gray-800">
-            {{ isset($details) ? 'Edit' : 'Add' }} Appointment Booking
+            {{ isset($details) ? 'Edit' : 'Add' }} Appointment Thank You Page
         </h1>
 
         <a href="{{ route('appointment-thankyou.index') }}" class="btn btn-sm btn-primary">

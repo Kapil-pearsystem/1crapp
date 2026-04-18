@@ -118,6 +118,9 @@ if ($request->media_type === 'embed_code') {
         $record->form_id = $request->form_id;
         $record->form_visible = $request->form_visible ?? 0;
 
+        $record->typ_cta_text = $request->typ_cta_text;
+        $record->typ_visible = $request->typ_visible ?? 0;
+
         $record->status = $request->status ?? 1;
         $record->created_by = auth()->id();
 

@@ -607,6 +607,7 @@ margin-right: 10px;
             {!! $form_data??'' !!}
         @endif
     </div>
+    
 </div>
 <!--- End YOUR CALL IS RESERVED! ---->	
 

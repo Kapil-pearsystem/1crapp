@@ -45,7 +45,12 @@
                         <tr>
                             <td>{{ ++$key }}</td>
 
-                            <td>{{ $item->title }}</td>
+                            <td>{{ $item->title }} |&ensp;  
+                                <i class="fa fa-copy copy-icon" data-url="{{ request()->getSchemeAndHttpHost() }}/page/{{ $item->page_path }}" aria-hidden="true" style="cursor:pointer;"></i>&ensp; |&ensp;  
+                                <a href="{{ request()->getSchemeAndHttpHost() }}/page/{{ $item->page_path }}" target="_blank" class="text-right">
+                                    <i class="fas fa-external-link-alt" aria-hidden="true"></i>
+                                </a>
+                            </td>
 
                             <!-- <td>
                                 <code>{{ $item->slug }}</code>
@@ -166,5 +171,26 @@ $(document).ready(function () {
         order: [[0, 'desc']]
     });
 });
+</script>
+
+<script>
+    // Select all elements with the 'copy-icon' class
+    document.querySelectorAll('.copy-icon').forEach(function(icon) {
+        icon.addEventListener('click', function() {
+            const urlToCopy = this.getAttribute('data-url'); // Get URL from the data attribute
+            navigator.clipboard.writeText(urlToCopy).then(() => {
+                this.classList.remove('fa-copy'); // Remove copy icon class
+                this.classList.add('fa-check', 'text-success'); // Add checkmark icon class
+
+                // Optional: Reset the icon after a few seconds
+                setTimeout(() => {
+                    this.classList.remove('fa-check', 'text-success'); // Remove checkmark icon class
+                    this.classList.add('fa-copy'); // Add copy icon class back
+                }, 10000);
+            }).catch(err => {
+                console.error('Error copying text: ', err);
+            });
+        });
+    });
 </script>
 @endsection

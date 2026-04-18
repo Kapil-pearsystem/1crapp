@@ -548,11 +548,11 @@ if($user){
         </a>
         <div id="appointmentDropDown" class="collapse" aria-labelledby="headingTwo" data-parent="#appointmentDropDown">
             <div class="bg-white py-2 collapse-inner rounded">
+                <a class="collapse-item" href="{{ route('calender.index') }}"> Calender </a>
+                <a class="collapse-item" href="{{ route('appointments.index') }}"> Appointments </a>
                 <a class="collapse-item" href="{{ route('appointment-booking.index') }}">Booking Page</a>
                 <a class="collapse-item" href="{{ route('appointment-homework.index') }}">Homework Page</a>
                 <a class="collapse-item" href="{{ route('appointment-thankyou.index') }}">Thankyou Page</a>
-                <a class="collapse-item" href="{{ route('calender.index') }}"> Calender </a>
-                <a class="collapse-item" href="{{ route('schedule-appointment.index') }}"> Schedule Appointment </a>
             </div>
         </div>
     </li>

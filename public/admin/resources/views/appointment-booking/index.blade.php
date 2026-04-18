@@ -36,7 +36,12 @@
                         @foreach($lists as $key => $item)
                         <tr>
                             <td>{{ ++$key }}</td>
-                            <td>{{ $item->page_name }}</td>
+                            <td>{{ $item->page_name }}  |&ensp;  
+                                <i class="fa fa-copy copy-icon" data-url="{{ request()->getSchemeAndHttpHost() }}/appointment/{{ $item->slug }}" aria-hidden="true" style="cursor:pointer;"></i>&ensp; |&ensp;  
+                                <a href="{{ request()->getSchemeAndHttpHost() }}/appointment/{{ $item->slug }}" target="_blank" class="text-right">
+                                    <i class="fas fa-external-link-alt" aria-hidden="true"></i>
+                                </a>
+                            </td>
                             <td>{{ $item->calendar_app_name }}</td>
                             <td>
                                 <label class="switch">
@@ -180,5 +185,26 @@
         // 🔥 Open modal
         $('#detailsModal_btn').click();
     }
+</script>
+
+<script>
+    // Select all elements with the 'copy-icon' class
+    document.querySelectorAll('.copy-icon').forEach(function(icon) {
+        icon.addEventListener('click', function() {
+            const urlToCopy = this.getAttribute('data-url'); // Get URL from the data attribute
+            navigator.clipboard.writeText(urlToCopy).then(() => {
+                this.classList.remove('fa-copy'); // Remove copy icon class
+                this.classList.add('fa-check', 'text-success'); // Add checkmark icon class
+
+                // Optional: Reset the icon after a few seconds
+                setTimeout(() => {
+                    this.classList.remove('fa-check', 'text-success'); // Remove checkmark icon class
+                    this.classList.add('fa-copy'); // Add copy icon class back
+                }, 10000);
+            }).catch(err => {
+                console.error('Error copying text: ', err);
+            });
+        });
+    });
 </script>
 @endsection

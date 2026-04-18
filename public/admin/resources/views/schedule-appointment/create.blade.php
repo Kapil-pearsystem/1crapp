@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', isset($details) ? 'Edit Schedule Appointment' : 'Add Schedule Appointment')
+@section('title', isset($details) ? 'Edit Appointment' : 'Add Appointment')
 
 @section('content')
 <div class="container-fluid">
@@ -8,10 +8,10 @@
     <!-- Header -->
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
         <h1 class="h3 mb-0 text-gray-800">
-            {{ isset($details) ? 'Edit' : 'Add' }} Schedule Appointment
+            {{ isset($details) ? 'Edit' : 'Add' }} Appointment
         </h1>
 
-        <a href="{{ route('schedule-appointment.index') }}" class="btn btn-sm btn-primary">
+        <a href="{{ route('appointments.index') }}" class="btn btn-sm btn-primary">
             <i class="fas fa-arrow-left"></i> Back
         </a>
     </div>
@@ -19,7 +19,7 @@
     @include('common.alert')
 
     <div class="card shadow mb-4">
-        <form method="POST" action="{{ route('schedule-appointment.store') }}">
+        <form method="POST" action="{{ route('appointments.store') }}">
             @csrf
             <input type="hidden" name="id" value="{{ $details->id ?? '' }}">
 
@@ -28,14 +28,27 @@
 
                     {{-- Title --}}
                     <div class="col-md-6 mb-3">
-                        <label>Title *</label>
+                        <label>Title <span class="text-danger">*</span></label>
                         <input type="text" name="title" class="form-control"
                             value="{{ old('title', $details->title ?? '') }}" required>
                     </div>
-
+                    
+                    {{-- Calendar --}}
+                    <div class="col-md-6 mb-3">
+                        <label>Select Calendar <span class="text-danger">*</span></label>
+                        <select name="calender_id" class="form-control" required>
+                            <option value="">Select</option>
+                            @foreach($calenders as $id => $name)
+                            <option value="{{ $id }}"
+                                {{ old('calender_id', $details->calendar_product_id ?? '') == $id ? 'selected' : '' }}>
+                                {{ $name }}
+                            </option>
+                            @endforeach
+                        </select>
+                    </div>
                     {{-- Date --}}
                     <div class="col-md-6 mb-3">
-                        <label>Schedule Date *</label>
+                        <label>Schedule Date <span class="text-danger">*</span></label>
                         <input type="date" name="schedule_date" class="form-control"
                             value="{{ old('schedule_date', isset($details->schedule_date) ? date('Y-m-d', strtotime($details->schedule_date)) : '') }}"
                             required>
@@ -43,7 +56,7 @@
 
                     {{-- Time --}}
                     <div class="col-md-6 mb-3">
-                        <label>Schedule Time *</label>
+                        <label>Schedule Time <span class="text-danger">*</span></label>
                         <div class="d-flex">
 
                             <!-- Hour -->
@@ -86,19 +99,6 @@
                             value="{{ old('duration', $details->duration ?? '') }}">
                     </div>
 
-                    {{-- Calendar --}}
-                    <div class="col-md-6 mb-3">
-                        <label>Select Calendar</label>
-                        <select name="calender_id" class="form-control">
-                            <option value="">Select</option>
-                            @foreach($calenders as $id => $name)
-                            <option value="{{ $id }}"
-                                {{ old('calender_id', $details->calendar_product_id ?? '') == $id ? 'selected' : '' }}>
-                                {{ $name }}
-                            </option>
-                            @endforeach
-                        </select>
-                    </div>
 
                     {{-- Meeting URL --}}
                     <div class="col-md-6 mb-3">
@@ -106,8 +106,11 @@
                         <input type="text" name="meeting_url" class="form-control"
                             value="{{ old('meeting_url', $details->location_url ?? '') }}">
                     </div>
-
-                    <div class="col-md-12 mb-3">
+                    <div class="col-md-6 mb-3">
+                        <label>Meeting Source</label>
+                        <input type="text" name="meeting_source" class="form-control" value="{{ old('meeting_source', $details->meeting_source ?? '') }}">
+                    </div>
+                    <div class="col-md-6 mb-3">
                         <label>Select Contacts</label>
                         <select name="contacts_list[]" class="form-control">
                             @foreach($contacts as $id => $name)
@@ -159,10 +162,10 @@
                                     <option value="Email"
                                         {{ old('remind_me_via', $details->remind_me_via ?? '') == 'Email' ? 'selected' : '' }}>
                                         Email</option>
-                                    <option value="SMS"
+                                    <option value="SMS" disabled
                                         {{ old('remind_me_via', $details->remind_me_via ?? '') == 'SMS' ? 'selected' : '' }}>
                                         SMS</option>
-                                    <option value="Email & SMS"
+                                    <option value="Email & SMS" disabled
                                         {{ old('remind_me_via', $details->remind_me_via ?? '') == 'Email & SMS' ? 'selected' : '' }}>
                                         Email & SMS</option>
                                 </select>
@@ -204,10 +207,10 @@
                                     <option value="Email"
                                         {{ old('remind_customer_via', $details->remind_customer_via ?? '') == 'Email' ? 'selected' : '' }}>
                                         Email</option>
-                                    <option value="SMS"
+                                    <option value="SMS" disabled
                                         {{ old('remind_customer_via', $details->remind_customer_via ?? '') == 'SMS' ? 'selected' : '' }}>
                                         SMS</option>
-                                    <option value="Email & SMS"
+                                    <option value="Email & SMS" disabled
                                         {{ old('remind_customer_via', $details->remind_customer_via ?? '') == 'Email & SMS' ? 'selected' : '' }}>
                                         Email & SMS</option>
                                 </select>
@@ -231,8 +234,8 @@
                             <div class="col-md-4 mb-3">
                                 <label>Remind customer message</label>
                                 <textarea name="remind_customer_message" class="form-control">
-    {{ old('remind_customer_message', $details->remind_customer_message ?? '') }}
-</textarea>
+                                    {{ old('remind_customer_message', $details->remind_customer_message ?? '') }}
+                                </textarea>
                             </div>
                         </div>
                     </div>
@@ -256,7 +259,7 @@
                     {{ isset($details) ? 'Update' : 'Save' }}
                 </button>
 
-                <a href="{{ route('schedule-appointment.index') }}"
+                <a href="{{ route('appointments.index') }}"
                     class="btn btn-secondary float-right mr-2">Cancel</a>
             </div>
 
