@@ -27,15 +27,10 @@ class PageController extends Controller
 {
 
     public function index(){
-
         $data = PageModel::select('tbl_page.*','tbl_tags.name as tag_name','tbl_contact.name as list_name')
-
-        ->join('tbl_tags','tbl_tags.id','=','tbl_page.tag_id')
-
-        ->join('tbl_contact','tbl_contact.id','=','tbl_page.list_id')
-
+        ->leftjoin('tbl_tags','tbl_tags.id','=','tbl_page.tag_id')
+        ->leftjoin('tbl_contact','tbl_contact.id','=','tbl_page.list_id')
         ->where(['tbl_page.created_by'=>auth()->user()->id])->get();
-
         return view('page/list',compact('data'));
 
     }

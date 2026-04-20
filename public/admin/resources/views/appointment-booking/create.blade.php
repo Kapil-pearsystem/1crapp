@@ -49,7 +49,7 @@
                     {{-- Description --}}
                     <div class="col-sm-12 mb-3">
                         <label>Short Description</label>
-                        <textarea name="sort_description" placeholder="Enter Short Description"
+                        <textarea name="sort_description" id="description_editor0" placeholder="Enter Short Description"
                             class="form-control">{{ old('sort_description', $details->sort_description ?? '') }}</textarea>
                     </div>
                     {{-- Step Title --}}
@@ -198,6 +198,7 @@ function initEditor(id) {
 
 // ✅ initialize all editors
 document.addEventListener("DOMContentLoaded", function () {
+    initEditor('description_editor0');
     initEditor('description_editor1');
     initEditor('description_editor2');
     initEditor('description_editor3');

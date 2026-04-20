@@ -97,9 +97,12 @@ class Helper
             return collect(); // return empty collection
         }
 
-        return \App\Models\Customer::select('name', 'email', 'mobile')
-            ->whereIn('tag_id', $tag_ids)
-            ->where('agent_id', auth()->id())
+        return \App\Models\Customer::select('users.name', 'users.email', 'users.mobile','tbl_cdo.name as cdo_title')
+        
+        ->leftjoin('user_details', 'user_details.user_id', '=', 'users.id')
+        ->leftjoin('tbl_cdo', 'tbl_cdo.id', '=', 'user_details.worked_in')
+            ->whereIn('users.tag_id', $tag_ids)
+            ->where('users.agent_id', auth()->id())
             ->get();
     }
 

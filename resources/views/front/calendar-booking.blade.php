@@ -360,10 +360,14 @@ margin-right: 10px;
 		<div class="col-lg-12">
          <div class="v_part_liststs opt_in_pg">		  
 		  <div class="bk_pert_sh">
-		   <p>
-		    <img class="fr_iconss" src="{{ url('home/img/fire_hot_icon.png')}}" alt="" />		   
-		    <span class="sup_al_cntx">{!! $booking->sort_description !!}</span>
-		   </p>
+              <div class="row">
+                <p>
+                    <div class="col-3"><img class="fr_iconss" src="{{ url('home/img/fire_hot_icon.png')}}" alt="" style="background-color:black;"/></div>
+                    <div class="col-9"><span class="sup_al_cntx">{!! $booking->sort_description !!}</span></div>
+                </p>
+            </div>
+		    		   
+		    
 		  </div>
 		</div>
     </div>
@@ -412,6 +416,7 @@ margin-right: 10px;
 		<div class="tital_main">
 			<div class="un_boxx">
             <iframe class="tidycal-embed" id="tidycal-embed-43u7b" scrolling="no" src="{!! $booking->embed_code !!}" style="border: medium; width: 1px; min-width: 100%; height: 1047px; overflow: hidden; min-height: 500px;" title="TidyCal"></iframe></div>
+             <!-- <pre></pre> -->
 		</div>
 	</div>
 </div>

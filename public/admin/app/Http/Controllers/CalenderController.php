@@ -34,12 +34,10 @@ class CalenderController extends Controller
     // ⭐ Create Page
     public function create()
     {
-        $pages = DB::table('tbl_page')->pluck('page_name', 'id');
-        $appointmentbooking = DB::table('tbl_appointment_booking')->pluck('page_name', 'id'); 
-        $appointmenthomework = DB::table('tbl_appointment_booking_homework')->pluck('page_name', 'id'); 
-        $thankyou = DB::table('tbl_appointment_thankyou')->pluck('page_name', 'id'); 
-
-        
+        $pages = DB::table('tbl_page')->where('created_by', auth()->id())->pluck('page_name', 'id');
+        $appointmentbooking = DB::table('tbl_appointment_booking')->where('created_by', auth()->id())->pluck('page_name', 'id'); 
+        $appointmenthomework = DB::table('tbl_appointment_booking_homework')->where('created_by', auth()->id())->pluck('page_name', 'id'); 
+        $thankyou = DB::table('tbl_appointment_thankyou')->where('created_by', auth()->id())->pluck('page_name', 'id');
         return view('calender.create', compact('pages', 'appointmentbooking', 'appointmenthomework', 'thankyou'));
     }
 

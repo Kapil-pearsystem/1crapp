@@ -65,10 +65,10 @@
                         @endif
                     </div>
                     <div class="col-sm-10 mb-3 embedBox">
-                        <label>Embed URL</label>
+                        <label>Embed/Video URL</label>
                         <input type="text" name="embed_url" class="form-control"
-                            placeholder="Enter YouTube / Vimeo URL"
-                            value="{{ old('embed_url', (isset($details) && $details->media_type == 'embed_code') ? $details->media_path : '') }}">
+                            placeholder="Enter YouTube / Video URL"
+                            value="{{ old('embed_url', (isset($details) && $details->media_type != 'image') ? $details->media_path : '') }}">
                     </div>
 
                     {{-- Media Visible (Switch) --}}
@@ -206,12 +206,12 @@ function toggleMediaFields() {
     let mediaBox = document.querySelector('.mediaBox');
     let embedBox = document.querySelector('.embedBox');
 
-    if (type === 'embed_code') {
-        mediaBox.style.display = 'none';
-        embedBox.style.display = 'block';
-    } else {
+    if (type === 'image') {
         mediaBox.style.display = 'block';
         embedBox.style.display = 'none';
+    } else {
+        mediaBox.style.display = 'none';
+        embedBox.style.display = 'block';
     }
 }
 

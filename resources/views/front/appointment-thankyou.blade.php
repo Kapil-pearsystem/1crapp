@@ -700,7 +700,7 @@ margin-right: 10px;
                 ); 
             @endphp
             @foreach($social_links as $skey=>$s_links)
-                <li><a href="{{ $s_links->url }}" class="{{ $s_bg[$skey] }}">{{ $s_links->title }}</a></li>
+                <li><a href="{{ $s_links->url }}" class="{{ $s_bg[$skey] }}" target="_blank">{{ $s_links->title }}</a></li>
             @endforeach
         </ul>
 	 </div> 
@@ -709,9 +709,9 @@ margin-right: 10px;
 	  <div class="dhr_partss">
         <p>{{ $data->assets_title }}</p>
         <p>{{ $data->join_subtitle }}</p>
-        <h3>{{ $data->cta_text }}</h3>
+        <h3><u>{{ $data->cta_heading }}</u></h3>
         
-        <div class="lnkees"><a href="{{ url('page').'/'.$data->page_slug }}"  style="background-color:{{ $data->header_footer_cta_bg_color}}; color:{{ $data->header_footer_cta_text_color}};"><i class="fa fa-arrow-circle-right"></i>{{ $data->page_name }}</a></div>
+        <div class="lnkees"><a href="{{ url('page').'/'.$data->page_slug }}"  style="background-color:{{ $data->header_footer_cta_bg_color}}; color:{{ $data->header_footer_cta_text_color}};"><i class="fa fa-arrow-circle-right"></i>{{ $data->cta_text }}</a></div>
 	  </div>
       @endif
 	</div>

@@ -30,6 +30,7 @@ class AppointmentThankyouModel extends Model
         'des_is_visible3',
         'join_title',
         'join_subtitle',
+        'cta_heading',
         'cta_text',
         'cta_page_id',
         'assets_title',

@@ -16,8 +16,9 @@ class AppointmentsController extends Controller
 {
     public function index($page)
     {
-        // dd($page);  ,'created_by'=>app('currentAgent')->id
-        $booking = AppointmentBookingModel::where(['status'=>1, 'slug'=>$page, 'created_by'=>app('currentAgent')->id])->first();
+        // dd($page);
+        //  ,'created_by'=>app('currentAgent')->id
+        $booking = AppointmentBookingModel::where(['status'=>1, 'slug'=>$page, ])->first();
         if(is_null($booking)){
             abort(404);
         }
@@ -26,13 +27,15 @@ class AppointmentsController extends Controller
     }
     public function homework($page)
     {
-        $agent_id = app('currentAgent')->id??78;
-        // dd($page);  ,'created_by'=>app('currentAgent')->id
+        $agent_id = app('currentAgent')->id??8;
+        // $agent_id = 78;
+        // dd($agent_id);  
+        // ,'created_by'=>app('currentAgent')->id
         $homework = AppointmentBookingHomeworkModel::select('*','tbl_filedrive.title as file_name', 'tbl_filedrive.path as file_path', 'tbl_appointment_thankyou.slug as thankyou_path')
         ->join('tbl_calender', 'tbl_calender.homework_page_id','=','tbl_appointment_booking_homework.id')
         ->join('tbl_appointment_thankyou', 'tbl_appointment_thankyou.id','=','tbl_calender.thank_you_id')
         ->leftjoin('tbl_filedrive', 'tbl_filedrive.id','=','tbl_appointment_booking_homework.file_drive_id')
-        ->where(['tbl_appointment_booking_homework.status'=>1, 'tbl_appointment_booking_homework.slug'=>$page, 'tbl_appointment_booking_homework.created_by'=>$agent_id])->first();
+        ->where(['tbl_appointment_booking_homework.status'=>1, 'tbl_appointment_booking_homework.slug'=>$page, 'tbl_appointment_booking_homework.created_by'=> $agent_id])->first();
         if(is_null($homework)){
             abort(404);
         }
@@ -45,9 +48,11 @@ class AppointmentsController extends Controller
         return view('front.call-booking-homework', compact('homework','form_data'));
     }
     public function thankyou($page){
+        $agent_id = app('currentAgent')->id??8;
+        $agent_id = 78;
         $data = DB::table('tbl_appointment_thankyou')->select('tbl_appointment_thankyou.*', 'tbl_page.page_name', 'tbl_page.slug as page_slug')
         ->leftjoin('tbl_page', 'tbl_page.id','=','tbl_appointment_thankyou.cta_page_id')
-        ->where(['tbl_appointment_thankyou.slug'=> $page, 'tbl_appointment_thankyou.created_by'=>app('currentAgent')->id])->first();
+        ->where(['tbl_appointment_thankyou.slug'=> $page, 'tbl_appointment_thankyou.created_by'=>$agent_id])->first();
         if(is_null($data)){
             abort(404);
         }

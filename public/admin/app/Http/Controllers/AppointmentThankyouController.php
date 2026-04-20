@@ -113,6 +113,7 @@ $record->slug = $slug;
         $record->join_title = $request->join_title;
         $record->join_subtitle = $request->join_subtitle;
 
+        $record->cta_heading = $request->cta_heading;
         $record->cta_text = $request->cta_text;
         $record->cta_page_id = $request->cta_page_id;
 

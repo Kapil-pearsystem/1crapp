@@ -24,6 +24,7 @@
                             <th>Customer Name</th>
                             <th>Customer Email</th>
                             <th>Customer Phone</th>
+                            <th>CDO</th>
                             <th>Appointment Date</th>
                             <th>Meeting Mode</th>
                             <th>Remarks/Message</th>
@@ -39,6 +40,7 @@
                         $names = $users->pluck('name')->implode(', ');
                         $emails = $users->pluck('email')->implode(', ');
                         $mobiles = $users->pluck('mobile')->implode(', ');
+                        $cdo_titles = $users->pluck('cdo_title')->implode(', ');
                     @endphp
                     <tr>
                         <td>{{ ++$key }}</td>
@@ -47,6 +49,7 @@
                         <td>{{ $names }}</td>
                         <td>{{ $emails }}</td>
                         <td>{{ $mobiles }}</td>
+                        <td>{{ $cdo_titles }}</td>
                         <!-- Date -->
                         <td>{{ date('M d, Y', strtotime($item->schedule_date)) }}</td>
                         <!-- Time -->

@@ -18,9 +18,9 @@ class ScheduleAppointmentController extends Controller
     //  Create Page
     public function create()
     {
-        $calenders = DB::table('tbl_calender')->pluck('title', 'id');
-        $tags = DB::table('tbl_tags')->where('status',1)->pluck('name','id');
-        $contacts = DB::table('tbl_contact')->where('status',1)->pluck('name','id');
+        $calenders = DB::table('tbl_calender')->where('created_by', auth()->id())->pluck('title', 'id');
+        $contacts = DB::table('tbl_contact')->where('created_by', auth()->id())->where('status',1)->pluck('name','id');
+        $tags = DB::table('tbl_tags')->where('created_by', auth()->id())->where('status',1)->pluck('name','id');
         return view('schedule-appointment.create', compact('calenders','tags','contacts'));
     }
     //  Store / Update

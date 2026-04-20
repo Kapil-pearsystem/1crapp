@@ -27,12 +27,12 @@
 
                     {{-- Title --}}
                     <div class="col-sm-6 mb-3">
-                        <label>Title *</label>
+                        <label>Title <span class="text-danger">*</span></label>
                         <input type="text" name="title" class="form-control" placeholder="Enter Title"
                             value="{{ old('title', $details->title ?? '') }}" required>
                     </div>
                      <div class="col-sm-6 mb-3">
-                        <label>Page Name *</label>
+                        <label>Page Name <span class="text-danger">*</span></label>
                         <input type="text" name="page_name" class="form-control" placeholder="Enter Page Name"
                             value="{{ old('page_name', $details->page_name ?? '') }}" required>
                     </div>
@@ -164,6 +164,12 @@
                             value="{{ old('join_subtitle', $details->join_subtitle ?? '') }}">
                     </div>
 
+                    {{-- CTA Text --}}
+                    <div class="col-sm-6 mb-3">
+                        <label>CTA Heading</label>
+                        <input type="text" name="cta_heading" class="form-control" placeholder="Enter CTA Heading"
+                            value="{{ old('cta_heading', $details->cta_heading ?? '') }}">
+                    </div>
                     {{-- CTA Text --}}
                     <div class="col-sm-6 mb-3">
                         <label>CTA Text</label>
