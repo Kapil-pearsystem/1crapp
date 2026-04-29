@@ -31,7 +31,7 @@
         <div class="form-group marges_ic">
             <i class="fa fa-building"></i>
 
-            <select class="slt_al_arra" name="cdo_category" onchange="getCDO(this.value)" required>
+            <select class="slt_al_arra" name="cdo_category" onchange="getCDO(this.value)" >
                 <option value="">Select Organisation Category</option>
                 @foreach($cdo_category as $cdo_cat)
                     <option value="{{ $cdo_cat->id }}">{{ $cdo_cat->name }}</option>
@@ -40,17 +40,17 @@
         </div>
         <div class="form-group marges_ic" id="cod_list" style="display:none;">
             <i class="fa fa-building"></i>
-            <select class="slt_al_arra" name="cdo_id" id="cdo_id"  onchange="OtherCod(this.value)" required>
+            <select class="slt_al_arra" name="cdo_id" id="cdo_id"  onchange="OtherCod(this.value)" >
                 <option value="">Select Company / Organisation</option>
             </select>
         </div>
         <div class="form-group marges_ic" id="other_cod" style="display:none;">
             <i class="fa fa-building"></i>
-            <input type="text" name="other_cod" value="" class="form-control" required placeholder="Enter Other Company / Organisation Name" />
+            <input type="text" name="other_cod" value="" class="form-control"  placeholder="Enter Other Company / Organisation Name" />
         </div>
         <div class="form-group marges_ic">
             <i class="fa fa-phone"></i>
-            <input type="text" name="phone" value="" class="form-control" required placeholder="Contact No" />
+            <input type="text" name="phone" value="" class="form-control" placeholder="Contact No" />
         </div>
 
         <div class="form-group marges_ic">
@@ -70,7 +70,7 @@
         </div>
         <div class="form-group marges_ic" id="other_product" style="display:none;">
             <i class="fa fa-building"></i>
-            <input type="text" name="other_product_and_service" value="" class="form-control" required placeholder="Enter Other Product or Service" />
+            <input type="text" name="other_product_and_service" value="" class="form-control" placeholder="Enter Other Product or Service" />
         </div>
 
         <div class="form-group marges_ic">

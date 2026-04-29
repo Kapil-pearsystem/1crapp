@@ -16,12 +16,28 @@ use App\Models\ProductService;
 use App\Models\EmbedPageModel;
 use App\Models\FormModel;
 
+use function Adminer\redirect;
+
 class PageController extends Controller
 {
     public function index($slug = NULL){
-        $page_data = PageModel::where(['slug'=>$slug,'status'=>1])->first();
+        // $agent_id = app('currentAgent')->id;
+        $agent_id = 78;
+        $page_data = PageModel::where(['slug'=>$slug,'status'=>1, 'created_by'=>$agent_id])->first();
         // dd($page_data);
+        
         if(!is_null($page_data)){
+            if($page_data->addination_cta_type == 'custom_url'){
+                $page_data->addination_url = $page_data->addination_url;
+            }else{
+                $asset = DB::table('tbl_assets')->where(['id'=>$page_data->asset_id])->first();
+                // dd($asset);
+                if($asset){
+                    $page_data->addination_url = $asset->url;
+                }else{
+                    $page_data->addination_url = 'javascript:void(0)';
+                }
+            }
             return view('front.page',compact('page_data'));
         }
         return redirect()->route('404');
@@ -74,13 +90,14 @@ class PageController extends Controller
         ]);
         $other_product = $request->other_product_and_service;
         $other_cod = $request->other_cod;
-        $page_data = PageModel::where(['id'=>$request->page_id,'status'=>1])->first();
+        $page_data = PageModel::where(['id'=>$request->page_id,'status'=>1, 'created_by'=>app('currentAgent')->id])->first();
         // dd($request->all());
         // dd($page_data);
 
         $product_data = ProductService::select('id','prod_name')->where('prod_category',$request->id)->get();
         // return $cdo_category;
         if(!is_null($product_data)){
+            return redirect()->back()->with('success','Your information has been submitted successfully!');
             return response()->json(['status'=>true,'data'=>$product_data,'message'=>'Success!']);
         }else{
             return response()->json(['status'=>false,'data'=>NULL,'message'=>'Failed!']);

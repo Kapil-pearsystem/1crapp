@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <title>OTP IN</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="shortcut icon" type="image/jpg" href="https://kapil.1crapp.com/admin/images/icon.png"/>
   <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.min.css'>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:opsz,wght@6..12,200;6..12,300;6..12,400;6..12,500;6..12,600;6..12,700;6..12,800;6..12,900&display=swap" rel="stylesheet">
@@ -257,7 +258,7 @@
     margin-top: 20px;
     text-align: center;
 }
-.n_thiks a {
+.n_thiks {
  background: #e7e7e7;
     display: inline-block;
     width: 100%;
@@ -265,6 +266,8 @@
     border-radius: 7px;
     font-size: 16px;
     color: #000000;
+}
+.n_thiks a {
     text-decoration: underline;
 }
 
@@ -535,9 +538,18 @@ margin-right: 10px;
                 @endif
             @endif
              @if($page_data->popup_status == 1)
-		        <a href="javascript:void(0)" onclick="getPopupContent({{$page_data->id}})"  data-toggle="modal" data-target="#sub_m_al_frms">
+		        <a href="javascript:void(0)" onclick="getPopupContent('{{$page_data->id}}', 'popup_data_id')"  data-toggle="modal" data-target="#sub_m_al_frms">
             @else
-                @if($page_data->page_cta_url)<a href="{{ $page_data->page_cta_url }}" @if($page_data->open_new_tab == 1) target="_blank"  @endif >@endif
+                @if($page_data->form_type == 'external')
+                    @if($page_data->page_cta_url)<a href="{{ $page_data->page_cta_url }}" @if($page_data->open_new_tab == 1) target="_blank"  @endif >@endif
+                @elseif($page_data->form_type == 'embeded')
+                   <hr> {!! $page_data->embed_form_code !!}<hr>
+                @elseif($page_data->form_type == 'custom')
+                
+                    <div id="cstm_frm_id">
+
+                    </div>
+                @endif
             @endif
 		    <h5>Yes. I needs to Have this Free Report</h5>
 			<span>i don't want to miss on such an opportunity. Please send me the details.</span>
@@ -549,7 +561,15 @@ margin-right: 10px;
           @endif
         </div>
         @if($page_data->addination_cta_status == 1)
-            @if($page_data->addination_cta)<div class="n_thiks"><a href="{{ $page_data->addination_url }}" @if($page_data->addination_cta_new_tab == 1) target="_blank"  @endif>{{ $page_data->addination_cta }}</a></div>@endif
+            <div class="n_thiks">
+                @if($page_data->addination_cta_title)
+                <a href="{{ $page_data->addination_url }}" @if($page_data->addination_cta_new_tab == 1) target="_blank"  @endif>{{ $page_data->addination_cta_title }}</a><br>
+                @endif
+                @if($page_data->addination_cta)
+                <p>{{ $page_data->addination_cta }}</p>
+                @endif
+            </div>
+           
         @endif
         </div>
     </div>
@@ -599,7 +619,10 @@ margin-right: 10px;
 <script src='https://cdnjs.cloudflare.com/ajax/libs/echarts/5.2.2/echarts.min.js'></script>
 
 <script>
-    function getPopupContent(id) {
+    @if($page_data->form_type == 'custom')
+           getPopupContent({{$page_data->id}}, 'cstm_frm_id');       
+    @endif
+    function getPopupContent(id, data_id) {
         $.ajax({
             url: '{{ route('get-page-popup-info') }}',
             type: 'POST',
@@ -608,10 +631,10 @@ margin-right: 10px;
                 id: id
             },
             success: function (response) {
-                $('#popup_data_id').html(response.data);
+                $('#'+data_id).html(response.data);
             },
             error: function (xhr) {
-                $('#popup_error_message').html('Something went wrong!. Please Try Again.');
+                $('#'+data_id).html('Something went wrong!. Please Try Again.');
             }
         });
     }
