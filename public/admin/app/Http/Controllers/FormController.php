@@ -43,11 +43,11 @@ class FormController extends Controller
             'tbl_filedrive.title as filedrive_name',
             'tbl_giftcollection.title as sequence_name',
         )
-        ->join('tbl_tags','tbl_tags.id','=','tbl_form.tag_id')
-        ->join('tbl_contact','tbl_contact.id','=','tbl_form.list_id')
-        ->join('tbl_formsource','tbl_formsource.id','=','tbl_form.source_id')
-        ->join('tbl_filedrive','tbl_filedrive.id','=','tbl_form.drivefile_id')
-        ->join('tbl_giftcollection','tbl_giftcollection.id','=','tbl_form.sequence_id')
+        ->leftjoin('tbl_tags','tbl_tags.id','=','tbl_form.tag_id')
+        ->leftjoin('tbl_contact','tbl_contact.id','=','tbl_form.list_id')
+        ->leftjoin('tbl_formsource','tbl_formsource.id','=','tbl_form.source_id')
+        ->leftjoin('tbl_filedrive','tbl_filedrive.id','=','tbl_form.drivefile_id')
+        ->leftjoin('tbl_giftcollection','tbl_giftcollection.id','=','tbl_form.sequence_id')
         ->orderBy('tbl_form.id','DESC')
         ->get();
         // dd($lists);

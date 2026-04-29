@@ -14,6 +14,7 @@ use App\Models\MainProperty;
 use App\Models\ProductServiceCategory;
 use App\Models\ProductService;
 use App\Models\EmbedPageModel;
+use App\Models\FormModel;
 
 class PageController extends Controller
 {
@@ -74,16 +75,16 @@ class PageController extends Controller
         $other_product = $request->other_product_and_service;
         $other_cod = $request->other_cod;
         $page_data = PageModel::where(['id'=>$request->page_id,'status'=>1])->first();
-        dd($request->all());
-        dd($page_data);
+        // dd($request->all());
+        // dd($page_data);
 
-        // $product_data = ProductService::select('id','prod_name')->where('prod_category',$request->id)->get();
-        // // return $cdo_category;
-        // if(!is_null($product_data)){
-        //     return response()->json(['status'=>true,'data'=>$product_data,'message'=>'Success!']);
-        // }else{
-        //     return response()->json(['status'=>false,'data'=>NULL,'message'=>'Failed!']);
-        // }
+        $product_data = ProductService::select('id','prod_name')->where('prod_category',$request->id)->get();
+        // return $cdo_category;
+        if(!is_null($product_data)){
+            return response()->json(['status'=>true,'data'=>$product_data,'message'=>'Success!']);
+        }else{
+            return response()->json(['status'=>false,'data'=>NULL,'message'=>'Failed!']);
+        }
     }
     public function embed_pages($slug = NULL){
         $user_id = Auth::id();

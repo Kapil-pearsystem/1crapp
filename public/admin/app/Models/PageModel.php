@@ -1,118 +1,61 @@
 <?php
-
-
-
 namespace App\Models;
-
-
-
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-
 use Illuminate\Database\Eloquent\Model;
-
-
-
 class PageModel extends Model
-
 {
-
     use HasFactory;
-
     protected $table = 'tbl_page';
-
     protected $fillable = [
-
         'page_name',
-
         'slug',
-
         'pre_heading',
-
         'pre_heading_status',
-
         'title',
-
         'title_status',
-
         'subtitle',
-
         'subtitle_status',
-
         'bullet_status',
-
         'bullet1',
-
         'bullet2',
-
         'bullet3',
-
         'bullet4',
-
         'bullet5',
-
         'bullet6',
-
         'media_type',
-
         'media_file',
-
         'media_link',
-
         'media_file_status',
-
         'countdown',
-
         'countdown_status',
-
         'page_cta_url',
-
         'other_page_cta_url_status',
-
         'open_new_tab',
-
         'popup_status',
-
         'popup_destination',
-
         'other_popup_destination_status',
-
         'addination_cta_status',
-
         'addination_cta',
-
         'addination_url',
-
         'addination_cta_new_tab',
-
         'popup_content',
-
         'popup_content_status',
-
         'popup_image',
-
         'popup_image_status',
-
         'embed_form_status',
-
         'embed_form_code',
-
         'created_by',
-
         'status',
-
         'tag_id',
-
         'list_id',
-
         'pre_cta',
-
         'pre_cta_status',
-
         'ps_text',
-
         'ps_text_status',
-
+        'form_type',
+        'form_id',
+        'addination_cta_type',
+        'asset_id',
+        'addination_cta_title',
     ];
-
 }
-

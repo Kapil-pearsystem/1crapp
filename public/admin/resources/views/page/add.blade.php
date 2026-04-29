@@ -233,54 +233,45 @@
                             </label>
                         </div>
                     </div>
-                    <div class="col-sm-4 mb-3 mt-1 mb-sm-0 ">
-                        <div id="cta_url" class="cta"
-                            <?php if (isset($details)) {
-                                if (
-                                    $details->popup_destination != ""
-                                ) { ?> style="display:none;"
-                            <?php } else { ?> style="display:block;" <?php }
-                            } ?>>
-                            Page CTA Url
-                            <select name="page_cta_url" id="page_cta_url_id" class="form-control form-control-user"
-                                onchange="setOtherPageCta(this.value)">
-                                <option selected="selected" value="">Select Page CTA Url</option>
-                                @foreach($assets as $asset)
-                                <option value="{{ $asset->url }}"
-                                    {{ (old('status') ?? ($details->page_cta_url ?? '')) == $asset->url ? 'selected' : '' }}>
-                                    {{ $asset->title }}</option>
-                                @endforeach
-                                <option value="other"
-                                    {{ (old('status') ?? ($details->other_page_cta_url_status ?? '')) == 1 ? 'selected' : '' }}>
-                                    Other</option>
-                            </select>
-                        </div>
-                        <div id="dst_url" class="dstn" <?php if (
-                            isset($details)
-                        ) {
-                            if ($details->page_cta_url != "" || $details->popup_status == 0) { ?>
-                            style="display:none;" <?php } else { ?> style="display:block;"
-                            <?php }
-                        } else {
-                             ?>style="display:none;" <?php
-                        } ?>>
-                            Popup Destination
-                            <select name="popup_destination" id="destination_id" class="form-control form-control-user"
-                                onchange="setOtherDestination(this.value)">
-                                <option selected="selected" value="">Select Page CTA Url</option>
-                                @foreach($assets as $asset)
-                                <option value="{{ $asset->url }}"
-                                    {{ (old('popup_destination') ?? ($details->popup_destination ?? '')) == $asset->url ? 'selected' : '' }}>
-                                    {{ $asset->title }}</option>
-                                @endforeach
-                                <option value="other"
-                                    {{ (old('other') ?? ($details->other_popup_destination_status ?? '')) == 1 ? 'selected' : '' }}>
-                                    Other</option>
-                            </select>
-                        </div>
-
+                    <div class="col-sm-4 mb-1 mt-3 mb-sm-0 swich_bntts"> Form Type
+                        <select name="form_type" id="type_id" class="form-control form-control-user"
+                            onchange="setFormType(this.value)">
+                            <option selected="selected" value="">Select Type</option>
+                            <option value="custom" {{ (old('form_type') ?? ($details->form_type ?? '')) == 'custom' ? 'selected' : '' }}>  Custom</option>
+                            <option value="embeded" {{ (old('form_type') ?? ($details->form_type ?? '')) == 'embeded' ? 'selected' : '' }}>  Embeded</option>
+                            <option value="external" {{ (old('form_type') ?? ($details->form_type ?? '')) == 'external' ? 'selected' : '' }}>  External</option>
+                        </select>
                     </div>
-                    <div class="col-sm-2 mb-1 mt-1 mb-sm-0 swich_bntts ">
+                    
+                    <div class="col-sm-6 mb-5 mt-3 mb-sm-0 popup_section custom_form_type" style="display:none;"> Embed Form Content
+                        <select name="form_id" id="destination_id" class="form-control form-control-user">
+                            <option selected="selected" value="">Select Custom Form</option>
+                            @foreach($forms as $form)
+                            <option value="{{ $form->id }}"
+                                {{ isset($details) && $details->form_id == $form->id ? 'selected' : '' }}>{{ $form->form_name }}
+                            </option>
+                            @endforeach
+                        </select>
+                    </div>
+                    
+                    
+                    <div class="col-sm-4 mb-5 mt-3 mb-sm-0 external_form_type popup_section" id="other_page_cta_url"
+                        <?php if (isset($details)) {
+                            if (
+                                $details->form_type == 'external'
+                            ) { ?>
+                        style="display:block;" <?php } else { ?> style="display:none;" <?php }
+                        } else {
+                                ?>
+                        style="display:none;" <?php
+                        } ?>>
+                        Enter External Url
+                        <input type="url" id="other_page_cta_url_id" placeholder="Enter Other CTA Url"
+                            name="external_url"
+                            value="{{ old('external_url')??($details->page_cta_url ?? '')}}"
+                            class="form-control form-control-user" />
+                    </div>
+                    <div class="col-sm-2 mb-1 mt-3 mb-sm-0 swich_bntts external_form_type popup_section">
                         <div id="cta_url" class="cta"
                             <?php if (isset($details)) {
                                 if (
@@ -295,76 +286,22 @@
                         </div>
 
                     </div>
-                    <div class="col-sm-4 mb-2 mt-1 mb-sm-0">
-
-                        <div class="" id="other_page_cta_url"
-                            <?php if (isset($details)) {
-                                if (
-                                    $details->other_page_cta_url_status == 1
-                                ) { ?>
-                            style="display:block;" <?php } else { ?> style="display:none;" <?php }
-                            } else {
-                                 ?>
-                            style="display:none;" <?php
-                            } ?>>
-                            Enter CTA Url
-                            <input type="url" id="other_page_cta_url_id" placeholder="Enter Other CTA Url"
-                                name="other_page_cta_url"
-                                value="{{ old('other_page_cta_url')??($details->page_cta_url ?? '')}}"
-                                class="form-control form-control-user" />
-                        </div>
-                        <div class="" id="other_page_destination"
-                            <?php if (isset($details)) {
-                                if (
-                                    $details->other_popup_destination_status ==
-                                    1
-                                ) { ?>
-                            style="display:block;" <?php } else { ?> style="display:none;" <?php }
-                            } else {
-                                 ?>
-                            style="display:none;" <?php
-                            } ?>>
-                            Enter Popup Destination
-                            <input type="url" id="other_popup_destination_id"
-                                placeholder="Enter Other Popup Destination" name="other_popup_destination"
-                                value="{{ old('other_popup_destination')??($details->popup_destination ?? '')}}"
-                                class="form-control form-control-user" />
-                        </div>
-                    </div>
                     <!-- ------------------------------------- -->
-                    <div class="row col-12">
-                        <div class="col-sm-6 mb-1 mt-3 mb-sm-0 swich_bntts popup_section" style="display:none;"  > Form Type
-                            <select name="form_type" id="type_id" class="form-control form-control-user"
-                                onchange="setFormType(this.value)">
-                                <option selected="selected" value="">Select Type</option>
-                                <option value="custom" {{ (old('other') ?? ($details->other_popup_destination_status ?? '')) == 1 ? 'selected' : '' }}>  Custom</option>
-                                <option value="embeded" {{ (old('other') ?? ($details->other_popup_destination_status ?? '')) == 1 ? 'selected' : '' }}>  Embeded</option>
-                            </select>
-                        </div>
-                        <div class="col-sm-6 mb-5 mt-3 mb-sm-0 popup_section custom_form_type" style="display:none;"> Embed Form Content
-                            <select name="popup_destination" id="destination_id" class="form-control form-control-user"
-                                >
-                                <option selected="selected" value="">Select Page CTA Url</option>
-                                <option value="1" {{ (old('other') ?? ($details->other_popup_destination_status ?? '')) == 1 ? 'selected' : '' }}>  Page 1</option>
-                                <option value="2" {{ (old('other') ?? ($details->other_popup_destination_status ?? '')) == 1 ? 'selected' : '' }}>  Page 2</option>
-                                <option value="3" {{ (old('other') ?? ($details->other_popup_destination_status ?? '')) == 1 ? 'selected' : '' }}>  Page 3</option>
-                                <option value="4" {{ (old('other') ?? ($details->other_popup_destination_status ?? '')) == 1 ? 'selected' : '' }}>  Page 4</option>
-                                <option value="5" {{ (old('other') ?? ($details->other_popup_destination_status ?? '')) == 1 ? 'selected' : '' }}>  Page 5</option>
-                                <option value="6" {{ (old('other') ?? ($details->other_popup_destination_status ?? '')) == 1 ? 'selected' : '' }}>  Page 6</option>
-                            </select>
-                        </div>
-                    </div>
-                    <!-- ------------------------------------- -->
-                     <div class="row  col-12">
-                        <div class="col-sm-2 mb-1 mt-3 mb-sm-0 swich_bntts popup_section embeded_form_type"  style="display:none;"> Embed form
-                            <div class="block_araea mt-1"><label class="switch"><input value="1" type="checkbox"
-                                        @isset($details) @if($details->embed_form_status == 1) checked @endif @endisset
-                                    name="embed_form_status"> <small></small></label></div>
-                        </div>
-                        <div class="col-sm-10 mb-5 mt-3 mb-sm-0 popup_section embeded_form_type"  style="display:none;" > Embed Form Content
-                            <textarea id="" placeholder="Enter Embed Form Content" name="embed_form_code"
-                                class="form-control form-control-user"
-                                height="50px;">{{ old('embed_form_code')??($details->embed_form_code ?? '')}}</textarea>
+                    <div class="col-12 popup_section embeded_form_type"  style="display:none;">
+                        <div class="row">
+                            <!-- <div class="col-sm-2 mb-1 mt-3 mb-sm-0 swich_bntts"> Embed form
+                                <div class="block_araea mt-1">
+                                    <label class="switch"><input value="1" type="checkbox"
+                                            @isset($details) @if($details->embed_form_status == 1) checked @endif @endisset
+                                        name="embed_form_status"> <small></small>
+                                    </label>
+                                </div>
+                            </div> -->
+                            <div class="col-sm-12 mb-5 mt-3 mb-sm-0"> Embed Form Content
+                                <textarea id="" placeholder="Enter Embed Form Content" name="embed_form_code"
+                                    class="form-control form-control-user"
+                                    style="height: 250px !important;">{{ old('embed_form_code')??($details->embed_form_code ?? '')}}</textarea>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -373,60 +310,80 @@
 
 
                 <div class="form-group row" id="brd_box">
-                    <div class="col-sm-3 mb-1 mt-1 mb-sm-0 swich_bntts">
+                    <div class="col-sm-2 mb-1 mt-1 mb-sm-0 swich_bntts">
                         Additional CTA Enable
                         <div class="block_araea mt-1"><label class="switch"><input value="1" type="checkbox"
                                     @isset($details) @if($details->addination_cta_status == 1) checked @endif @endisset
                                 name="addination_cta_status"> <small></small></label></div>
                     </div>
-                    <div class="col-sm-7 mb-5 mt-1 mb-sm-0">
+                    <div class="col-sm-4 mb-1 mt-3 mb-sm-0 swich_bntts"> Type
+                        <select name="addination_cta_type" id="addination_type_id" class="form-control form-control-user"
+                            onchange="setAddtionalCTAType(this.value)">
+                            <option selected="selected" value="">Select Type</option>
+                            <option value="assets" {{ (old('addination_cta_type') ?? ($details->addination_cta_type ?? '')) == 'assets' ? 'selected' : '' }}> My Digital Assets</option>
+                            <option value="custom_url" {{ (old('addination_cta_type') ?? ($details->addination_cta_type ?? '')) == 'custom_url' ? 'selected' : '' }}>  Custom URL</option>
+                        </select>
+                    </div>
+                    <div class="col-sm-4 mb-5 mt-3 mb-sm-0 custom-url-field cta_section">
                         Additional CTA URL
-                        <input type="text" id="" placeholder="Enter Additional CTA" name="addination_url"
+                        <input type="text" id="" placeholder="Enter Additional CTA URL" name="addination_url"
                             value="{{ old('addination_url')??($details->addination_url ?? '')}}"
                             class="form-control form-control-user" />
                     </div>
-                    <div class="col-sm-2 mb-1 mt-1 mb-sm-0 swich_bntts">
+                    <div class="col-sm-4 mb-5 mt-3 mb-sm-0 cta_section asset-field" style="display:none;"> Embed Form Content
+                        <select name="asset_id" id="asset_id" class="form-control form-control-user">
+                            <option selected="selected" value="">Select Assets</option>
+                            @foreach($assets as $asset)
+                            <option value="{{ $asset->id }}"
+                                {{ isset($details) && $details->asset_id == $asset->id ? 'selected' : '' }}>{{ $asset->title }}
+                            </option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="col-sm-2 mb-1 mt-1 mb-sm-0 swich_bntts addination_cta_new_tab" style="display:none;">
                         Open New Tab
                         <div class="block_araea mt-1"><label class="switch"><input value="1" type="checkbox"
                                     @isset($details) @if($details->addination_cta_new_tab == 1) checked @endif @endisset
                                 name="addination_cta_new_tab"> <small></small></label></div>
                     </div>
-                    <div class="col-sm-12 mb-6 mt-6 mb-sm-0">
+                    <div class="col-sm-12 mb-6 mt-2 mb-sm-0">
+                        Additional CTA Title
+                        <input type="text" id="" placeholder="Enter Additional CTA Title" name="addination_cta_title"
+                            class="form-control form-control-user" value="{{ old('addination_cta_title')??($details->addination_cta_title ?? '')}}" />
+                    </div>
+                    <div class="col-sm-12 mb-6 mt-2 mb-sm-0">
                         Additional CTA Content
                         <textarea id="" placeholder="Enter Additional CTA Content" name="addination_cta"
                             class="form-control form-control-user">{{ old('addination_cta')??($details->addination_cta ?? '')}}</textarea>
                     </div>
                 </div>
 
-
-                <div class="form-group  popup_section" id="brd_box" >
-                    <div class="row">
-                        <div class="col-sm-6" >
-                            <div class="row">
-                                <div class="col-sm-10 mb-2 mt-1 mb-sm-0"> Popup Image
-                                    <input type="file" id="" placeholder="Enter Popup Image" name="popup_image"
-                                        value="{{ old('popup_image')}}" {{ isset($details)?'' : ''}}
-                                        class="form-control form-control-user" style="height: 60px;" /> <input type="hidden"
-                                        name="old_popup_image" value="{{ isset($details)?$details->popup_image : ''}}" />
-                                </div>
-                                <div class="col-sm-2 mb-1 mt-1 mb-sm-0 swich_bntts"> Visible <div class="block_araea mt-1"><label
-                                            class="switch"><input value="1" type="checkbox" @isset($details)
-                                                @if($details->popup_image_status == 1) checked @endif @endisset
-                                            name="popup_image_status"> <small></small></label></div>
-                                </div>
+                <div class="form-group row popup_section_content popup_section" id="brd_box">
+                    <div class="col-sm-12 mb-3 mt-1 mb-sm-0" >
+                        <div class="row">
+                            <div class="col-sm-10 mb-2 mt-1 mb-sm-0"> Popup Image
+                                <input type="file" id="" placeholder="Enter Popup Image" name="popup_image"
+                                    value="{{ old('popup_image')}}" {{ isset($details)?'' : ''}}
+                                    class="form-control form-control-user" style="height: 60px;" /> <input type="hidden"
+                                    name="old_popup_image" value="{{ isset($details)?$details->popup_image : ''}}" />
+                            </div>
+                            <div class="col-sm-2 mb-1 mt-1 mb-sm-0 swich_bntts"> Visible <div class="block_araea mt-1"><label
+                                        class="switch"><input value="1" type="checkbox" @isset($details)
+                                            @if($details->popup_image_status == 1) checked @endif @endisset
+                                        name="popup_image_status"> <small></small></label></div>
                             </div>
                         </div>
-                        <div class="col-sm-6">
-                            <div class="row">
-                                <div class="col-sm-10 mb-6 mt-6 mb-sm-0"> Popup Content
-                                    <textarea id="" placeholder="Enter Popup Content" name="popup_content"
-                                        class="form-control form-control-user">{{ old('popup_content')??($details->popup_content ?? '')}}</textarea>
-                                </div>
-                                <div class="col-sm-2 mb-1 mt-1 mb-sm-0 swich_bntts"> Visible <div class="block_araea mt-1"><label
-                                            class="switch"><input value="1" type="checkbox" @isset($details)
-                                                @if($details->popup_content_status == 1) checked @endif @endisset
-                                            name="popup_content_status"> <small></small></label></div>
-                                </div>
+                    </div>
+                    <div class="col-sm-12 mb-3 mt-1 mb-sm-0">
+                        <div class="row">
+                            <div class="col-sm-10 mb-6 mt-6 mb-sm-0"> Popup Content
+                                <textarea id="" placeholder="Enter Popup Content" name="popup_content"
+                                    class="form-control form-control-user">{{ old('popup_content')??($details->popup_content ?? '')}}</textarea>
+                            </div>
+                            <div class="col-sm-2 mb-1 mt-1 mb-sm-0 swich_bntts"> Visible <div class="block_araea mt-1"><label
+                                        class="switch"><input value="1" type="checkbox" @isset($details)
+                                            @if($details->popup_content_status == 1) checked @endif @endisset
+                                        name="popup_content_status"> <small></small></label></div>
                             </div>
                         </div>
                     </div>
@@ -458,24 +415,26 @@
 </div>
 
 @endsection
-
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <script>
 function PageCtcUrl(status) {
+    var formType = $('#type_id');
+
     if (status == 1) {
-        $('#other_popup_destination_id').val('');
-        $('#page_cta_url_id').val('');
-        $('#other_page_cta_url').attr('style', 'display: none !important');
-        $('.cta').attr('style', 'display: none !important');
-        $('.dstn').attr('style', 'display: block !important');
-        $('.popup_section').attr('style', 'display: block !important');
+        
+        $('.popup_section_content').attr('style', 'display: block !important');
+        $('.external_form_type').attr('style', 'display: none !important');
+        // Hide external option
+        formType.find('option[value="external"]').hide();
+        // If currently selected is external, reset it
+        if (formType.val() == 'external') {
+            formType.val('');
+        }
+
     } else {
-        $('#other_page_cta_url_id').val('');
-        $('#destination_id').val('');
-        $('#other_page_destination').attr('style', 'display: none !important');
-        $('#other_page_cta_url').attr('style', 'display: none !important');
-        $('.cta').attr('style', 'display: block !important');
-        $('.dstn').attr('style', 'display: none !important');
-        $('.popup_section').attr('style', 'display: none !important');
+        // Show external option
+        formType.find('option[value="external"]').show();
+        $('.popup_section_content').attr('style', 'display: none !important');
     }
 }
 
@@ -526,14 +485,39 @@ flatpickr("#datetime", {
 });
 </script>
 <script>
+    $(document).ready(function(){
+        var formType = $('#type_id').val();
+        setFormType(formType);
+    });
     function setFormType(type){
-        alert(type);
+        $('.popup_section').attr('style', 'display: none !important');
         if(type == 'custom'){
             $('.custom_form_type').attr('style', 'display: block !important');
-            $('.embeded_form_type').attr('style', 'display: none !important');
-        }else {
-            $('.custom_form_type').attr('style', 'display: none !important');
+        }else if(type == 'external'){
+            $('.external_form_type').attr('style', 'display: block !important');
+        }else if(type == 'embeded') {
             $('.embeded_form_type').attr('style', 'display: block !important');
+        }
+    }
+</script>
+
+<script>
+    $(document).ready(function(){
+        var AddformType = $('#addination_type_id').val();
+        setAddtionalCTAType(AddformType);
+    });
+    function setAddtionalCTAType(type){
+        $('.cta_section').attr('style', 'display: none !important');
+        if(type == 'assets'){
+            $('.asset-field').attr('style', 'display: block !important');
+        $('.addination_cta_new_tab').attr('style', 'display: block !important');
+        }else if(type == 'custom_url'){
+            $('.custom-url-field').attr('style', 'display: block !important');
+        $('.addination_cta_new_tab').attr('style', 'display: block !important');
+        }else {
+            $('.asset-field').attr('style', 'display: none !important');
+            $('.custom-url-field').attr('style', 'display: none !important');
+        $('.addination_cta_new_tab').attr('style', 'display: none !important');
         }
     }
 </script>
