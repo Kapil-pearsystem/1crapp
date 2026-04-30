@@ -358,14 +358,17 @@
                     </div>
                 </div>
 
-                <div class="form-group row popup_section_content popup_section" id="brd_box">
+                <div class="form-group row popup_section_content" id="brd_box">
                     <div class="col-sm-12 mb-3 mt-1 mb-sm-0" >
                         <div class="row">
                             <div class="col-sm-10 mb-2 mt-1 mb-sm-0"> Popup Image
                                 <input type="file" id="" placeholder="Enter Popup Image" name="popup_image"
                                     value="{{ old('popup_image')}}" {{ isset($details)?'' : ''}}
-                                    class="form-control form-control-user" style="height: 60px;" /> <input type="hidden"
-                                    name="old_popup_image" value="{{ isset($details)?$details->popup_image : ''}}" />
+                                    class="form-control form-control-user"/>
+                                <input type="hidden" name="old_popup_image" value="{{ isset($details)?$details->popup_image : ''}}" />
+                                @if(isset($details) && $details->popup_image)
+                                    <br><img src="{{ asset($details->popup_image) }}" alt="Popup Image" style="max-width: 100px; max-height: 100px;" />
+                                @endif
                             </div>
                             <div class="col-sm-2 mb-1 mt-1 mb-sm-0 swich_bntts"> Visible <div class="block_araea mt-1"><label
                                         class="switch"><input value="1" type="checkbox" @isset($details)
@@ -417,6 +420,10 @@
 @endsection
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <script>
+$(document).ready(function(){
+    var popup_status = "{{ isset($details) ? $details->popup_status : 0 }}";
+    PageCtcUrl(popup_status);
+});
 function PageCtcUrl(status) {
     var formType = $('#type_id');
 

@@ -404,7 +404,6 @@ margin-right: 10px;
                     <p id="popup_error_message">Loading content, please wait...</p>
                 </div>
             </div>
-
         </div>
     </div>
 </div>

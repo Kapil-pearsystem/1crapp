@@ -16,13 +16,13 @@ use App\Models\ProductService;
 use App\Models\EmbedPageModel;
 use App\Models\FormModel;
 
-use function Adminer\redirect;
+// use function Adminer\redirect;
 
 class PageController extends Controller
 {
     public function index($slug = NULL){
-        // $agent_id = app('currentAgent')->id;
-        $agent_id = 78;
+        $agent_id = app('currentAgent')->id;
+        // $agent_id = 78;
         $page_data = PageModel::where(['slug'=>$slug,'status'=>1, 'created_by'=>$agent_id])->first();
         // dd($page_data);
         
