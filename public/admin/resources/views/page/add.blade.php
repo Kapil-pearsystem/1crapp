@@ -162,8 +162,8 @@
                                 ($details->media_type ?? "")) !=
                             1
                         ) { ?> style="display:none;"
-                        <?php } ?>> Media File <input type="file" id=""
-                            placeholder="Enter Media File" name="media_file" value="{{ old('media_file')}}"
+                        <?php } ?>> Media File 
+                        <input type="file" id="" placeholder="Enter Media File" name="media_file" value="{{ old('media_file')}}"
                             {{ isset($details)?'' : ''}} class="form-control form-control-user" /> <input type="hidden"
                             name="old_media_file" value="{{ isset($details)?$details->media_file : ''}}" /> </div>
                     <div class="col-sm-6 mb-2 mt-1 mb-sm-0" id="media_type_link" <?php if (

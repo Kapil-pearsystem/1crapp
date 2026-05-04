@@ -63,6 +63,7 @@ use App\Http\Controllers\AppointmentBookingController;
 use App\Http\Controllers\CalenderController;
 use App\Http\Controllers\ScheduleAppointmentController;
 use App\Http\Controllers\UserHeroSectionController;
+use App\Http\Controllers\UserOnboardController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -928,5 +929,11 @@ Route::middleware('auth')->prefix('user-hero-section')->name('user-hero-section.
     Route::post('/store', [UserHeroSectionController::class, 'store'])->name('store');
     Route::get('/edit/{id}', [UserHeroSectionController::class, 'edit'])->name('edit');
     Route::get('/delete/{id}', [UserHeroSectionController::class, 'destroy'])->name('delete');
+});
+Route::middleware('auth')->prefix('user-onboard-cms')->name('user-onboard-cms.')->group(function(){
+    Route::get('/login', [UserOnboardController::class, 'login'])->name('login');
+    Route::post('/login/save', [UserOnboardController::class, 'login_save'])->name('login.save');
+    Route::get('/signup', [UserOnboardController::class, 'signup'])->name('signup');
+    Route::post('/signup/save', [UserOnboardController::class, 'signup_save'])->name('signup.save');
 });
 

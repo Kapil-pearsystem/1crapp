@@ -594,12 +594,14 @@ $finalUrl = $scheme . '://' . $host;
 				<div class="accordion_body" style="display: none;">
 				 <div class="user_listst_links">
 				   <ul>
-                       <li><a href="{{ $finalUrl }}">Home Page</a></li>
-					    <li><a href="{{ $finalUrl }}/about-us">About Us</a></li>
-					    <li><a href="{{ $finalUrl }}/how-it-works">How It Works</a></li>
-					    <li><a href="{{ $finalUrl }}/features">Features</a></li>
-					    <li><a href="{{ $finalUrl }}/faq">FAQ Page</a></li>
-					    <li><a href="{{ $finalUrl }}/contact-us">Contact Us</a></li>
+                        <li><a href="javascript:void(0);">About Us</a></li>
+                        <li><a href="javascript:void(0);">Home Page</a></li>
+					    <li><a href="javascript:void(0);">How It Works</a></li>
+					    <li><a href="javascript:void(0);">Features</a></li>
+					    <li><a href="javascript:void(0);">FAQ Page</a></li>
+					    <li><a href="javascript:void(0);">Price</a></li>
+					    <li><a href="javascript:void(0);">Contact Us</a></li>
+                        <li><a href="javascript:void(0);">About Company</a></li>
 				   </ul>
 				 </div>
 				</div>
@@ -609,14 +611,13 @@ $finalUrl = $scheme . '://' . $host;
 				<div class="accordion_body" style="display: none;">
 				 <div class="user_listst_links">
 				   <ul>
-					<li><a href="{{ $finalUrl }}/user-home">User Dashboard</a></li>
-					<li><a href="{{ $finalUrl }}/investors">Investor</a></li>
-					<li><a href="{{ $finalUrl }}/investors-menu-popup">Investor Menu</a></li>
-					<li><a href="{{ $finalUrl }}/realtors">Realtor</a></li>
-					<li><a href="{{ $finalUrl }}/realtors-menu-popup">Realtor Menu</a></li>
-					<li><a href="{{ $finalUrl }}/market-place-list">Market Place</a></li>
-					<li><a href="{{ $finalUrl }}/services-for-you">Services for You</a></li>
-					<li><a href="{{ $finalUrl }}/plp-introduction">Property Look Out Pitch</a></li>
+					<li><a href="javascript:void(0);">User Dashboard</a></li>
+					<li><a href="javascript:void(0);">Investor</a></li>
+					<li><a href="javascript:void(0);">Investor Menu</a></li>
+					<li><a href="javascript:void(0);">Realtor</a></li>
+					<li><a href="javascript:void(0);">Realtor Menu</a></li>
+					<li><a href="javascript:void(0);">Services for You</a></li>
+					<li><a href="javascript:void(0);">Property Look Out Pitch</a></li>
 				   </ul>
 				 </div>
 				</div>
@@ -626,11 +627,11 @@ $finalUrl = $scheme . '://' . $host;
 				<div class="accordion_body" style="display: none;">
 				 <div class="user_listst_links">
 				   <ul>
-					<li><a href="{{ $finalUrl }}/my-properties">My Properties</a></li>
-					<li><a href="{{ $finalUrl }}/personal-money-path">Personal Money Path</a></li>
-					<li><a href="{{ $finalUrl }}/pbm">Personal Budget Management</a></li>
-					<li><a href="{{ $finalUrl }}/pnt">Personal Networth Tracking</a></li>
-					<li><a href="{{ $finalUrl }}/personal-financial-freedom-journey">Financial Freedom Journey</a></li>
+					<li><a href="javascript:void(0);">My Properties</a></li>
+					<li><a href="javascript:void(0);">Personal Money Path</a></li>
+					<li><a href="javascript:void(0);">Personal Budget Management</a></li>
+					<li><a href="javascript:void(0);">Personal Networth Tracking</a></li>
+					<li><a href="javascript:void(0);">Financial Freedom Journey</a></li>
 				   </ul>
 				 </div>
 				</div>
@@ -640,12 +641,12 @@ $finalUrl = $scheme . '://' . $host;
 				<div class="accordion_body" style="display: none;">
 				 <div class="user_listst_links">
 				   <ul>
-					<li><a href="{{ route('media.index') }}">Media</a></li>
-					<li><a href="{{ $finalUrl }}/meet-team">Meet Team</a></li>
-					<li><a href="{{ $finalUrl }}/join-the-team">Join Team</a></li>
-					<li><a href="{{ $finalUrl }}/join-as-affiliate">Join Affiliate</a></li>
-					<li><a href="{{ $finalUrl }}/reviews">Review</a></li>
-					<li><a href="{{ $finalUrl }}/business-cards">Business Cards</a></li>
+					<li><a href="javascript:void(0);">Media</a></li>
+					<li><a href="javascript:void(0);">Meet Team</a></li>
+					<li><a href="javascript:void(0);">Join Team</a></li>
+					<li><a href="javascript:void(0);">Join Affiliate</a></li>
+					<li><a href="javascript:void(0);">Review</a></li>
+					<li><a href="javascript:void(0);">Business Cards</a></li>
 				   </ul>
 				 </div>
 				</div>
@@ -670,25 +671,45 @@ $finalUrl = $scheme . '://' . $host;
 				 <div class="user_listst_links">
 				   <ul>
 					<li><a href="{{ route('banner.index') }}"> Hero Section- Index Page</a></li>
+                    <li><a href="{{ route('about-us.index') }}">About Us</a></li>
 					<li><a href="{{ route('user-hero-section.index') }}"> Hero Section - User Page</a></li>
-					<li><a href="{{ route('web.service-category.index') }}"> Services Category Section</a></li>
-					<li><a href="{{ route('web.services.index') }}"> Services Section</a></li>
+					<!-- <li><a href="{{ route('web.service-category.index') }}"> Services Category Section</a></li>
+					<li><a href="{{ route('web.services.index') }}"> Services Section</a></li> -->
 					<li><a href="{{ route('web.clients.index') }}">Clients</a></li>
 					<li><a href="{{ route('web.testimonials.index') }}">Testimonials</a></li>
 					<li><a href="javascript:void(0);">Demo Section</a></li>
 					<li><a href="javascript:void(0);">TEXT Section</a></li>
 					<li><a href="{{ route('features.index') }}">Features Section</a></li>
+                    <li><a href="{{ route('easytoshare.index') }}">Easy to Share</a></li>
 					<li><a href="{{ route('easytouse.index') }}">Use Cases Section</a></li>
 					<li><a href="javascript:void(0);">Insights Section Quick Analyse</a></li>
 					<li><a href="{{ route('work-matrix.index') }}">Work Matrix</a></li>
 					<li><a href="{{ route('call-to-action.index') }}">CTA Section (Reusable)</a></li>
-					<li><a href="{{ route('need-help.index') }}">Support Section</a></li>
 					<li><a href="{{ route('form.index') }}">Forms</a></li>
 					<li><a href="{{ route('business-card.index') }}">Visiting Card</a></li>
 					<li><a href="{{ route('propertymarket.cms') }}">Top of Property Market Place</a></li>
 					<li><a href="javascript:void(0);">Top of Prodct & Servecs</a></li>
-					<li><a href="{{ $finalUrl }}/resources-tools">Reourses & Tools Bottom Section</a></li>
+					<!-- <li><a href="{{ $finalUrl }}/resources-tools">Reourses & Tools Bottom Section</a></li> -->
 					<li><a href="{{ route('need-help.index') }}">Support Section</a></li>
+                    <li><a href="{{ route('how-it-works.index') }}">How it Works</a></li>
+                    <li><a href="{{ route('faq.index') }}">FAQ</a></li>
+                    <li><a href="{{ route('faq.category.index') }}">FAQ Category</a></li>
+                    <li><a href="{{ route('subscribe.index') }}">Subscribers</a></li>
+                    <li><a href="{{ route('web-setting.index') }}">Contact Us</a></li>
+                    <li><a href="{{ route('meet-team.index') }}">Meet Team</a></li>
+                    <li><a href="{{ route('meet-category.index') }}">Meet Category</a></li>
+                    <li><a href="{{ route('team-detail.index') }}">Team Detail</a></li>
+                    <li><a href="{{ route('media.index') }}">Media</a></li>
+                    <li><a href="{{ route('join-as-affiliate.index') }}">Join As Affiliate</a></li>
+                    <li><a href="{{ route('join-as-affiliate.enquiry') }}">Affiliate Enquiry</a></li>
+                    <li><a href="{{ route('reviews.index') }}"> Review</a></li>
+                    <li><a href="{{ route('app-feedback.index') }}"> Feedback</a></li>
+                    <li><a href="javascript:void(0);">Company</a></li>
+                    <!-- <li><a href="{{ route('project-category.index') }}"> Project Category</a></li>
+                    <li><a href="{{ route('project.index') }}"> Project </a></li>
+                    <li><a href="{{ route('booking-event.index') }}"> Booking Event </a></li> -->
+
+                            
 				   </ul>
 				 </div>
 				</div>
@@ -698,8 +719,8 @@ $finalUrl = $scheme . '://' . $host;
 				<div class="accordion_body" style="display: none;">
 				 <div class="user_listst_links">
 				   <ul>
-					<li><a href="{{ $finalUrl }}/login">Login Now</a></li>
-					<li><a href="{{ $finalUrl }}/register">Register Now</a></li>
+					<li><a href="{{ route('user-onboard-cms.login') }}">Login Now</a></li>
+					<li><a href="{{ route('user-onboard-cms.signup') }}">Register Now</a></li>
 					<li><a href="javascript:void(0);">Whats New Button</a></li>
 					<li><a href="javascript:void(0);">Top Header</a></li>
 					<li><a href="javascript:void(0);">Footer Top</a></li>
