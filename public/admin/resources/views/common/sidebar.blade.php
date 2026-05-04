@@ -22,6 +22,14 @@ if($user){
 }else{
     return redirect()->route('login');
 }
+$scheme = request()->getScheme();
+$host   = request()->getHost(); // admin.1crapp.com
+
+if (str_starts_with($host, 'admin.')) {
+    $host = substr($host, 6); // remove 'admin.'
+}
+
+$finalUrl = $scheme . '://' . $host;
 ?>
 <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
     <!-- Sidebar - Brand -->
@@ -576,6 +584,144 @@ if($user){
 				<div class="accordion_body" style="display: none;">
 				 <div class="user_listst_links">
 				   <ul>
+					<li><a href="{{ route('header-navigation.index') }}">Navigation Bar</a></li>
+				   </ul>
+				 </div>
+				</div>
+			</div>
+			<div class="man_boxx">
+				<div class="accordion_head"><i class="fas fa-list"></i> Core Website Pages<span class="plusminus">+</span></div>
+				<div class="accordion_body" style="display: none;">
+				 <div class="user_listst_links">
+				   <ul>
+                       <li><a href="{{ $finalUrl }}">Home Page</a></li>
+					    <li><a href="{{ $finalUrl }}/about-us">About Us</a></li>
+					    <li><a href="{{ $finalUrl }}/how-it-works">How It Works</a></li>
+					    <li><a href="{{ $finalUrl }}/features">Features</a></li>
+					    <li><a href="{{ $finalUrl }}/faq">FAQ Page</a></li>
+					    <li><a href="{{ $finalUrl }}/contact-us">Contact Us</a></li>
+				   </ul>
+				 </div>
+				</div>
+			</div>
+			<div class="man_boxx">
+				<div class="accordion_head"><i class="fas fa-list"></i> User System<span class="plusminus">+</span></div>
+				<div class="accordion_body" style="display: none;">
+				 <div class="user_listst_links">
+				   <ul>
+					<li><a href="{{ $finalUrl }}/user-home">User Dashboard</a></li>
+					<li><a href="{{ $finalUrl }}/investors">Investor</a></li>
+					<li><a href="{{ $finalUrl }}/investors-menu-popup">Investor Menu</a></li>
+					<li><a href="{{ $finalUrl }}/realtors">Realtor</a></li>
+					<li><a href="{{ $finalUrl }}/realtors-menu-popup">Realtor Menu</a></li>
+					<li><a href="{{ $finalUrl }}/market-place-list">Market Place</a></li>
+					<li><a href="{{ $finalUrl }}/services-for-you">Services for You</a></li>
+					<li><a href="{{ $finalUrl }}/plp-introduction">Property Look Out Pitch</a></li>
+				   </ul>
+				 </div>
+				</div>
+			</div>
+			<div class="man_boxx">
+				<div class="accordion_head"><i class="fas fa-list"></i>Financial Tools<span class="plusminus">+</span></div>
+				<div class="accordion_body" style="display: none;">
+				 <div class="user_listst_links">
+				   <ul>
+					<li><a href="{{ $finalUrl }}/my-properties">My Properties</a></li>
+					<li><a href="{{ $finalUrl }}/personal-money-path">Personal Money Path</a></li>
+					<li><a href="{{ $finalUrl }}/pbm">Personal Budget Management</a></li>
+					<li><a href="{{ $finalUrl }}/pnt">Personal Networth Tracking</a></li>
+					<li><a href="{{ $finalUrl }}/personal-financial-freedom-journey">Financial Freedom Journey</a></li>
+				   </ul>
+				 </div>
+				</div>
+			</div>
+			<div class="man_boxx">
+				<div class="accordion_head"><i class="fas fa-list"></i>Admin/Network<span class="plusminus">+</span></div>
+				<div class="accordion_body" style="display: none;">
+				 <div class="user_listst_links">
+				   <ul>
+					<li><a href="{{ route('media.index') }}">Media</a></li>
+					<li><a href="{{ $finalUrl }}/meet-team">Meet Team</a></li>
+					<li><a href="{{ $finalUrl }}/join-the-team">Join Team</a></li>
+					<li><a href="{{ $finalUrl }}/join-as-affiliate">Join Affiliate</a></li>
+					<li><a href="{{ $finalUrl }}/reviews">Review</a></li>
+					<li><a href="{{ $finalUrl }}/business-cards">Business Cards</a></li>
+				   </ul>
+				 </div>
+				</div>
+			</div>
+			<div class="man_boxx">
+				<div class="accordion_head"><i class="fas fa-list"></i>Other/Miscellaneous Pages<span class="plusminus">+</span></div>
+				<div class="accordion_body" style="display: none;">
+				 <div class="user_listst_links">
+				   <ul>
+					<li><a href="javascript:void(0);">ABC XYC HJSHKJS</a></li>
+					<li><a href="javascript:void(0);">ABC XYC HJSHKJS</a></li>
+					<li><a href="javascript:void(0);">ABC XYC HJSHKJS</a></li>
+					<li><a href="javascript:void(0);">ABC XYC HJSHKJS</a></li>
+					<li><a href="javascript:void(0);">ABC XYC HJSHKJS</a></li>
+				   </ul>
+				 </div>
+				</div>
+			</div>
+			<div class="man_boxx">
+				<div class="accordion_head"><i class="fas fa-list"></i>Sections of Pages<span class="plusminus">+</span></div>
+				<div class="accordion_body" style="display: none;">
+				 <div class="user_listst_links">
+				   <ul>
+					<li><a href="{{ route('banner.index') }}"> Hero Section- Index Page</a></li>
+					<li><a href="{{ route('user-hero-section.index') }}"> Hero Section - User Page</a></li>
+					<li><a href="{{ route('web.service-category.index') }}"> Services Category Section</a></li>
+					<li><a href="{{ route('web.services.index') }}"> Services Section</a></li>
+					<li><a href="{{ route('web.clients.index') }}">Clients</a></li>
+					<li><a href="{{ route('web.testimonials.index') }}">Testimonials</a></li>
+					<li><a href="javascript:void(0);">Demo Section</a></li>
+					<li><a href="javascript:void(0);">TEXT Section</a></li>
+					<li><a href="{{ route('features.index') }}">Features Section</a></li>
+					<li><a href="{{ route('easytouse.index') }}">Use Cases Section</a></li>
+					<li><a href="javascript:void(0);">Insights Section Quick Analyse</a></li>
+					<li><a href="{{ route('work-matrix.index') }}">Work Matrix</a></li>
+					<li><a href="{{ route('call-to-action.index') }}">CTA Section (Reusable)</a></li>
+					<li><a href="{{ route('need-help.index') }}">Support Section</a></li>
+					<li><a href="{{ route('form.index') }}">Forms</a></li>
+					<li><a href="{{ route('business-card.index') }}">Visiting Card</a></li>
+					<li><a href="{{ route('propertymarket.cms') }}">Top of Property Market Place</a></li>
+					<li><a href="javascript:void(0);">Top of Prodct & Servecs</a></li>
+					<li><a href="{{ $finalUrl }}/resources-tools">Reourses & Tools Bottom Section</a></li>
+					<li><a href="{{ route('need-help.index') }}">Support Section</a></li>
+				   </ul>
+				 </div>
+				</div>
+			</div>
+			<div class="man_boxx">
+				<div class="accordion_head"><i class="fas fa-list"></i>Header/Footer Settings<span class="plusminus">+</span></div>
+				<div class="accordion_body" style="display: none;">
+				 <div class="user_listst_links">
+				   <ul>
+					<li><a href="{{ $finalUrl }}/login">Login Now</a></li>
+					<li><a href="{{ $finalUrl }}/register">Register Now</a></li>
+					<li><a href="javascript:void(0);">Whats New Button</a></li>
+					<li><a href="javascript:void(0);">Top Header</a></li>
+					<li><a href="javascript:void(0);">Footer Top</a></li>
+					<li><a href="javascript:void(0);">Footer Bottom</a></li>
+					<li><a href="javascript:void(0);">Legal & Compliances</a></li>
+				   </ul>
+				 </div>
+				</div>
+			</div>
+			<!-- <div class="man_boxx">
+				<div class="accordion_head"><i class="fas fa-list"></i> Old Code <span class="plusminus">+</span></div>
+				<div class="accordion_body" style="display: none;">
+				 <div class="user_listst_links">
+				   
+				 </div>
+				</div>
+			</div>
+			<div class="man_boxx">
+				<div class="accordion_head"><i class="fas fa-list"></i> Navigation Bar <span class="plusminus">+</span></div>
+				<div class="accordion_body" style="display: none;">
+				 <div class="user_listst_links">
+				   <ul>
 					<li><a href="{{ route('header-navigation.index') }}">Navigation List</a></li>
 					<li><a href="javascript:void(0);">Login Now</a></li>
 					<li><a href="javascript:void(0);">Register Now</a></li>
@@ -649,7 +795,7 @@ if($user){
 					   </ul>
                     </div>
 				</div>
-		    </div>
+		    </div> -->
     		</div>
 		</div>
     </div>

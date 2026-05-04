@@ -62,6 +62,7 @@ use App\Http\Controllers\AppointmentBookingHomeworkController;
 use App\Http\Controllers\AppointmentBookingController;
 use App\Http\Controllers\CalenderController;
 use App\Http\Controllers\ScheduleAppointmentController;
+use App\Http\Controllers\UserHeroSectionController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -920,5 +921,12 @@ Route::middleware('auth')->prefix('appointments')->name('appointments.')->group(
     Route::post('/store', [ScheduleAppointmentController::class, 'store'])->name('store');
     Route::get('/edit/{id}', [ScheduleAppointmentController::class, 'edit'])->name('edit');
     Route::get('/delete/{id}', [ScheduleAppointmentController::class, 'destroy'])->name('delete');
+});
+Route::middleware('auth')->prefix('user-hero-section')->name('user-hero-section.')->group(function(){
+    Route::get('/', [UserHeroSectionController::class, 'index'])->name('index');
+    Route::get('/create', [UserHeroSectionController::class, 'create'])->name('create');
+    Route::post('/store', [UserHeroSectionController::class, 'store'])->name('store');
+    Route::get('/edit/{id}', [UserHeroSectionController::class, 'edit'])->name('edit');
+    Route::get('/delete/{id}', [UserHeroSectionController::class, 'destroy'])->name('delete');
 });
 

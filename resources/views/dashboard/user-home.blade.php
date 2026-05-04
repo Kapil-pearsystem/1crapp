@@ -206,8 +206,49 @@
 		  <h2>Now, Using 1CR APP You Can</h2>
 		  <p>Find and Analyse and in Seconds</p>
 		</div>
-	
-        <div class="row mb_view_none">
+	    <div class="row mb_view_none">
+            <div class="col-lg-6">
+                <div class="al_most_bg">
+                    <h6>{{ $appuses->realtor_title }}</h6>
+                    <div class="mg_arar">
+                        <img src="{{ $appuses->realtor_image }}" alt="" />
+                    </div>
+                    <div class="cnt_al_cntent">
+                        <h3>{{ $appuses->realtor_subtitle }}</h3>
+                        <p>{{ $appuses->realtor_shortdesc }}</p>
+                    </div>
+
+                    <div class="usr_lists_lgo">
+                        {!! $appuses->realtor_description !!}
+                    </div>
+					<div class="explrr">
+                        <a href="{{ $appuses->realtor_btnlink }}" @if($appuses->realtor_btnlink_new_tab == 1) target="_blank" @endif>{{ $appuses->realtor_btntext }}</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-6">
+                <div class="al_most_bg">
+                    <h6>{{ $appuses->investor_title }}</h6>
+                    <div class="mg_arar">
+                        <img src="{{ $appuses->investor_image }}" alt="" />
+                    </div>
+                    <div class="cnt_al_cntent">
+                        <h3>{{ $appuses->investor_subtitle }}</h3>
+                        <p>{{ $appuses->investor_shortdesc }}</p>
+                    </div>
+
+                    <div class="usr_lists_lgo">
+                        {!! $appuses->investor_description !!}
+                    </div>
+					
+					<div class="explrr">
+                        <a href="{{ $appuses->investor_btnlink }}" @if($appuses->investor_btnlink_new_tab == 1) target="_blank" @endif>{{ $appuses->investor_btntext }}</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- <div class="row mb_view_none">
             <div class="col-lg-6">
                 <div class="al_most_bg">
                     <h6>If You Are A Realtor?</h6>
@@ -292,7 +333,7 @@
 							</div>
                 </div>
             </div>
-        </div>
+        </div> -->
 
         <div class="row mb_view_show" id="al_mang_tab">
             <!---- Mobile View ----->

@@ -177,6 +177,9 @@ class PageController extends Controller
         $page->popup_content_status = $request->input('popup_content_status');
         $page->popup_image = $popup_imagename;
         $page->popup_image_status = $request->input('popup_image_status');
+        $page->popup_title = $request->input('popup_title');
+        $page->popup_title_status = $request->input('popup_title_status')??0;
+
         $page->pre_cta = $request->input('pre_cta');
         $page->pre_cta_status = $request->input('pre_cta_status');
         $page->ps_text = $request->input('ps_text');

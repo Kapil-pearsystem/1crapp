@@ -394,7 +394,9 @@ margin-right: 10px;
         <div class="modal-content othr_ledss">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">Great Thanks for your interest.</h4>
+                @if($page_data->popup_title_status == 1)
+                    @if($page_data->popup_title)<h4 class="modal-title">{{ $page_data->popup_title }}</h4>@endif
+                @endif
             </div>
             <div class="modal-body" id="popup_data_id">
                 <div class="text-center">
@@ -482,9 +484,12 @@ margin-right: 10px;
                         <iframe width="100%" height="400" src="{{ $page_data->media_link }}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
                     </div>
                 @elseif($page_data->media_type == 3)
-                    @if(file_is_exist(ASSETS_PATH.$page_data->media_file))
+                    @if($page_data->media_link)
                         <div class="you_tb_arra">
-                            <iframe width="100%" height="400" src="{{ ASSETS_PATH.$page_data->media_file }}" title="video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                            <video width="100%" height="400" controls>
+                                <source src="{{ $page_data->media_link }}" type="video/mp4">
+                                Your browser does not support the video tag.
+                            </video>
                         </div>
                     @endif
                 @else

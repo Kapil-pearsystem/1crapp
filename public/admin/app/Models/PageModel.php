@@ -40,6 +40,8 @@ class PageModel extends Model
         'addination_cta_new_tab',
         'popup_content',
         'popup_content_status',
+        'popup_title',
+        'popup_title_status',
         'popup_image',
         'popup_image_status',
         'embed_form_status',

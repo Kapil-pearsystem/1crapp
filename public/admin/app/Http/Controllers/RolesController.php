@@ -67,10 +67,10 @@ class RolesController extends Controller
             ]);
              $name = $request->name;
              $id = Auth()->user()->id;
-            $check_role = Role::where('name','LIKE','%'.$name.'%')->where('added_by',$id)->first();
-            if($check_role){
-                 return redirect()->route('roles.create')->with('error','Name Already Taken, Please use different name');
-            }
+            // $check_role = Role::where('name','LIKE','%'.$name.'%')->where('added_by',$id)->first();
+            // if($check_role){
+            //      return redirect()->route('roles.create')->with('error','Name Already Taken, Please use different name');
+            // }
             
             $roles = new Role;
             $roles->name = $name;

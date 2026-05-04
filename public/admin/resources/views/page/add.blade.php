@@ -379,6 +379,19 @@
                     </div>
                     <div class="col-sm-12 mb-3 mt-1 mb-sm-0">
                         <div class="row">
+                            <div class="col-sm-10 mb-6 mt-6 mb-sm-0"> Popup Title
+                                <input type="text" id="" placeholder="Enter Popup Title" name="popup_title"
+                                    class="form-control form-control-user" value="{{ old('popup_title')??($details->popup_title ?? '')}}" />
+                            </div>
+                            <div class="col-sm-2 mb-1 mt-1 mb-sm-0 swich_bntts"> Visible <div class="block_araea mt-1"><label
+                                        class="switch"><input value="1" type="checkbox" @isset($details)
+                                            @if($details->popup_title_status == 1) checked @endif @endisset
+                                        name="popup_title_status"> <small></small></label></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-12 mb-3 mt-1 mb-sm-0">
+                        <div class="row">
                             <div class="col-sm-10 mb-6 mt-6 mb-sm-0"> Popup Content
                                 <textarea id="" placeholder="Enter Popup Content" name="popup_content"
                                     class="form-control form-control-user">{{ old('popup_content')??($details->popup_content ?? '')}}</textarea>

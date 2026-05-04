@@ -21,7 +21,9 @@ class UserController extends Controller
 {
     
     public function user_home(){
-        return view('dashboard/user-home');
+        $appuses = DB::table('tbl_1crappuses')->orderBy('id', 'desc')->first();
+        // dd($appuses);
+        return view('dashboard/user-home', compact('appuses'));
     }
     public function realtors(){
         return view('dashboard/realtors');
