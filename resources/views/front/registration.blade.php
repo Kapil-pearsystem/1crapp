@@ -37,21 +37,30 @@
 <!--PEN HEADER-->
 <div class="container-fluid px-0 pdding_0">
 <div class="login-container regisstr">
-  <div class="onboarding flu_lnth col-md-6 text-center">
-          <div class="slide-content">
+    <div class="onboarding flu_lnth col-md-6 text-center">
+        <div class="slide-content">
 		  <div class="medilss_areaaa">
-            <div class="lgo_areaa"><a href="{{ url('') }}"><img width="100" src="{{ url('home/img/lg_logo.png')}}" alt="Logo" /></a></div>
-             <h2 class="txt_hdns">Property Analysis, Simplified</h2>
-			 <embed src="{{ url('') }}/img/big_buck_bunny_720p_1mb.mp4" />
-             <div class="cnts_fildsss">
-              <p><img src="{{ url('home/img/graph.png')}}" alt="" /> Analyze any investment property in seconds</p>
-              <p><img src="{{ url('home/img/cals.png')}}" alt="" /> Calculate cash flow, profit, cap rates, ROI and dozens of other metrics</p>
-              <p><img src="{{ url('home/img/price.png')}}" alt="" /> Look up recent sales and rental comps</p>
-              <p><img src="{{ url('home/img/serc.png')}}" alt="" /> Compare properties and find the best real estate deals</p>
+            @if(isset($signupcms->logo_visible) && $signupcms->logo_visible == 1)<div class="lgo_areaa"><a href="{{ url('') }}"><img width="100" src="{{ $signupcms->company_logo }}" alt="Logo" /></a></div>@endif
+            @if(isset($signupcms->tagline_visible) && $signupcms->tagline_visible == 1)<h2 class="txt_hdns">{{ $signupcms->tagline_text }}</h2>@endif
+			 <!-- <embed src="{{ url('') }}/img/big_buck_bunny_720p_1mb.mp4" /> -->
+            @if(isset($signupcms->file_visible) && $signupcms->file_visible == 1)
+                @if(isset($signupcms->file_type) && $signupcms->file_type == 1)
+                    <img src="{{ $signupcms->file_path }}" alt="" />
+                @else
+                    <embed src="{{ $signupcms->file_path }}" />
+                @endif
+            @endif
+            @if(isset($signupcms->bullet_visible) && $signupcms->bullet_visible == 1)
+            <div class="cnts_fildsss">
+                <p class="d-flex align-items-start"><i class="fa {{ $signupcms->b1_icon }} mr-2" style="font-size:16px; font-weight: bold;"></i><span>{{ $signupcms->b1_text }}</span></p>
+                <p class="d-flex align-items-start"><i class="fa {{ $signupcms->b2_icon }} mr-2" style="font-size:16px; font-weight: bold;"></i><span>{{ $signupcms->b2_text }}</span></p>
+                <p class="d-flex align-items-start"><i class="fa {{ $signupcms->b3_icon }} mr-2" style="font-size:16px; font-weight: bold;"></i><span>{{ $signupcms->b3_text }}</span></p>
+                <p class="d-flex align-items-start"><i class="fa {{ $signupcms->b4_icon }} mr-2" style="font-size:16px; font-weight: bold;"></i><span>{{ $signupcms->b4_text }}</span></p>
 			 </div>
+             @endif
             </div>
-          </div>
-  </div>
+        </div>
+    </div>
         <div class="login-form flu_lnth frm_right_pertss col-md-6 justify-content-center d-flex">
 		   <div class="medls_araeass">
             <div class="login-form-inner registers">

@@ -29,9 +29,17 @@ class AuthController extends Controller
 {
     public function showRegistrationForm(Request $request)
     {
-        Cache::put('agent_id', app('currentAgent')->id, 60);
+        $agentId = app('currentAgent')->id;
+        Cache::put('agent_id', $agentId, 60);
+        $signupcms = DB::table('tbl_signupcms')->where(['created_by' => $agentId, 'status' => 1])->first();
+        
+        if (!is_null($signupcms)) {
+            $company = DB::table('company_details')->where(['user_id' => $agentId])->first();
+            $signupcms->company_logo = $company ? $company->company_logo : url('').'/img/lg_logo.png';
+        }
         $referral = $request->query('referral', '');
-        return view('front.registration',compact('referral'));
+        // dd($signupcms);
+        return view('front.registration',compact('referral', 'signupcms'));
     }
     public function registrerStore(Request $request)
     {
@@ -67,11 +75,16 @@ class AuthController extends Controller
 
     public function showLoginForm()
     {
-        // dd(app('subdomain'));
-        // $agentId = app('currentAgent')->id;
-        // echo "Agentid: ".$agentId;die;
-        Cache::put('agent_id', app('currentAgent')->id, 60); // 60 minutes
-        return view('front.login');
+        $agentId = app('currentAgent')->id;
+        // $agentId = 78;
+        Cache::put('agent_id', $agentId, 60); // 60 minutes 'created_by' => $agentId,
+        $logincms = DB::table('tbl_logincms')->where(['created_by' => $agentId, 'status' => 1])->first();
+        if (!is_null($logincms)) {
+            $company = DB::table('company_details')->where(['user_id' => $agentId])->first();
+            $logincms->company_logo = $company ? $company->company_logo : url('').'/img/lg_logo.png';
+        }
+        // dd($logincms);
+        return view('front.login', compact('logincms'));
     }
 
     public function login(Request $request)

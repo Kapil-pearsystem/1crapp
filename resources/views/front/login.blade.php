@@ -38,14 +38,21 @@
         <div class="login-container">
             <div class="onboarding flu_lnth col-md-6 text-center">
                 <div class="slide-content">
+                    @if(isset($logincms) && !is_null($logincms))
                     <div class="medilss_areaaa">
-                        <div class="lgo_areaa"><a href="{{ url('') }}"><img width="100" src="{{ url('') }}/img/lg_logo.png" alt="Logo" /></a></div>
-                        <h2 class="txt_hdns">Property Analysis, Simplified</h2>
-                        <embed src="{{ url('') }}/img/big_buck_bunny_720p_1mb.mp4" />
-                        <p class="py-4 btnmss_tx">Ofter on the road? download our mobile <span>app to analyze investment
-                                properties anywhere</span></p>
-                        <div class="socila_mds"><img src="{{ url('') }}/img/sign_up.png" alt="" /></div>
+                        @if(isset($logincms->logo_visible) && $logincms->logo_visible == 1)<div class="lgo_areaa"><a href="{{ url('') }}"><img width="100" src="{{ $logincms->company_logo }}" alt="Logo" /></a></div>@endif
+                        @if(isset($logincms->tagline_visible) && $logincms->tagline_visible == 1)<h2 class="txt_hdns">{{ $logincms->tagline_text }}</h2>@endif
+                        @if(isset($logincms->file_visible) && $logincms->file_visible == 1)
+                            @if(isset($logincms->file_type) && $logincms->file_type == 1)
+                                <img src="{{ $logincms->file_path }}" alt="" />
+                            @else
+                                <embed src="{{ $logincms->file_path }}" />
+                            @endif
+                        @endif
+                        @if(isset($logincms->content_visible) && $logincms->content_visible == 1)<p class="py-4 btnmss_tx">{{ $logincms->content }}</p>@endif
+                        @if(isset($logincms->gotit_visible) && $logincms->gotit_visible == 1)<div class="socila_mds"><a href="{{ $logincms->gotit_link }}" target="_blank"><img src="{{ $logincms->gotit_image }}" alt="" /></a></div>@endif
                     </div>
+                    @endif
                 </div>
             </div>
 

@@ -489,7 +489,7 @@
                         <input type="file" id="" placeholder="File Upload" name="company_logo" value=""  class="form-control form-control-user" />
                     </div>										<div class="col-sm-12 mb-0 mt-5 mb-sm-0 upldds text-center">
                         @if(!is_null($company))
-                        <img src="{{ url('').'/profile/'.$company->company_logo }}" class="img-profile " width="80px">
+                        <img src="{{ $company->company_logo }}" class="img-profile " width="80px">
                         @endif
                     </div>
                 </div>

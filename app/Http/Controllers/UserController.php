@@ -21,7 +21,8 @@ class UserController extends Controller
 {
     
     public function user_home(){
-        $appuses = DB::table('tbl_1crappuses')->orderBy('id', 'desc')->first();
+        $agent_id = app('currentAgent')->id;
+        $appuses = DB::table('tbl_1crappuses')->where('created_by', $agent_id)->orderBy('id', 'desc')->first();
         // dd($appuses);
         return view('dashboard/user-home', compact('appuses'));
     }

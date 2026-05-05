@@ -140,8 +140,9 @@ class ProfileController extends Controller
                 $file = $request->file('company_logo');
                 $company_logo = 'profile-'.rand().time().'.'.$file->extension();		
                 $file->move(public_path('profile'), $company_logo);
+                $company_logo = asset('profile/'.$company_logo);
             }else{
-                $company_logo = $request->old_company_logo; 
+                $company_logo = $request->old_company_logo;
             }
             $companydata = CompanyDetail::where('user_id',$user->id)->first();
             if(!$companydata){
