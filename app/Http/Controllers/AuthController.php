@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use App\Mail\VerificationCodeMail;
 use App\Mail\RegistrationSuccessfullyMail;
@@ -123,7 +124,8 @@ class AuthController extends Controller
             if($previous_loc != ''){
                 return redirect()->away($previous_loc);
             }
-            return redirect()->route('properties.list',['type'=>'buy-sale']);
+            // return redirect()->route('prices').with('success', 'You have logged in successfully!');
+            return redirect()->route('user-home')->with('success', 'You have logged in successfully!');
         } else {
             return redirect()->route('login')->with('fail', 'Login details are not valid');
         }
@@ -204,19 +206,34 @@ class AuthController extends Controller
             DB::rollback();
             return redirect()->route('register')->with('fail', 'Customer details are not valid');
         }
+        try {
+            if (\Auth::attempt($request->only('email', 'password'))) {
 
-        if(\Auth::attempt($request->only('email', 'password'))) {
+                $maildata = [
+                    'name'     => $request->name,
+                    'email'    => $request->email,
+                    'mobile'   => $request->mobile,
+                    'password' => $request->password,
+                ];
 
-            $maildata = array();
-            $maildata['name'] = $request->name;
-            $maildata['email'] = $request->email;
-            $maildata['mobile'] = $request->mobile;
-            $maildata['password'] = $request->password;
-            Mail::to($request->email)->send(new RegistrationSuccessfullyMail($maildata));
-            return redirect()->route('properties.list',['type'=>'buy-sale'])->with('success', 'Your registeration has been successful.');
-        } else {
-            return redirect()->route('register')->with('fail', 'Customer details are not valid');
+                try {
+                    Mail::to($request->email)->send(new RegistrationSuccessfullyMail($maildata));
+                    $message = 'Your registration has been successful. A confirmation email has been sent.';
+                } catch (\Exception $mailException) {
+                    $message = 'Your registration was successful, but we could not send the confirmation email.';
+                    Log::error('Failed to send registration email to ' . $request->email . ': ' . $mailException->getMessage());
+                }
+                Log::info('New user registered: ' . $request->email . ' (Referral: ' . ($request->referral_code ?? 'None') . ')');
+                return redirect()->route('price')->with('success', $message);
+
+            } else {
+                return redirect()->route('register')->with('fail', 'Invalid email or password.');
+            }
+
+        } catch (\Exception $e) {
+            return redirect()->route('register')->with('fail', 'Something went wrong. Please try again.');
         }
+        
     }
     // welcome bonus
     public function welcome_bonus($data)
@@ -375,7 +392,15 @@ class AuthController extends Controller
             'code' => $code,
             'source' => $request->source
         ];
-        Mail::to($request->email)->send(new VerificationCodeMail($data));
+        try{
+            Mail::to($request->email)->send(new VerificationCodeMail($data));
+        }catch(\Exception $e){
+            return response()->json([
+                'otp' => $code,
+                'status' => false,
+                'message' => 'Failed to send verification code on mail. Please try again.'
+            ]);
+        }
         return response()->json([
             'otp' => $code,
             'status' => true,

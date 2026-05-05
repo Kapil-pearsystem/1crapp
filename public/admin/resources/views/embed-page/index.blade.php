@@ -1,5 +1,17 @@
-@extends('layouts.app')
 
+@extends('layouts.app')
+<?php
+use Illuminate\Support\Str;
+
+$scheme = request()->getScheme();
+$host   = request()->getHost(); // admin.1crapp.com
+
+if (str_starts_with($host, 'admin.')) {
+    $host = substr($host, 6); // remove 'admin.'
+}
+
+$finalUrl = $scheme . '://' . $host;
+?>
 @section('title', 'Embed Page List')
 
 <link href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css" rel="stylesheet">
@@ -46,11 +58,7 @@
                                 <td>{{ $list->title }}</td>
                                 <td>
                                     @php
-            							if(auth()->user()->custom_domain){
-                                            $path = 'https://'.auth()->user()->custom_domain.'pages/'.$list->page_url;
-                                        }else if(auth()->user()->subdomain){
-                                            $path = 'https://'.auth()->user()->subdomain.'.1crapp.com/pages/'.$list->page_url;
-                                        }
+                                        $path = $finalUrl.'/pages/'.$list->page_url;
                                     @endphp
                                 <i class="fa fa-copy copy-icon" data-url="{{ $path }}" style="cursor:pointer;" aria-hidden="true"></i>&ensp; |&ensp;  
                                 <a href="{{ $path }}" target="_blank" class="text-right">

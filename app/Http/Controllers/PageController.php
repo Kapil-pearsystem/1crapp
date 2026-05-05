@@ -104,8 +104,8 @@ class PageController extends Controller
         }
     }
     public function embed_pages($slug = NULL){
-        $user_id = Auth::id();
-        $page_data = EmbedPageModel::where(['page_url'=>$slug,'status'=>'active', 'created_by'=> app('currentAgent')->id])->first();
+        $user_id = auth()->id();
+        $page_data = DB::table('tbl_embedded_pages')->where(['page_url'=>$slug,'status'=>'active', 'created_by'=> app('currentAgent')->id])->first();
         if(is_null($page_data)){
             return redirect()->route('404');
         }

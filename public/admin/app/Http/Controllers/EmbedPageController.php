@@ -14,6 +14,7 @@ class EmbedPageController extends Controller
      */
     public function index()
     {
+        // dd('index');
         $lists = EmbedPageModel::where('created_by',Auth::id())->orderBy('id', 'DESC')->get();
         return view('embed-page.index', compact('lists'));
     }
@@ -33,7 +34,7 @@ class EmbedPageController extends Controller
 {
     $request->validate([
         'title'       => 'required|string|max:255',
-        'embed_link'  => 'required|string',
+        'embed_code'  => 'required|string',
         'status'      => 'required|in:active,inactive',
     ]);
 
@@ -63,9 +64,10 @@ class EmbedPageController extends Controller
 
     $embedPage->title        = $request->title;
     $embedPage->page_url     = $slug;
-    $embedPage->embed_link   = $request->embed_link;
+    $embedPage->embed_code   = $request->embed_code;
     $embedPage->status       = $request->status;
     $embedPage->login_status = $request->login_status;
+    $embedPage->page_header_visible = $request->page_header_visible??0;
     $embedPage->created_by   = Auth::id();
 
     $embedPage->save();

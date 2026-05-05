@@ -26,7 +26,7 @@
                 <div class="form-group row">
 
                     <!-- Title -->
-                    <div class="col-sm-12 mb-3 mt-3 mb-sm-0">
+                    <div class="col-sm-10 mb-3 mt-3 mb-sm-0">
                         <span style="color: red;">*</span> Title
                         <input type="text" name="title" class="form-control form-control-user"
                             placeholder="Enter the Title"
@@ -35,15 +35,32 @@
                             <span class="text-danger">{{ $message }}</span>
                         @enderror
                     </div>
+                    <div class="col-sm-2 mb-3 swich_bntts">
+                        Page Header Visible
+                        <div class="block_araea mt-1">
+                            <label class="switch">
+                                <input type="checkbox" name="page_header_visible" value="1"
+                                    {{ old('page_header_visible', $details->page_header_visible ?? 1) == 1 ? 'checked' : '' }}>
+                                <small></small>
+                            </label>
+                        </div>
+                    </div>
 
                    
 
                     <!-- Embed Link -->
                     <div class="col-sm-12 mb-3 mt-3 mb-sm-0">
-                        <span style="color: red;">*</span> Embed Link
-                        <input type="url" name="embed_link"  class="form-control form-control-user" value="{{ old('embed_link', $details->embed_link ?? '') }}"
-                            placeholder="Paste the Embed Code here..."  required/>
-                        @error('embed_link')
+                        <span style="color: red;">*</span> Embed Code
+                        <!-- <input type="url" name="embed_link"  class="form-control form-control-user" value="{{ old('embed_link', $details->embed_link ?? '') }}"
+                            placeholder="Paste the Embed Code here..."  required/> -->
+                            <textarea
+                                name="embed_code"
+                                class="form-control form-control-user"
+                                placeholder="Paste the Embed Code here..."
+                                rows="5"
+                                required
+                            >{{ old('embed_code', $details->embed_code ?? '') }}</textarea>
+                        @error('embed_code')
                             <span class="text-danger">{{ $message }}</span>
                         @enderror
                     </div>
