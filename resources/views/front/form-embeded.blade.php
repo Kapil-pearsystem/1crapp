@@ -55,7 +55,7 @@
  </style>
 
  <div class="onecrapp-form-raw-html-embed">
-      @if($data->title_visible)
+      @if($data->title_visible == 1)
          <h2>{{ $data->title }}</h2>
       @endif
     <form action="{{ url('/') }}/admin/api/save-leads" method="post" id="leadForm">

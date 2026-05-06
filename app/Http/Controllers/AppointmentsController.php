@@ -25,13 +25,12 @@ class AppointmentsController extends Controller
         // dd($booking);
         return view('front.calendar-booking', compact('booking'));
     }
+    
     public function homework($page)
     {
         // dd($page);
         $agent_id = app('currentAgent')->id??8;
         // $agent_id = 78;
-        // dd($agent_id);  
-        // ,'created_by'=>app('currentAgent')->id
         $homework = DB::table('tbl_appointment_booking_homework')->select('tbl_appointment_booking_homework.*','tbl_filedrive.title as file_name', 'tbl_filedrive.path as file_path', 'tbl_appointment_thankyou.slug as thankyou_path')
         ->join('tbl_calender', 'tbl_calender.homework_page_id','=','tbl_appointment_booking_homework.id')
         ->join('tbl_appointment_thankyou', 'tbl_appointment_thankyou.id','=','tbl_calender.thank_you_id')
@@ -43,9 +42,15 @@ class AppointmentsController extends Controller
         }
         // dd($homework);
         $data = DB::table('tbl_form')->where('id', $homework->form_id)->first();
-        $cdos = DB::table('tbl_cdo')->select('id','name')->where(['created_by' => $agent_id, 'status' => 1])->get();
-        $p_services = DB::table('product_services')->select('id','prod_name')->where(['agent_id' => $agent_id, 'status' => 1])->get();
-        $form_data = view('front.form-embeded',compact('data','cdos','p_services', 'homework'))->render();
+        // dd($data);
+        if(!is_null($data)){
+            $cdos = DB::table('tbl_cdo')->select('id','name')->where(['created_by' => $agent_id, 'status' => 1])->get();
+            $p_services = DB::table('product_services')->select('id','prod_name')->where(['agent_id' => $agent_id, 'status' => 1])->get();
+            $form_data = view('front.form-embeded',compact('data','cdos','p_services', 'homework'))->render();
+        }else{
+            $form_data = '';
+        }
+        
         // $form_data = htmlspecialchars($html);
         return view('front.call-booking-homework', compact('homework','form_data'));
     }

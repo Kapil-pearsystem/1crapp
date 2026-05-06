@@ -463,6 +463,26 @@ margin-right: 10px;
   position: absolute;
   right: 15%;
 }
+.you_tb_arra {
+    width: 100%;
+    max-width: 100%;
+    overflow: hidden; /* 🔥 prevents overflow */
+}
+
+.you_tb_arra iframe,
+.you_tb_arra video,
+.you_tb_arra img,
+.you_tb_arra audio {
+    width: 100% !important;
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+.you_tb_arra iframe,
+.you_tb_arra video {
+    aspect-ratio: 16 / 9;
+    height: auto;
+}
 </style>
 
 
@@ -502,55 +522,31 @@ margin-right: 10px;
                 $url  = $homework->media_path;
                 $ext  = strtolower(pathinfo($url, PATHINFO_EXTENSION));
             @endphp
-            {{-- 🔥 EMBED (YouTube / iframe) --}}
-            @if($type == 'embed_code')
-                <iframe
-                    width="100%"
-                    height="400"
-                    src="{{ $url }}"
-                    frameborder="0"
-                    allowfullscreen
-                ></iframe>
 
-            {{-- 🎥 VIDEO --}}
+            @if($type == 'embed_code')
+                <iframe src="{{ $url }}" frameborder="0" allowfullscreen></iframe>
+
             @elseif($type == 'video' || in_array($ext, ['mp4','webm','ogg']))
-                <video width="100%" height="400" controls controlsList="nodownload" oncontextmenu="return false;">
+                <video controls controlsList="nodownload" oncontextmenu="return false;">
                     <source src="{{ $url }}" type="video/{{ $ext }}">
-                    Your browser does not support video.
                 </video>
 
-            {{-- 🎧 AUDIO --}}
             @elseif($type == 'audio' || in_array($ext, ['mp3','wav','ogg']))
-                <audio controls style="width:100%;">
+                <audio controls>
                     <source src="{{ $url }}" type="audio/{{ $ext }}">
-                    Your browser does not support audio.
                 </audio>
 
-            {{-- 🖼 IMAGE --}}
             @elseif(in_array($ext, ['jpg','jpeg','png','gif','webp']))
-                <img src="{{ $url }}" alt="image" class="w-full rounded-lg" />
+                <img src="{{ $url }}" alt="image" />
 
-            {{-- 📄 PDF --}}
             @elseif($ext == 'pdf')
-                <iframe 
-                    src="{{ $url }}#toolbar=0" 
-                    width="100%" 
-                    height="500px" 
-                    style="border:none;">
-                </iframe>
+                <iframe src="{{ $url }}#toolbar=0"></iframe>
 
-            {{-- 📁 DOC / DOCX / XLS / PPT --}}
             @elseif(in_array($ext, ['doc','docx','xls','xlsx','ppt','pptx']))
-                <iframe 
-                    src="https://docs.google.com/gview?url={{ urlencode($url) }}&embedded=true" 
-                    width="100%" 
-                    height="500px">
-                </iframe>
+                <iframe src="https://docs.google.com/gview?url={{ urlencode($url) }}&embedded=true"></iframe>
 
-            {{-- 📦 DEFAULT DOWNLOAD --}}
             @else
-                <a href="{{ $url }}" target="_blank"
-                class="inline-block px-4 py-2 bg-blue-600 text-white rounded-lg">
+                <a href="{{ $url }}" target="_blank" class="btn btn-primary">
                     Download File
                 </a>
             @endif
