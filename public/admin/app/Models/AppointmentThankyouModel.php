@@ -15,6 +15,8 @@ class AppointmentThankyouModel extends Model
     protected $fillable = [
         'title',
         'page_name',
+        'custom_header_visible',
+        'custom_footer_visible',
         'slug',
         'logo',
         'logo_visible',

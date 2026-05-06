@@ -187,7 +187,7 @@ $finalUrl = $scheme . '://' . $host;
 							<td>
 								<a href="#" data-toggle="modal" data-target="#page_model"  data-id="{{ $list->id }}" class="btn btn-info bnt_alsss page_model"><i aria-hidden="true" class="fa fa-eye"></i></a>
 								<a href="{{ route('page.edit',['id'=>$list->id])}}" class="btn btn-primary bnt_alsss"><i aria-hidden="true" class="fa fa-pen"></i></a>
-								<a href="{{ route('page.delete',['id'=>$list->id])}}" class="btn btn-danger bnt_alsss" onclick="return confirm('Are you sure you want to delete this page?')"><i aria-hidden="true" class="fa fa-trash-o"></i></a>
+								<a href="{{ route('page.delete',['id'=>$list->id])}}" class="btn btn-danger bnt_alsss" onclick="return confirm('Are you sure you want to delete this page?')"><i aria-hidden="true" class="fa fa-trash"></i></a>
 							</td> 
 						</tr>
 						@endforeach

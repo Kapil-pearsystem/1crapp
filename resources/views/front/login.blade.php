@@ -4,7 +4,10 @@
 .login-form.flu_lnth .medls_araeass .login-form-inner .forms_reass input.lg_frms {width:100%;}
 .iti--separate-dial-code .iti__selected-flag {color: #0e3992; font-size: 14px;}
 .iti__country {color: #333; font-size: 12px;}
-
+.login-container.regisstr .onboarding.flu_lnth {
+    height: 740px;
+    overflow: auto;
+}
 @media screen and (max-width: 800px) {
     .login-form.flu_lnth .medls_araeass {padding: 30px 20px; width: 100% !important; margin: 0 0 20px;}
 	.login-form.flu_lnth .medls_araeass .login-form-inner h3 {font-size: 23px;}
@@ -14,6 +17,8 @@
 	.top_hedderrss .rt_contentss a {padding: 0px 20px; line-height: 33px; font-size: 12px;}
 	.iti__country-list {white-space: normal; width: 100%; max-width: 290px; min-width: 290px;}
 	.login-container .login-form .login-form-group.with_both.lft_rigt .snd_cd {padding: 12px 5px; font-size: 11px;}	
+    .login-container.regisstr .onboarding.flu_lnth { height: auto !important; overflow: initial; }
+    .login-container.regisstr .onboarding.flu_lnth .slide-content {height: auto; }
 }
 </style>
 
@@ -35,24 +40,26 @@
 
     <!--PEN HEADER-->
     <div class="container-fluid px-0 pdding_0">
-        <div class="login-container">
-            <div class="onboarding flu_lnth col-md-6 text-center">
-                <div class="slide-content">
-                    @if(isset($logincms) && !is_null($logincms))
-                    <div class="medilss_areaaa">
-                        @if(isset($logincms->logo_visible) && $logincms->logo_visible == 1)<div class="lgo_areaa"><a href="{{ url('') }}"><img width="100" src="{{ $logincms->company_logo }}" alt="Logo" /></a></div>@endif
-                        @if(isset($logincms->tagline_visible) && $logincms->tagline_visible == 1)<h2 class="txt_hdns">{{ $logincms->tagline_text }}</h2>@endif
-                        @if(isset($logincms->file_visible) && $logincms->file_visible == 1)
-                            @if(isset($logincms->file_type) && $logincms->file_type == 1)
-                                <img src="{{ $logincms->file_path }}" alt="" />
-                            @else
-                                <embed src="{{ $logincms->file_path }}" />
+        <div class="login-container regisstr">
+            <div class="col-md-6">
+                <div class="onboarding flu_lnth text-center">
+                    <div class="slide-content">
+                        @if(isset($logincms) && !is_null($logincms))
+                        <div class="medilss_areaaa">
+                            @if(isset($logincms->logo_visible) && $logincms->logo_visible == 1)<div class="lgo_areaa"><a href="{{ url('') }}"><img width="100" src="{{ $logincms->company_logo }}" alt="Logo" /></a></div>@endif
+                            @if(isset($logincms->tagline_visible) && $logincms->tagline_visible == 1)<h2 class="txt_hdns">{{ $logincms->tagline_text }}</h2>@endif
+                            @if(isset($logincms->file_visible) && $logincms->file_visible == 1)
+                                @if(isset($logincms->file_type) && $logincms->file_type == 1)
+                                    <img src="{{ $logincms->file_path }}" alt="" />
+                                @else
+                                    <embed src="{{ $logincms->file_path }}" />
+                                @endif
                             @endif
+                            @if(isset($logincms->content_visible) && $logincms->content_visible == 1)<p class="py-4 btnmss_tx">{{ $logincms->content }}</p>@endif
+                            @if(isset($logincms->gotit_visible) && $logincms->gotit_visible == 1)<div class="socila_mds"><a href="{{ $logincms->gotit_link }}" target="_blank"><img src="{{ $logincms->gotit_image }}" alt="" /></a></div>@endif
+                        </div>
                         @endif
-                        @if(isset($logincms->content_visible) && $logincms->content_visible == 1)<p class="py-4 btnmss_tx">{{ $logincms->content }}</p>@endif
-                        @if(isset($logincms->gotit_visible) && $logincms->gotit_visible == 1)<div class="socila_mds"><a href="{{ $logincms->gotit_link }}" target="_blank"><img src="{{ $logincms->gotit_image }}" alt="" /></a></div>@endif
                     </div>
-                    @endif
                 </div>
             </div>
 

@@ -34,7 +34,7 @@
             <input type="hidden" name="id" value="{{ isset($details)?$details->id:'' }}">
             <div class="card-body" style="    background: #bedafd;">
                 <div class="form-group row" id="brd_box">
-                    <div class="col-sm-12 mb-2 mt-1 mb-sm-0"> <span style="color: red;">*</span>Page Name <input
+                    <div class="col-sm-8 mb-2 mt-1 mb-sm-0"> <span style="color: red;">*</span>Page Name <input
                             type="text" id="" placeholder="Enter Page Name" name="page_name"
                             value="{{ old('page_name') ?? ($details->page_name ?? '') }}" required
                             class="form-control form-control-user" /> </div> @if ($errors->has('page_name')) <span
@@ -61,6 +61,27 @@
                     <!--        @endforeach-->
                     <!--    </select>-->
                     <!--</div>-->
+                    
+                    <div class="col-sm-2 mb-3 swich_bntts">
+                         <label>Custom Header</label>
+                        <div class="block_araea mt-1">
+                            <label class="switch">
+                              <input type="checkbox" name="custom_header_visible" value="1"
+                            {{ (old('custom_header_visible', $details->custom_header_visible ?? 0) == 1) ? 'checked' : '' }}>
+                                <small></small>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-sm-2 mb-3 swich_bntts">
+                         <label>Custom Footer</label>
+                        <div class="block_araea mt-1">
+                            <label class="switch">
+                              <input type="checkbox" name="custom_footer_visible" value="1"
+                            {{ (old('custom_footer_visible', $details->custom_footer_visible ?? 0) == 1) ? 'checked' : '' }}>
+                                <small></small>
+                            </label>
+                        </div>
+                    </div>
                 </div>
                 <div class="form-group row" id="brd_box">
                     <div class="col-lg-4">
@@ -220,6 +241,25 @@
                                     @isset($details) @if($details->ps_text_status == 1) checked @endif @endisset
                                 name="ps_text_status"> <small></small></label></div>
                     </div>
+                </div>
+                <div class="form-group row" id="brd_box">
+                    <div class="col-sm-4 mb-2 mt-1 mb-sm-0"> CTA Button Text <input
+                            type="text" id="" placeholder="Enter Cta Button Text" name="cta_button_text"
+                            value="{{ old('cta_button_text')??($details->cta_button_text ?? '')}}"
+                            class="form-control form-control-user" required/> 
+                    </div>
+                    <div class="col-sm-4 mb-2 mt-1 mb-sm-0"> CTA Button Subtext <input
+                        type="text" id="" placeholder="Enter CTA Button Subtext" name="cta_button_subtext"
+                        value="{{ old('cta_button_subtext')??($details->cta_button_subtext ?? '')}}"
+                        class="form-control form-control-user" required/> 
+                    </div>
+                    <div class="col-sm-4 mb-2 mt-1 mb-sm-0"> CTA Section Color <input
+                        type="color" id="" placeholder="Enter CTA Section Color" name="cta_section_color"
+                        value="{{ old('cta_section_color')??($details->cta_section_color ?? '#ff0000')}}"
+                        class="form-control form-control-user"/> 
+                    </div>
+                    
+                    
                 </div>
 
                 <div class="form-group row" id="brd_box">

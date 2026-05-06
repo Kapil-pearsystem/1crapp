@@ -26,7 +26,7 @@
                 <div class="form-group row">
 
                     <!-- Title -->
-                    <div class="col-sm-10 mb-3 mt-3 mb-sm-0">
+                    <div class="col-sm-8 mb-3 mt-3 mb-sm-0">
                         <span style="color: red;">*</span> Title
                         <input type="text" name="title" class="form-control form-control-user"
                             placeholder="Enter the Title"
@@ -36,18 +36,26 @@
                         @enderror
                     </div>
                     <div class="col-sm-2 mb-3 swich_bntts">
-                        Page Header Visible
+                         <label>Custom Header</label>
                         <div class="block_araea mt-1">
                             <label class="switch">
-                                <input type="checkbox" name="page_header_visible" value="1"
-                                    {{ old('page_header_visible', $details->page_header_visible ?? 1) == 1 ? 'checked' : '' }}>
+                              <input type="checkbox" name="custom_header_visible" value="1"
+                            {{ (old('custom_header_visible', $details->custom_header_visible ?? 0) == 1) ? 'checked' : '' }}>
                                 <small></small>
                             </label>
                         </div>
                     </div>
-
-                   
-
+                    <div class="col-sm-2 mb-3 swich_bntts">
+                         <label>Custom Footer</label>
+                        <div class="block_araea mt-1">
+                            <label class="switch">
+                              <input type="checkbox" name="custom_footer_visible" value="1"
+                            {{ (old('custom_footer_visible', $details->custom_footer_visible ?? 0) == 1) ? 'checked' : '' }}>
+                                <small></small>
+                            </label>
+                        </div>
+                    </div>
+                    
                     <!-- Embed Link -->
                     <div class="col-sm-12 mb-3 mt-3 mb-sm-0">
                         <span style="color: red;">*</span> Embed Code

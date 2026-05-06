@@ -61,6 +61,8 @@ class AppointmentBookingController extends Controller
         $record->slug = $slug;
 
         // ⭐ SAVE DATA
+        $record->custom_header_visible = $request->custom_header_visible ?? 0;
+        $record->custom_footer_visible = $request->custom_footer_visible ?? 0;
         $record->title = $request->title;
         $record->subtitle = $request->subtitle;
         $record->calendar_app_name = $request->calendar_app_name;

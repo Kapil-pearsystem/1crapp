@@ -28,6 +28,8 @@ class AppointmentBookingModel extends Model
         'testimonial_title',
         'test_visible',
         'test_title_visible',
+        'custom_header_visible',
+        'custom_footer_visible',
         'status',
         'created_by'
     ];

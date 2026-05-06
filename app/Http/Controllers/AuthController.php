@@ -77,7 +77,7 @@ class AuthController extends Controller
     public function showLoginForm()
     {
         $agentId = app('currentAgent')->id;
-        // $agentId = 78;
+        $agentId = 78;
         Cache::put('agent_id', $agentId, 60); // 60 minutes 'created_by' => $agentId,
         $logincms = DB::table('tbl_logincms')->where(['created_by' => $agentId, 'status' => 1])->first();
         if (!is_null($logincms)) {

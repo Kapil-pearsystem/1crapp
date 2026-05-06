@@ -28,6 +28,8 @@ class AppointmentBookingHomeworkModel extends Model
         'fd_visible',
         'form_id',
         'form_visible',
+        'custom_header_visible',
+        'custom_footer_visible',
         'status',
         'created_by'
     ];

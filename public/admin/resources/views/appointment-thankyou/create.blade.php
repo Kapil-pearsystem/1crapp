@@ -26,15 +26,36 @@
                 <div class="row">
 
                     {{-- Title --}}
-                    <div class="col-sm-6 mb-3">
+                    <div class="col-sm-4 mb-3">
                         <label>Title <span class="text-danger">*</span></label>
                         <input type="text" name="title" class="form-control" placeholder="Enter Title"
                             value="{{ old('title', $details->title ?? '') }}" required>
                     </div>
-                     <div class="col-sm-6 mb-3">
+                     <div class="col-sm-4 mb-3">
                         <label>Page Name <span class="text-danger">*</span></label>
                         <input type="text" name="page_name" class="form-control" placeholder="Enter Page Name"
                             value="{{ old('page_name', $details->page_name ?? '') }}" required>
+                    </div>
+                    
+                    <div class="col-sm-2 mb-3 swich_bntts">
+                         <label>Custom Header</label>
+                        <div class="block_araea mt-1">
+                            <label class="switch">
+                              <input type="checkbox" name="custom_header_visible" value="1"
+                            {{ (old('custom_header_visible', $details->custom_header_visible ?? 0) == 1) ? 'checked' : '' }}>
+                                <small></small>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-sm-2 mb-3 swich_bntts">
+                         <label>Custom Footer</label>
+                        <div class="block_araea mt-1">
+                            <label class="switch">
+                              <input type="checkbox" name="custom_footer_visible" value="1"
+                            {{ (old('custom_footer_visible', $details->custom_footer_visible ?? 0) == 1) ? 'checked' : '' }}>
+                                <small></small>
+                            </label>
+                        </div>
                     </div>
 
 

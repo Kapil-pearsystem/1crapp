@@ -69,34 +69,34 @@ class AppointmentThankyouController extends Controller
         // ⭐ Save data
         $record->title = $request->title;
         // ✅ Page Name
-$record->page_name = $request->page_name ?? $request->title;
+        $record->page_name = $request->page_name ?? $request->title;
 
-// ✅ Slug generate
-$baseSlug = Str::slug($record->page_name);
+        // ✅ Slug generate
+        $baseSlug = Str::slug($record->page_name);
 
-// ✅ Unique slug banane ka logic
-$slug = $baseSlug;
-$count = 1;
+        // ✅ Unique slug banane ka logic
+        $slug = $baseSlug;
+        $count = 1;
 
-while (
-    AppointmentThankyouModel::where('slug', $slug)
-    ->when($request->id, function ($q) use ($request) {
-        return $q->where('id', '!=', $request->id); // edit case ignore current
-    })
-    ->exists()
-) {
-    $slug = $baseSlug . '-' . $count++;
-}
+        while (
+            AppointmentThankyouModel::where('slug', $slug)
+            ->when($request->id, function ($q) use ($request) {
+                return $q->where('id', '!=', $request->id); // edit case ignore current
+            })
+            ->exists()
+        ) {
+            $slug = $baseSlug . '-' . $count++;
+        }
 
-$record->slug = $slug;
-        $record->logo = $logoPath;
-        $record->logo_visible = $request->logo_visible ?? 0;
-      if (!$request->id) {
-    $record->calender_code = $this->generateUniqueCode();
-} else {
-    // keep old value
-    $record->calender_code = $record->calender_code;
-}
+        $record->slug = $slug;
+                $record->logo = $logoPath;
+                $record->logo_visible = $request->logo_visible ?? 0;
+            if (!$request->id) {
+            $record->calender_code = $this->generateUniqueCode();
+        } else {
+            // keep old value
+            $record->calender_code = $record->calender_code;
+        }
         $record->sub_title = $request->sub_title;
         $record->sub_title_color = $request->sub_title_color;
         $record->sortdescription = $request->sortdescription;
@@ -123,6 +123,8 @@ $record->slug = $slug;
         $record->assets_title = $request->assets_title;
         $record->sm_visible = $request->sm_visible ?? 0;
         $record->nf_visible = $request->nf_visible ?? 0;
+        $record->custom_header_visible = $request->custom_header_visible ?? 0;
+        $record->custom_footer_visible = $request->custom_footer_visible ?? 0;
 
         $record->status = $request->status ?? 1;
         $record->created_by = auth()->id();

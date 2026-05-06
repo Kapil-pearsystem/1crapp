@@ -4,7 +4,10 @@
 .login-form.flu_lnth .medls_araeass .login-form-inner .forms_reass input.lg_frms {width:100%;}
 .iti--separate-dial-code .iti__selected-flag {color: #0e3992; font-size: 14px;}
 .iti__country {color: #333; font-size: 12px;}
-
+.login-container.regisstr .onboarding.flu_lnth {
+    height: 740px;
+    overflow: auto;
+}
 @media screen and (max-width: 800px) {
     .login-form.flu_lnth .medls_araeass {padding: 30px 20px; width: 100% !important; margin: 0 0 20px;}
 	.login-form.flu_lnth .medls_araeass .login-form-inner h3 {font-size: 23px;}
@@ -16,6 +19,8 @@
 	.onboarding.flu_lnth .slide-content .cnts_fildsss {max-width: 325px; width: 100%;}
 	.login-container.regisstr {padding: 0px 0 20px;}
 	.iti__country-list {white-space: normal; width: 100%; max-width: 290px; min-width: 290px;}
+    .login-container.regisstr .onboarding.flu_lnth { height: auto !important; overflow: initial; }
+    .login-container.regisstr .onboarding.flu_lnth .slide-content {height: auto; }
 }
 </style>
 @php
@@ -37,27 +42,29 @@
 <!--PEN HEADER-->
 <div class="container-fluid px-0 pdding_0">
 <div class="login-container regisstr">
-    <div class="onboarding flu_lnth col-md-6 text-center">
-        <div class="slide-content">
-		  <div class="medilss_areaaa">
-            @if(isset($signupcms->logo_visible) && $signupcms->logo_visible == 1)<div class="lgo_areaa"><a href="{{ url('') }}"><img width="100" src="{{ $signupcms->company_logo }}" alt="Logo" /></a></div>@endif
-            @if(isset($signupcms->tagline_visible) && $signupcms->tagline_visible == 1)<h2 class="txt_hdns">{{ $signupcms->tagline_text }}</h2>@endif
-			 <!-- <embed src="{{ url('') }}/img/big_buck_bunny_720p_1mb.mp4" /> -->
-            @if(isset($signupcms->file_visible) && $signupcms->file_visible == 1)
-                @if(isset($signupcms->file_type) && $signupcms->file_type == 1)
-                    <img src="{{ $signupcms->file_path }}" alt="" />
-                @else
-                    <embed src="{{ $signupcms->file_path }}" />
+    <div class="col-md-6">
+        <div class="onboarding flu_lnth text-center">
+            <div class="slide-content">
+            <div class="medilss_areaaa">
+                @if(isset($signupcms->logo_visible) && $signupcms->logo_visible == 1)<div class="lgo_areaa"><a href="{{ url('') }}"><img width="100" src="{{ $signupcms->company_logo }}" alt="Logo" /></a></div>@endif
+                @if(isset($signupcms->tagline_visible) && $signupcms->tagline_visible == 1)<h2 class="txt_hdns">{{ $signupcms->tagline_text }}</h2>@endif
+                <!-- <embed src="{{ url('') }}/img/big_buck_bunny_720p_1mb.mp4" /> -->
+                @if(isset($signupcms->file_visible) && $signupcms->file_visible == 1)
+                    @if(isset($signupcms->file_type) && $signupcms->file_type == 1)
+                        <img src="{{ $signupcms->file_path }}" alt="" />
+                    @else
+                        <embed src="{{ $signupcms->file_path }}" />
+                    @endif
                 @endif
-            @endif
-            @if(isset($signupcms->bullet_visible) && $signupcms->bullet_visible == 1)
-            <div class="cnts_fildsss">
-                <p class="d-flex align-items-start"><i class="fa {{ $signupcms->b1_icon }} mr-2" style="font-size:16px; font-weight: bold;"></i><span>{{ $signupcms->b1_text }}</span></p>
-                <p class="d-flex align-items-start"><i class="fa {{ $signupcms->b2_icon }} mr-2" style="font-size:16px; font-weight: bold;"></i><span>{{ $signupcms->b2_text }}</span></p>
-                <p class="d-flex align-items-start"><i class="fa {{ $signupcms->b3_icon }} mr-2" style="font-size:16px; font-weight: bold;"></i><span>{{ $signupcms->b3_text }}</span></p>
-                <p class="d-flex align-items-start"><i class="fa {{ $signupcms->b4_icon }} mr-2" style="font-size:16px; font-weight: bold;"></i><span>{{ $signupcms->b4_text }}</span></p>
-			 </div>
-             @endif
+                @if(isset($signupcms->bullet_visible) && $signupcms->bullet_visible == 1)
+                <div class="cnts_fildsss">
+                    <p class="d-flex align-items-start"><i class="fa {{ $signupcms->b1_icon }} mr-2" style="font-size:16px; font-weight: bold;"></i><span>{{ $signupcms->b1_text }}</span></p>
+                    <p class="d-flex align-items-start"><i class="fa {{ $signupcms->b2_icon }} mr-2" style="font-size:16px; font-weight: bold;"></i><span>{{ $signupcms->b2_text }}</span></p>
+                    <p class="d-flex align-items-start"><i class="fa {{ $signupcms->b3_icon }} mr-2" style="font-size:16px; font-weight: bold;"></i><span>{{ $signupcms->b3_text }}</span></p>
+                    <p class="d-flex align-items-start"><i class="fa {{ $signupcms->b4_icon }} mr-2" style="font-size:16px; font-weight: bold;"></i><span>{{ $signupcms->b4_text }}</span></p>
+                </div>
+                @endif
+                </div>
             </div>
         </div>
     </div>

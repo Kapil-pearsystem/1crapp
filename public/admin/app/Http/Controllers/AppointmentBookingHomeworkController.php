@@ -69,35 +69,31 @@ class AppointmentBookingHomeworkController extends Controller
         }
 
         $record->slug = $slug;
+        if ($request->media_type === 'embed_code') {
 
-        // ⭐ Media Upload
-        // ⭐ Media Upload / Embed Handling
-if ($request->media_type === 'embed_code') {
+            $mediaPath = $request->embed_url;
 
-    // 👉 URL wala media_path me save hoga
-    $mediaPath = $request->embed_url;
+        } else {
 
-} else {
+            if ($request->hasFile('media_path')) {
 
-    if ($request->hasFile('media_path')) {
+                $fileName = time().'_'.$request->file('media_path')->getClientOriginalName();
+                $request->file('media_path')->move(public_path('uploads/homework/'), $fileName);
 
-        $fileName = time().'_'.$request->file('media_path')->getClientOriginalName();
-        $request->file('media_path')->move(public_path('uploads/homework/'), $fileName);
+                $mediaPath = url('uploads/homework/'.$fileName);
 
-        $mediaPath = url('uploads/homework/'.$fileName);
+                // delete old file
+                if ($request->id && $record->media_path) {
+                    $oldFile = public_path(str_replace(url('/').'/', '', $record->media_path));
+                    if (File::exists($oldFile)) {
+                        File::delete($oldFile);
+                    }
+                }
 
-        // delete old file
-        if ($request->id && $record->media_path) {
-            $oldFile = public_path(str_replace(url('/').'/', '', $record->media_path));
-            if (File::exists($oldFile)) {
-                File::delete($oldFile);
+            } else {
+                $mediaPath = $request->old_media ?? $record->media_path ?? null;
             }
         }
-
-    } else {
-        $mediaPath = $request->old_media ?? $record->media_path ?? null;
-    }
-}
 
         // ⭐ Save Data
         $record->title = $request->title;
@@ -120,12 +116,14 @@ if ($request->media_type === 'embed_code') {
 
         $record->typ_cta_text = $request->typ_cta_text;
         $record->typ_visible = $request->typ_visible ?? 0;
-
+        
+        $record->custom_header_visible = $request->custom_header_visible ?? 0;
+        $record->custom_footer_visible = $request->custom_footer_visible ?? 0;
         $record->status = $request->status ?? 1;
         $record->created_by = auth()->id();
 
         $record->save();
-
+        // dd($record);
         return redirect()->route('appointment-homework.index')->with('success', $message);
     }
 

@@ -44,7 +44,7 @@ $finalUrl = $scheme . '://' . $host;
                             <th>#</th>
                             <th>Title</th>
                             <th>Page URL</th>
-                            <th>Embed Link</th>
+                            <!-- <th>Embed Link</th> -->
                             <th>Status</th>
                             <!--<th>Created By</th>-->
                             <th>Created Date</th>
@@ -65,9 +65,9 @@ $finalUrl = $scheme . '://' . $host;
                                     view page >>
                                 </a>
                                 </td>
-                                <td style="white-space:normal;">
+                                <!-- <td style="white-space:normal;">
                                     {!! Str::limit($list->embed_link, 80) !!}
-                                </td>
+                                </td> -->
                                 <td>
                                     <span class="{{ $list->status == 'active' ? 'act_g' : 'inact_g' }}">
                                         {{ ucfirst($list->status) }}

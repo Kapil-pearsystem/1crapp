@@ -8,6 +8,8 @@ class PageModel extends Model
     protected $table = 'tbl_page';
     protected $fillable = [
         'page_name',
+        'custom_header_visible',
+        'custom_footer_visible',
         'slug',
         'pre_heading',
         'pre_heading_status',
@@ -35,6 +37,9 @@ class PageModel extends Model
         'popup_destination',
         'other_popup_destination_status',
         'addination_cta_status',
+        'cta_button_text',
+        'cta_button_subtext',
+        'cta_section_color',
         'addination_cta',
         'addination_url',
         'addination_cta_new_tab',

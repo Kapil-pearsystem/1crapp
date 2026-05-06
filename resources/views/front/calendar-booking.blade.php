@@ -1,21 +1,21 @@
+@if($booking->custom_header_visible == 1)
+    @include('front.custom-layout.header')
+@else
+@include('front.layouts.user-header')
+<section class="tital_mg_cntss">
+    <img src="{{ url('home/img/top_al_pgss.png')}}" class="bg_al_cntxt" alt="" />
+    <div class="midils_contnts">
+        <div class="medilss">
+            <h4>{!! ucwords($booking->title) !!}</h4>
+            <a href="{{ url('') }}">Home</a> &gt; <span>{!! ucwords($booking->title) !!}</span>
+        </div>
+    </div>
+</section>
+@endif
 @php
-use App\Models\OurClientsModel;
-$clients = OurClientsModel::where(['status'=> 1,'created_by'=>app('currentAgent')->id])->orderBy('id', 'DESC')->limit(12)->get();
+    use App\Models\OurClientsModel;
+    $clients = OurClientsModel::where(['status'=> 1,'created_by'=>app('currentAgent')->id])->orderBy('id', 'DESC')->limit(12)->get();
 @endphp
-<html lang="en" >
-<head>
-  <meta charset="UTF-8">
-  <title>Calendar Booking</title>
-  <link rel="shortcut icon" type="image/jpg" href="https://admin.1crapp.com/images/icon.png"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.min.css'>
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-  <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:opsz,wght@6..12,200;6..12,300;6..12,400;6..12,500;6..12,600;6..12,700;6..12,800;6..12,900&display=swap" rel="stylesheet">
-  <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css'>
-  <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.css'>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css">
-  <link rel='stylesheet' href="{{ url('home/css/style.css')}}">
-</head>
 <style>
  .shadow.othr_pgss_lde .top_menuues {margin: 0; padding: 5px 0; background: #000;}
  .shadow.othr_pgss_lde .top_menuues .top_sec_menu.cnt_parts {margin: 0 0 0px; padding: 5px 0; float: right;}
@@ -320,32 +320,8 @@ margin-right: 10px;
 .st_parts_als .tital_main {padding: 15px 0 0; border: none;}
 .st_parts_als .hid_ar_partss h2 {font-size: 20px;}
 }
-</style>
-<body>
-<!--- Header Part ---->
-<section class="shadow othr_pgss_lde" id="myHeader">
-    <div class="top_menuues">
-        <div class="container">
-		  <div class="row">
-		   <div class="col-lg-2 col-2">
-		    <div class="othr_logges">
-			 <a class="nav-brand" href="javascript:void(0);"><img class="logo" src="{{ url('home/img/logo 1.png')}}" alt="Logo" /></a>
-			</div>
-		   </div>
-		   <div class="col-lg-10 col-10">
-		    <div class="top_sec_menu cnt_parts">
-                <ul>
-				    <li><a href="{{ url('help') }}"><i class="fa fa-phone"></i> <span>Help ?</span></a></li>
-                    <li class="callss"><i class="fa fa-whatsapp"></i> <span>+91-9966680133</span></li>
-                    <li><a href="javascript:void(0);" class="gt_it_nnw">Get it now</a></li>
-                </ul>
-            </div>
-		   </div>
-		  </div>
-        </div>
-    </div>
-</section>
-<!---- End Header Part ---->     
+</style>   
+
 <!--- New On-Demand Training ---->
     <div class="container">		      
 		 <div class="new_ar_tring mt_50p">
@@ -439,6 +415,7 @@ margin-right: 10px;
             <span class="ar_bntss"><i class="fa fa-long-arrow-down"></i></span>
         </div>
         <div class="owl-carousel owl-theme qu_bx_partss pt_top_40" id="testimonials">
+       
     @foreach($clients as $testimonial)
         <div class="item">
             <div class="it_emms">
@@ -462,40 +439,12 @@ margin-right: 10px;
 </div>
 </section>
 @endif
-<!--- End Testimonial --->
-<section class="ftr_new_other">
- <div class="container">
-  <div class="ftr_content">
-   <div class="lgo">
-    <a href="javascript:void(0);"><img class="logo" src="{{ url('home/img/logo 1.png')}}" alt="Logo" /></a>
-   </div>
-   <div class="menu_ftrr">
-    <a href="javascript:void(0);">Blog</a>
-    <a href="javascript:void(0);">DMCA Policy</a>
-    <a href="javascript:void(0);">Earnings Disclaimer</a>
-    <a href="javascript:void(0);">Privacy Policy</a>
-    <a href="javascript:void(0);">Terms & Conditions</a>
-   </div>
-   <div class="crt_arar mt-0 mb-4">
-    Copyright 2024 @ 1crapp.com, G-10, Green View, Jaipur, Rajasthan. India 301725
-   </div>
-   <div class="crt_arar">
-    <img class="logo" src="{{ url('home/img/logo 1.png')}}" alt="Logo" /> Create your lead mannet and capture the leads easily with 1CR APP
-   </div>
-  </div>
- </div>
-</section>
-<script src='https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js'></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-<script src="https://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.6/dist/jquery.fancybox.min.js"></script>
-<!--  -->
-<script src='https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js'></script> 
-<script src="{{ url('home/js/menu_js.js')}}"></script>
-<script src="{{ url('home/js/responsive.js')}}"></script>
-<script src='https://cdnjs.cloudflare.com/ajax/libs/echarts/5.2.2/echarts.min.js'></script>	
-<script src="https://asset-F.b-cdn.net/js/embed.js" async></script>
+@if($booking->custom_footer_visible == 1)
+    @include('front.custom-layout.footer')
+@else
+    @include('front.layouts.footer')
+@endif
+
 <script>
 (function () {
   const second = 1000,

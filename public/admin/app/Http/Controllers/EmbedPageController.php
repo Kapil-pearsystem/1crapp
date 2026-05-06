@@ -67,7 +67,8 @@ class EmbedPageController extends Controller
     $embedPage->embed_code   = $request->embed_code;
     $embedPage->status       = $request->status;
     $embedPage->login_status = $request->login_status;
-    $embedPage->page_header_visible = $request->page_header_visible??0;
+    $embedPage->custom_header_visible = $request->custom_header_visible??0;
+    $embedPage->custom_footer_visible = $request->custom_footer_visible??0;
     $embedPage->created_by   = Auth::id();
 
     $embedPage->save();

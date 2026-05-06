@@ -56,9 +56,7 @@ class PageController extends Controller
         $validationRules['media_file_status'] = 'nullable|integer';
         $validationRules['countdown'] = 'nullable';
         $validationRules['countdown_status'] = 'nullable|integer';
-
         $validationRules['popup_status'] = 'nullable|integer';
-        
         $validationRules['form_type'] = 'nullable|in:external,custom,embeded';
         $validationRules['form_id'] = 'nullable|integer';
 
@@ -131,6 +129,8 @@ class PageController extends Controller
             $msg = 'Page Created Successfully.';
         }
         $page->page_name = $request->input('page_name');
+        $page->custom_header_visible = $request->custom_header_visible ?? 0;
+        $page->custom_footer_visible = $request->custom_footer_visible ?? 0;
         // $page->tag_id = $request->input('tag_id');
         // $page->list_id = $request->input('list_id');
         $page->pre_heading = $request->input('pre_heading');
@@ -164,6 +164,10 @@ class PageController extends Controller
 
         $page->popup_destination = $popup_destination;
         $page->other_popup_destination_status = $other_popup_destination_status;
+
+        $page->cta_button_text = $request->input('cta_button_text');
+        $page->cta_button_subtext = $request->input('cta_button_subtext');
+        $page->cta_section_color = $request->input('cta_section_color')??'#ff0000';
 
         $page->addination_cta_status = $request->input('addination_cta_status');
         $page->addination_cta = $request->input('addination_cta');

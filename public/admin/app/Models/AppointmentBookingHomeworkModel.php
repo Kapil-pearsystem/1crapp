@@ -29,6 +29,8 @@ class AppointmentBookingHomeworkModel extends Model
         'form_id',
         'form_visible',
         'typ_cta_text',
+        'custom_header_visible',
+        'custom_footer_visible',
         'typ_visible',
         'status',
         'created_by'
