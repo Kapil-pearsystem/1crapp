@@ -811,4 +811,21 @@ class WebController extends Controller
         return redirect()->back()->with('success', 'Company details saved successfully!');
     }
 
+    //business card
+    public function businessCard()
+    {
+        $agent_id = app('currentAgent')->id;
+        $card = DB::table('tbl_businesscard')->select('tbl_businesscard.*','rk_countries.name as country_name','rk_states.name as state_name','rk_cities.name as city_name')
+        ->leftjoin('rk_countries','rk_countries.id','=','tbl_businesscard.country')
+        ->leftjoin('rk_states','rk_states.id','=','tbl_businesscard.state')
+        ->leftjoin('rk_cities','rk_cities.id','=','tbl_businesscard.city')
+        ->where('tbl_businesscard.user_id', $agent_id)
+        ->where('tbl_businesscard.category', 1)
+        ->orWhere('tbl_businesscard.is_public', 1)
+        ->orderBy('tbl_businesscard.id','desc')
+        ->first();
+        // dd($card);
+        return view('front.business-card-new', compact('card'));
+    }
+
 }

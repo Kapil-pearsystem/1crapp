@@ -80,7 +80,7 @@ if($user){
                     <a href="{{ route('myaccount.my-profile') }}">
                         <i class="fas fa-user-alt fa-sm fa-fw mr-2 text-gray-400"></i> My Profile
                     </a>
-					<a href="javascript:void(0);">
+					<a href="{{ route('business-card.view') }}">
                         <i class="fas fa-bookmark fa-sm fa-fw mr-2 text-gray-400"></i> Business Card
                     </a>
                     <?php if(Auth()->user()->hasrole('Agent')){ ?>

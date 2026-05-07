@@ -545,8 +545,12 @@ Route::middleware(['auth','plan_permission'])->prefix('cdo')->name('cdo.')->grou
 });
 Route::middleware(['auth','plan_permission'])->prefix('business-card')->name('business-card.')->group(function() {
     Route::get('/', [BusinessCard::class, 'index'])->name('index');
+    Route::get('/create', [BusinessCard::class, 'create'])->name('create');
+    Route::get('/edit/{id}', [BusinessCard::class, 'edit'])->name('edit');
+    Route::get('/delete/{id}', [BusinessCard::class, 'delete'])->name('delete');
     Route::post('/save', [BusinessCard::class, 'save'])->name('save');
-    Route::get('/card', [BusinessCard::class, 'card'])->name('card');
+    Route::post('/make-public', [BusinessCard::class, 'make_public'])->name('make-public');
+    Route::get('/view', [BusinessCard::class, 'view'])->name('view');
 });
 // Banner
 Route::middleware(['auth','plan_permission'])->controller(HomeController::class)->prefix('banner')->name('banner.')->group(function() {

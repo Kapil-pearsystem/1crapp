@@ -153,12 +153,11 @@ Route::get('/gift-list', function () {
 Route::get('/add-personal', function () {
     return view('front.add-personal');
 });
-Route::get('/business-card', function () {
-    return view('front.business-card');
-});
-Route::get('/business-card-new', function () {
-    return view('front.business-card-new');
-});
+Route::get('/business-card',[WebController::class, 'businessCard'])->name('business-card');
+// Route::get('/business-card-new', function () {
+    // return view('front.business-card');
+//     return view('front.business-card-new');
+// });
 Route::get('/thank-you-card', function () {
     return view('front.thank-you-card');
 });
