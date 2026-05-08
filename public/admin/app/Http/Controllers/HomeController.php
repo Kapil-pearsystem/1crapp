@@ -11,6 +11,8 @@ use App\Models\PassiveProfitModel;
 use App\Models\GiftMailModel;
 use App\Models\FormSourceModel;
 use App\Models\FileDriveModel;
+use App\Models\AdbSettingsModel;
+use App\Models\JoinCommunityModel;
 use Illuminate\Http\Request;
 use App\Rules\MatchOldPassword;
 use Illuminate\Support\Facades\DB;
@@ -37,9 +39,42 @@ class HomeController extends Controller
      */
     public function index()
     {
+        $adb_setting = AdbSettingsModel::first();
+        $communities = JoinCommunityModel::orderBy('priority', 'asc')->limit(8)->get();
+        return view('home', compact('adb_setting', 'communities') );
+    }
+    public function userGraph(Request $request)
+    {
+        $type = $request->type;
+        if ($type == '1month') {
+            $from = now()->subMonth();
+        } elseif ($type == '6months') {
+            $from = now()->subMonths(6);
+        } elseif ($type == '1year') {
+            $from = now()->subYear();
+        } else {
+            $from = now()->subDays(7);
+        }
+        $users = DB::table('users')
+            ->selectRaw('DATE(created_at) as date, COUNT(*) as total')
+            ->where('created_at', '>=', $from)
+            ->groupBy('date')
+            ->orderBy('date');
+        if(auth()->user()->role_id != 1){
+            $users = $users->where('agent_id', auth()->user()->id);
+        }
+            $users = $users->get();
         
-        // dd(Auth()->user()->getRoleNames());
-        return view('home');
+        $labels = [];
+        $data = [];
+        foreach ($users as $user) {
+            $labels[] = date('d M', strtotime($user->date));
+            $data[] = $user->total;
+        }
+        return response()->json([
+            'labels' => $labels,
+            'data' => $data
+        ]);
     }
     /**
      * User Profile
@@ -123,12 +158,9 @@ class HomeController extends Controller
             'c.updated_at'
         )
         ->where('c.created_by', auth()->user()->id)->groupBy('c.id', 'c.list_id', 'c.name', 'c.status', 'c.created_by', 'c.updated_by', 'c.created_at', 'c.updated_at')->orderBy('c.id')->get();
-       
-
         // dd($contacts);
         $customers = Customer::where(['agent_id'=>auth()->user()->id,'type'=>1])->count();
         $passive_profit = PassiveProfitModel::where(['created_by'=>auth()->user()->id,'status'=>1])->count();
-        
         $query = EnquiryModel::select('tbl_enquiry.id')
         ->join('users', 'users.id', '=', 'tbl_enquiry.customer_id')
         ->leftJoin('tbl_form', 'tbl_form.id', '=', 'tbl_enquiry.form_id')
@@ -137,7 +169,6 @@ class HomeController extends Controller
         ->leftJoin('tbl_cdo', 'tbl_cdo.id', '=', 'tbl_enquiry.cdo_id')
         ->where('tbl_form.created_by', auth()->user()->id)
         ->where('users.type', 2);
-
         // Get the count of the results
         $leads = $query->count();
         return view('admin.contact-list', compact('contacts','customers','leads','passive_profit'));
@@ -381,7 +412,6 @@ class HomeController extends Controller
                 $list_name = $contact->name;
             }
             $lists = $lists->where('tbl_enquiry.list_id',$request->list);
-
         }
         $lists = $lists->orderBy('tbl_enquiry.id','DESC')->get();
         // dd($lists);
@@ -469,7 +499,6 @@ class HomeController extends Controller
         $banner->save();
         return redirect()->route('banner.index')->with('success', $msg);
     }
-
     public function edit_banner($id){
         $details = BannerModel::find($id);
         return view('banner.create',compact('details'));
@@ -655,9 +684,6 @@ class HomeController extends Controller
                     <i class="fab fa-whatsapp" style="margin-right: 8px;"></i> Send Link via WhatsApp
                 </a>
             </div>';
-
-
-
         return response()->json(['status' => true, 'msg' => 'WhatsApp link generated successfully!', 'data' => $html], 200);
     }
     public function master_list()
@@ -687,12 +713,6 @@ class HomeController extends Controller
             ->groupBy('users.email') // Group by email
             ->orderBy('id', 'DESC')
             ->get();
-
         return view('admin.master-list', compact('lists'));
     }
-
-
-
-
-
 }

@@ -82,6 +82,7 @@ Route::get('/', function () {
 });
 Auth::routes(['register' => false]);
 Route::get('/home', [HomeController::class, 'index'])->name('home');
+Route::get('/dashboard-user-graph', [HomeController::class, 'userGraph'])->name('dashboard.user.graph');
 Route::get('/enquiry-list', [HomeController::class, 'enquiry_list'])->name('enquiry-list');
 Route::get('/master-list', [HomeController::class, 'master_list'])->name('master-list');
 Route::post('/next-step-data', [HomeController::class, 'next_step_data'])->name('next-step-data');
@@ -686,12 +687,18 @@ Route::middleware(['auth','plan_permission'])->prefix('rc-management/passive-pro
     Route::get('/delete/{id}', [PassiveProfitController::class, 'delete'])->name('delete');
 
 });
-Route::middleware(['auth','plan_permission'])->prefix('agent-setting')->name('agent-setting.')->group(function() {
+Route::middleware(['auth'])->prefix('agent-setting')->name('agent-setting.')->group(function() {
     Route::get('/', [AgentSettingController::class,'index'])->name('index');
     Route::get('/create', [AgentSettingController::class,'create'])->name('create');
     Route::post('/store', [AgentSettingController::class,'store'])->name('store');
     Route::get('/edit/{id}', [AgentSettingController::class,'edit'])->name('edit');
     Route::get('/delete/{id}', [AgentSettingController::class,'delete'])->name('delete');
+});
+Route::middleware(['auth'])->prefix('adb-setting')->name('adb-setting.')->group(function() {
+    Route::get('/', [AgentSettingController::class,'adb_index'])->name('index');
+    Route::post('/store-community', [AgentSettingController::class,'store_community'])->name('store-community');
+    Route::post('/store', [AgentSettingController::class,'store_chatbot'])->name('store');
+    Route::get('/delete/{id}', [AgentSettingController::class,'delete_community'])->name('delete');
 });
 
 //how-it-works 

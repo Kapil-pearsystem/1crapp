@@ -252,6 +252,7 @@
                         <button type="button" class="toggle-btn" data-type="yearly">Yearly</button>
                     </div>
                 </div>
+                <?php /*
 				<div id="plan-list-data" class="prc_box_listst monthly">
 					
 					@foreach($subscription_plan as $list)
@@ -366,7 +367,7 @@
 					</div>
 					<!---- End List ----->
 					@endforeach
-				</div>
+				</div> */?>
 			</div>
 		</div>
 	</div>
@@ -412,7 +413,7 @@
 
 					<div class="col-sm-12 mb-3 mt-3 mb-sm-0">
 
-					 <div class="text-center">
+					 <?php /*<div class="text-center">
 
 						  <form action="{{ route('billing.upgrade') }}" method="POST" >
 
@@ -444,7 +445,7 @@
 
                         </form>
 
-					 </div>
+					 </div> */ ?>
 
 					</div>
 
