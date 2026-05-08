@@ -129,6 +129,10 @@
                         </select>
                     </div>
                     <div class="col-sm-6 mb-3 mt-3 mb-sm-0">
+                        <label>Address</label>
+                        <textarea name="address" id="" class="form-control" placeholder="Enter Address" required="">{{ old('address', $details->address ?? '') }}</textarea>
+                    </div>
+                    <div class="col-sm-6 mb-3 mt-3 mb-sm-0">
                         <label>SMS Template :</label>
                         <textarea name="smstemplate" id="" cols="3" rows="3" class="form-control" placeholder="Enter Message" required="">{{ old('smstemplate', $details->smstemplate ?? '') }}</textarea>
                     </div>

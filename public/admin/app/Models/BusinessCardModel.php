@@ -23,7 +23,7 @@ class BusinessCardModel extends Model
         'category', 'link_name', 'link_slug', 'layout', 'photo', 'email', 'first_name', 'last_name',
         'designation', 'chatboat', 'r_bot', 'organization', 'title', 'telephone', 'website',
         'facebook', 'linkedin', 'whatsapp', 'instagram', 'twitter', 'city',
-        'state', 'country', 'smstemplate', 'scanning_popup', 'contact_popup',
+        'state', 'country','address', 'smstemplate', 'scanning_popup', 'contact_popup',
         'status', 'created_by'
     ];
 

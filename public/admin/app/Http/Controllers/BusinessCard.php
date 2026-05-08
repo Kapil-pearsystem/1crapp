@@ -138,6 +138,7 @@ class BusinessCard extends Controller
         $businesscard->city = $request->city;
         $businesscard->state = $request->state;
         $businesscard->country = $request->country;
+        $businesscard->address = $request->address;
         $businesscard->smstemplate = $request->smstemplate;
         $businesscard->scanning_popup = $request->scanning_popup;
         $businesscard->contact_popup = $request->contact_popup;

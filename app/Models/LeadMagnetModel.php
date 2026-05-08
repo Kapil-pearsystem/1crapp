@@ -25,6 +25,7 @@ class LeadMagnetModel extends Model
     protected $fillable = [
         'user_id',
         'agent_id',
+        'page_name',
         'page_url',
         'pre_headline',
         'pre_headline_visible',

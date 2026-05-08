@@ -1,6 +1,14 @@
 <?php
 
 use Illuminate\Support\Str;
+$scheme = request()->getScheme();
+$host   = request()->getHost(); // admin.1crapp.com
+
+if (str_starts_with($host, 'admin.')) {
+    $host = substr($host, 6); // remove 'admin.'
+}
+
+$finalUrl = $scheme . '://' . $host;
 ?>
 @extends('layouts.app')
 @section('title', 'Business Card List')
@@ -53,7 +61,13 @@ use Illuminate\Support\Str;
                                 N/A
                                 @endif
                             </td>
-                            <td>{{ $list->link_name }}</td>
+                            <td>
+                                {{ $list->link_name }} |&ensp;  
+                                <i class="fa fa-copy copy-icon" data-url="{{ $finalUrl.'/business-card/'.$list->link_slug }}" aria-hidden="true"></i>&ensp; |&ensp;  
+                                <a href="{{ $finalUrl.'/business-card/'.$list->link_slug }}" target="_blank" class="text-right">
+                                    <i class="fas fa-external-link-alt" aria-hidden="true"></i>
+                                </a>
+                            </td>
                             <td>
                                 {{ $list->first_name }} {{ $list->last_name }}
                             </td>
@@ -145,5 +159,26 @@ use Illuminate\Support\Str;
             });
         }
     }
+</script>
+
+<script>
+    // Select all elements with the 'copy-icon' class
+    document.querySelectorAll('.copy-icon').forEach(function(icon) {
+        icon.addEventListener('click', function() {
+            const urlToCopy = this.getAttribute('data-url'); // Get URL from the data attribute
+            navigator.clipboard.writeText(urlToCopy).then(() => {
+                this.classList.remove('fa-copy'); // Remove copy icon class
+                this.classList.add('fa-check', 'text-success'); // Add checkmark icon class
+
+                // Optional: Reset the icon after a few seconds
+                setTimeout(() => {
+                    this.classList.remove('fa-check', 'text-success'); // Remove checkmark icon class
+                    this.classList.add('fa-copy'); // Add copy icon class back
+                }, 10000);
+            }).catch(err => {
+                console.error('Error copying text: ', err);
+            });
+        });
+    });
 </script>
 @endsection

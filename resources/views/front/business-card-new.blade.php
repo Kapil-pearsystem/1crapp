@@ -533,10 +533,10 @@
                                     <h4>Share Your Card</h4>
                                     <div class="social_iconsss">
                                         @php
-                                        $shareUrl = urlencode(url()->current());
-                                        $currentUrl = url()->current();
-                                        $shareTitle = urlencode($details->title ?? 'Business Card');
-                                        $qrUrl = "https://quickchart.io/qr?text=" . urlencode($currentUrl) . "&size=300";
+                                            $shareUrl = urlencode(url()->current());
+                                            $currentUrl = url()->current();
+                                            $shareTitle = urlencode($details->title ?? 'Business Card');
+                                            $qrUrl = "https://quickchart.io/qr?text=" . urlencode($currentUrl) . "&size=300";
                                         @endphp
                                         <ul>
                                             <!-- Facebook -->
@@ -644,7 +644,7 @@
                                             </li>
                                             <li>
                                                 <span class="usr_icoos"><i class="fa fa-map-marker"></i></span>
-                                                <span class="cntents">{{ @$card->city_name }}, {{ @$card->state_name }}, {{ @$business_card->country_name }} <span class="und_txss">Address</span></span>
+                                                <span class="cntents">{{ @$card->address }}, {{ @$card->city_name }}, {{ @$card->state_name }}, {{ @$card->country_name }} <span class="und_txss">Address</span></span>
                                             </li>
                                             <li>
                                                 <span class="usr_icoos"><i class="fa fa-comment-o"></i></span>

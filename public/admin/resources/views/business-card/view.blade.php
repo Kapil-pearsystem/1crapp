@@ -27,7 +27,7 @@ $finalUrl = $scheme . '://' . $host;
          <h4>Digital Business Card</h4>
          <div class="content_arara">
             <div class="mettre">
-               <span class="toll_tops"><i class="fa fa-info-circle"></i></span> Your digital business card share link is: <a href="{{ $finalUrl.'/business-card/' }}{{ $business_card->link_slug ?? '' }}" target="_blank">{{ $finalUrl.'/business-card' }}</a> <span class="copy_urlss" onclick="copyToClipboard('{{ $finalUrl.'/business-card' }}')">Copy your share URL</span>
+               <span class="toll_tops"><i class="fa fa-info-circle"></i></span> Your digital business card share link is: <a href="{{ $finalUrl.'/business-card/' }}{{ $business_card->link_slug ?? '' }}" target="_blank">{{ $finalUrl.'/business-card/' }}{{ $business_card->link_slug ?? '' }}</a> <span class="copy_urlss" onclick="copyToClipboard('{{ $finalUrl.'/business-card/'.$business_card->link_slug }}')">Copy your share URL</span>
             </div>
             <div class="row">
                <div class="col-lg-3"></div>
@@ -47,7 +47,7 @@ $finalUrl = $scheme . '://' . $host;
                            <li><span class="usr_icoos"><i class="fa fa-phone"></i></span><span class="cntents">{{ @$business_card->telephone }} <span class="und_txss">Phone</span></span></li>
                            <li><span class="usr_icoos"><i class="fa fa-envelope"></i></span><span class="cntents"><a href="mailto:{{ @$business_card->email }}" class="al_linkss">{{ @$business_card->email }}</a> <span class="und_txss">Email</span></span></li>
                            <li><span class="usr_icoos"><i class="fa fa-globe"></i></span><span class="cntents">{{ @$business_card->website }} <span class="und_txss">Official Website</span></span></li>
-                           <li><span class="usr_icoos"><i class="fa fa-map-marker"></i></span><span class="cntents">{{ @$business_card->city_name }}, {{ @$business_card->state_name }}, {{ @$business_card->country_name }} <span class="und_txss">Address</span></span></li>
+                           <li><span class="usr_icoos"><i class="fa fa-map-marker"></i></span><span class="cntents">{{ @$business_card->address ?? 'N/A' }}, {{ @$business_card->city_name }}, {{ @$business_card->state_name }}, {{ @$business_card->country_name }} <span class="und_txss">Address</span></span></li>
                            <li><span class="usr_icoos"><i class="fa fa-comment"></i></span><span class="cntents"><a href="javascript:void(0);" data-toggle="modal" data-target="#chat_mesages">Talk with My AI Assistant</a></span></li>
                         </ul>
                      </div>

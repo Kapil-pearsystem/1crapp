@@ -621,7 +621,7 @@ class WebController extends Controller
         // dd($request->post_headline_visible);
         // Validation (optional but recommended)
         $request->validate([
-            'page_url' => 'required|string|max:255',
+            'page_name' => 'required|string|max:255',
             'pre_headline' => 'required|string|max:255',
             'headline' => 'required|string|max:255',
             'post_headline' => 'nullable|string|max:255',
@@ -690,6 +690,7 @@ class WebController extends Controller
         $data['media_path'] = $logoPath ?? $request->media_path ?? null;
         $data['user_id'] = auth()->id();
         $data['agent_id'] = app('currentAgent')->id;
+        $data['page_url'] = Str::slug($request->page_name) . '-' . time();
         // dd($data);
         // Save data to database
         if ($request->id) {

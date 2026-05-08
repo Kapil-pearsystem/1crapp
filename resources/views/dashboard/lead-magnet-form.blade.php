@@ -51,12 +51,11 @@
 								<div class="row">
 								   <input type="hidden" name="id" value="{{ isset($details->id) ? $details->id : '' }}"/>
 									<div class="col-lg-4">
-										<div class="form-group">
-											<label>Page URL<span class="red">*</span></label>
-											<input type="text" placeholder="i.e. useridabc" class="inp_araea" name="page_url" value="{{ isset($details->page_url) ? $details->page_url : '' }}" required=""/>
-											<small id="user_msg"></small>
-										</div>
-                                        
+                                        <div class="form-group">
+                                            <label>Page Name<span class="red">*</span></label>
+                                            <input type="text" placeholder="i.e. useridabc" class="inp_araea" name="page_name" value="{{ isset($details->page_name) ? $details->page_name : '' }}" required=""/>
+                                            <small id="user_msg"></small>
+                                        </div>
 									</div>
 									<div class="col-lg-7">
 										<div class="form-group">
@@ -344,7 +343,7 @@
                                         <label>Custom Form</label>
                                         <select class="slt_areaa" name="custom_form_id">
                                            <option value="{{ $custom_form->id ?? '' }}"
-                                                {{ (isset($details) && $custom_form->id == $details->custom_form_id) ? 'selected' : '' }}>
+                                                {{ (isset($details) && $details->custom_form_id == optional($custom_form)->id) ? 'selected' : '' }}>
                                                 {{ $custom_form->title ?? '' }}
                                             </option>
                                         </select>
