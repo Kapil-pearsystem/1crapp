@@ -207,7 +207,7 @@ class HomeController extends Controller
     public function save_lets_connect(Request $request)
     {
         // dd($request->all());
-        try {
+        // try {
             $request->validate([
                 'form_id' => 'required',
                 'name' => 'required|string|max:255',
@@ -260,9 +260,14 @@ class HomeController extends Controller
 
                     // ✅ Attachment
                     if (!empty($attachment)) {
-                        $message->attach($attachment); 
-                        // OR if full URL:
-                        // $message->attach($attachment);
+
+                        try {
+                            $contents = file_get_contents($attachment);
+                            $filename = basename(parse_url($attachment, PHP_URL_PATH));
+                            $message->attachData($contents, $filename);
+                        } catch (\Exception $e) {
+                            Log::error('Attachment Error: ' . $e->getMessage());
+                        }
                     }
                 });
             }
@@ -271,21 +276,21 @@ class HomeController extends Controller
                 ->with('success', $form_details->thankyou_message ?? 'Thank you for connecting with us! We will get back to you soon.')
                 ->with('open_modal', true);
 
-        } catch (\Illuminate\Validation\ValidationException $e) {
+        // } catch (\Illuminate\Validation\ValidationException $e) {
 
-            return redirect()->back()
-                ->withErrors($e->validator)
-                ->withInput()
-                ->with('open_modal', true);
+        //     return redirect()->back()
+        //         ->withErrors($e->validator)
+        //         ->withInput()
+        //         ->with('open_modal', true);
 
-        } catch (\Exception $e) {
+        // } catch (\Exception $e) {
 
-            Log::error($e);
+        //     Log::error($e);
 
-            return redirect()->back()
-                ->with('error', 'Something went wrong. Please try again!')
-                ->with('open_modal', true);
-        }
+        //     return redirect()->back()
+        //         ->with('error', 'Something went wrong. Please try again!')
+        //         ->with('open_modal', true);
+        // }
     }
     public function resend_mail(Request $request)
     {
@@ -325,12 +330,13 @@ class HomeController extends Controller
                 }
                 // ✅ Attachment
                 if (!empty($attachment)) {
-                    // if stored in public folder
-                    if (file_exists(public_path($attachment))) {
-                        $message->attach(public_path($attachment));
-                    } else {
-                        // fallback (if URL)
-                        $message->attach($attachment);
+
+                    try {
+                        $contents = file_get_contents($attachment);
+                        $filename = basename(parse_url($attachment, PHP_URL_PATH));
+                        $message->attachData($contents, $filename);
+                    } catch (\Exception $e) {
+                        Log::error('Attachment Error: ' . $e->getMessage());
                     }
                 }
             });
@@ -388,31 +394,70 @@ class HomeController extends Controller
     public function get_whatsapp_link(Request $request)
     {
         $link = $request->link;
-        $lead = DB::table('cdb_lets_connect')->where('id', $request->id)->first();
+
+        $lead = DB::table('cdb_lets_connect')
+            ->where('id', $request->id)
+            ->first();
+
         if (!$lead) {
-            return response()->json(['status' => false, 'msg' => 'Lead not found!'], 404);
+
+            return response()->json([
+                'status' => false,
+                'msg' => 'Lead not found!'
+            ], 404);
+
         }
+
         $whatsAppNumber = $lead->phone;
-        $message = urlencode($request->message);
-        $whatsAppLink = "https://wa.me/{$whatsAppNumber}?text={$message}";
+
+        // WhatsApp Message
+        $message = $request->message . "\n\n" . $link;
+
+        // Encode message properly
+        $encodedMessage = urlencode($message);
+
+        // WhatsApp URL
+        $whatsAppLink = "https://wa.me/{$whatsAppNumber}?text={$encodedMessage}";
+
         $html = '
             <div class="text-center text-primary border border-secondary bg-light p-3 rounded" style="max-width: 600px; margin: auto;">
-                <p class="mb-3" style="font-size: 14px; font-weight: bold;">Scan to Share:</p>
-                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=' . urlencode($whatsAppLink) . '" alt="QR Code" />
-                <p class="mt-3 mb-3" style="font-size: 16px; font-weight: bold;">Your Link:</p>
+
+                <p class="mb-3" style="font-size: 14px; font-weight: bold;">
+                    Scan to Share:
+                </p>
+
+                <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=' . urlencode($whatsAppLink) . '" alt="QR Code" />
+
+                <p class="mt-3 mb-3" style="font-size: 16px; font-weight: bold;">
+                    Your Link:
+                </p>
+
                 <div class="bg-white p-2 border rounded text-info" style="word-wrap: break-word;">
                     ' . $link . '
                 </div>
+
             </div>
+
             <div class="text-center mt-4">
-                <a href="' . $whatsAppLink . '" target="_blank" class="btn btn-success d-flex align-items-center justify-content-center" style="font-size: 14px; padding: 10px 20px; border-radius: 5px;">
-                    <i class="fa fa-whatsapp" style="margin-right: 8px;"></i> Send Link via WhatsApp
+
+                <a href="' . $whatsAppLink . '"
+                    target="_blank"
+                    class="btn btn-success d-flex align-items-center justify-content-center"
+                    style="font-size: 14px; padding: 10px 20px; border-radius: 5px;">
+
+                    <i class="fa fa-whatsapp" style="margin-right: 8px;"></i>
+
+                    Send Link via WhatsApp
+
                 </a>
+
             </div>';
 
-
-
-        return response()->json(['status' => true, 'msg' => 'WhatsApp link generated successfully!', 'data' => $html], 200);
+        return response()->json([
+            'status' => true,
+            'msg' => 'WhatsApp link generated successfully!',
+            'data' => $html
+        ], 200);
     }
     public function lead_magnet_list(){
         $lists = DB::table('cdb_lets_connect')->select('cdb_lets_connect.*','cdb_popup_form.title as form_name','tbl_lead_magnet.page_url as page_name')

@@ -1086,6 +1086,13 @@
                             </div>
                         </div>
                     </div>
+                    
+                    <div class="share_araea">
+                        <div class="shr_linkss">
+                            <input type="text" class="" placeholder="" id="referral_link" value="{{ url('/').'/lets-connect/'.$page->page_url }}" />
+                            <button id="copyButton" onclick="copyReferralLink()">Copy & share</button>
+                        </div>
+                    </div>
                     <div class="add_area_parts_show mt-5">
                         @if($page && $page->company_logo)
                         <div class="prof_imgsss">
@@ -1313,5 +1320,22 @@ function openErrorModal(message = "Something went wrong!") {
 
 function closeErrorModal() {
     document.getElementById('errorModal').style.display = 'none';
+}
+</script>
+<script>
+	function copyReferralLink() {
+    // Get the referral link input element
+    var copyText = document.getElementById("referral_link");
+    // Copy the text inside the input to the clipboard using the clipboard API
+    navigator.clipboard.writeText(copyText.value).then(function() {
+        // Change button text and color after copying
+        var copyButton = document.getElementById("copyButton");
+        copyButton.textContent = "Copied!";
+        copyButton.style.backgroundColor = "green";
+        copyButton.style.color = "white";
+        // Optional: Reset button text and color after 3 seconds
+    }).catch(function(error) {
+        console.error("Failed to copy text: ", error);
+    });
 }
 </script>

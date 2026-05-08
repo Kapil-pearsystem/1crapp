@@ -690,7 +690,7 @@ class WebController extends Controller
         $data['media_path'] = $logoPath ?? $request->media_path ?? null;
         $data['user_id'] = auth()->id();
         $data['agent_id'] = app('currentAgent')->id;
-        $data['page_url'] = Str::slug($request->page_name) . '-' . time();
+        $data['page_url'] = Str::slug($request->page_name);
         // dd($data);
         // Save data to database
         if ($request->id) {
