@@ -59,13 +59,12 @@
                         @enderror
                     </div>
                     <div class="col-sm-6 mb-3 mt-3 mb-sm-0">
+                        <label>Designation</label>
+                        <input type="text" name="designation" value="{{ old('designation', $details->designation ?? '') }}" class="form-control" placeholder="Enter Designation" />
+                    </div>
+                    <div class="col-sm-12 mb-3 mt-3 mb-sm-0">
                         <label>Chatbot</label>
-                        <select class="form-control" name="chatboat">
-                            <option value="1" {{ old('chatboat', $details->chatboat ?? '') == '1' ? 'selected' : '' }}>Digital Ramjee Bot1</option>
-                            <option value="2" {{ old('chatboat', $details->chatboat ?? '') == '2' ? 'selected' : '' }}>Digital Ramjee Bot2</option>
-                            <option value="3" {{ old('chatboat', $details->chatboat ?? '') == '3' ? 'selected' : '' }}>Digital Ramjee Bot3</option>
-                            <option value="4" {{ old('chatboat', $details->chatboat ?? '') == '4' ? 'selected' : '' }}>Digital Ramjee Bot4</option>
-                        </select>
+                        <textarea name="chatboat" id="" class="form-control" placeholder="Enter Chatbot Message">{{ old('chatboat', $details->chatboat ?? '') }}</textarea>
                     </div>
                     <div class="col-sm-6 mb-3 mt-3 mb-sm-0">
                         <label>Digital Ramjee Bot</label>

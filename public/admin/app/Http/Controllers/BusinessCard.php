@@ -124,6 +124,7 @@ class BusinessCard extends Controller
         $businesscard->first_name = $request->first_name;
         $businesscard->last_name = $request->last_name;
         $businesscard->chatboat = $request->chatboat;
+        $businesscard->designation = $request->designation;
         $businesscard->r_bot = $request->r_bot;
         $businesscard->organization = $request->organization;
         $businesscard->title = $request->title;

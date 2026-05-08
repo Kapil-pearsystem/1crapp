@@ -812,7 +812,7 @@ class WebController extends Controller
     }
 
     //business card
-    public function businessCard()
+    public function businessCard($slug = null)
     {
         $agent_id = app('currentAgent')->id;
         $card = DB::table('tbl_businesscard')->select('tbl_businesscard.*','rk_countries.name as country_name','rk_states.name as state_name','rk_cities.name as city_name')
@@ -821,8 +821,11 @@ class WebController extends Controller
         ->leftjoin('rk_cities','rk_cities.id','=','tbl_businesscard.city')
         ->where('tbl_businesscard.user_id', $agent_id)
         ->where('tbl_businesscard.category', 1)
-        ->orWhere('tbl_businesscard.is_public', 1)
-        ->orderBy('tbl_businesscard.id','desc')
+        ->orWhere('tbl_businesscard.is_public', 1);
+        if($slug) {
+            $card = $card->where('tbl_businesscard.link_slug', $slug);
+        }
+        $card = $card->orderBy('tbl_businesscard.id','desc')
         ->first();
         // dd($card);
         return view('front.business-card-new', compact('card'));

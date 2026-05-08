@@ -27,7 +27,7 @@ $finalUrl = $scheme . '://' . $host;
          <h4>Digital Business Card</h4>
          <div class="content_arara">
             <div class="mettre">
-               <span class="toll_tops"><i class="fa fa-info-circle"></i></span> Your digital business card share link is: <a href="{{ $finalUrl.'/business-card' }}" target="_blank">{{ $finalUrl.'/business-card' }}</a> <span class="copy_urlss" onclick="copyToClipboard('{{ $finalUrl.'/business-card' }}')">Copy your share URL</span>
+               <span class="toll_tops"><i class="fa fa-info-circle"></i></span> Your digital business card share link is: <a href="{{ $finalUrl.'/business-card/' }}{{ $business_card->link_slug ?? '' }}" target="_blank">{{ $finalUrl.'/business-card' }}</a> <span class="copy_urlss" onclick="copyToClipboard('{{ $finalUrl.'/business-card' }}')">Copy your share URL</span>
             </div>
             <div class="row">
                <div class="col-lg-3"></div>
@@ -38,7 +38,7 @@ $finalUrl = $scheme . '://' . $host;
                            <img class="logo" src="{{ $business_card->photo ?? '' }}" alt="Logo" />
                         </div>
                         <h4>{{ $business_card->first_name ?? '' }} {{ $business_card->last_name ?? '' }}</h4>
-                        <p>CEO</p>
+                        <p>{{ $business_card->designation ?? '' }}</p>
                         <span>{{ $business_card->organization ?? '' }}</span>
                      </div>
                      <div class="user_list">

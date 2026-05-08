@@ -1,8 +1,9 @@
-@if(@$card->custom_header_visible == 1)
+@if(@$card->layout == 2)
     @include('front.custom-layout.header')
-@else
+
+@elseif(@$card->layout == 1)
     @include('front.layouts.user-header')
-    <!-- <section class="tital_mg_cntss">
+    <section class="tital_mg_cntss">
         <img src="{{ url('home/img/top_al_pgss.png')}}" class="bg_al_cntxt" alt="" />
         <div class="midils_contnts">
             <div class="medilss">
@@ -10,13 +11,9 @@
                 <a href="{{ url('') }}">Home</a> &gt; <span>{!! ucwords($card->link_name) !!}</span>
             </div>
         </div>
-    </section> -->
-@endif
-@php
-    use App\Models\BookingEventModel;
-    $steps = BookingEventModel::where('status', 1)->where('step', 2)->first();
-@endphp
-<!-- <html lang="en">
+    </section>
+@else
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Meet The Team</title>
@@ -29,7 +26,13 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css">
     <link rel='stylesheet' href="{{ url('home/css/style.css')}}">
     <link rel='stylesheet' href="{{ url('home/css/intlTelInput.css')}}">
-</head> -->
+</head>
+@endif
+@php
+    use App\Models\BookingEventModel;
+    $steps = BookingEventModel::where('status', 1)->where('step', 2)->first();
+@endphp
+
 <!-- Chat Part Modal -->
 <div class="modal fade" id="chat_mesages" role="dialog">
     <div class="modal-dialog">
@@ -512,7 +515,11 @@
         }
     }
 </style>
-<body style="background:#000;">
+@if(@$card->layout == 0)
+    <body style="background:#000;">
+@else
+    <body style="background:#fff;">
+@endif
     <section class="business_card_items">
         <div class="container">
             <div class="businnes_main busness_new">
@@ -614,7 +621,7 @@
                                             <img class="logo" src="{{ url('home/img/pro_perty_bg.jpg')}}" alt="Logo" />
                                         </div>
                                         <h4>{{ $card->first_name ?? '' }} {{ $card->last_name ?? '' }}</h4>
-                                        <p>CEO</p>
+                                        <p>{{ $card->designation ?? '' }}</p>
                                         <span>{{ $card->organization ?? '' }}</span>
                                     </div>
                                     <div class="user_list">
@@ -677,9 +684,9 @@
         </div>
     </section>
     
-@if(@$card->custom_footer_visible == 1)
+@if(@$card->layout == 2)
     @include('front.custom-layout.footer')
-@else
+@elseif(@$card->layout == 1)
     @include('front.layouts.footer')
 @endif
     <script src='https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js'></script>

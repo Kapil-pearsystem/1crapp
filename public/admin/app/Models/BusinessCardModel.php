@@ -21,7 +21,7 @@ class BusinessCardModel extends Model
     // Fillable properties
     protected $fillable = [
         'category', 'link_name', 'link_slug', 'layout', 'photo', 'email', 'first_name', 'last_name',
-        'chatboat', 'r_bot', 'organization', 'title', 'telephone', 'website',
+        'designation', 'chatboat', 'r_bot', 'organization', 'title', 'telephone', 'website',
         'facebook', 'linkedin', 'whatsapp', 'instagram', 'twitter', 'city',
         'state', 'country', 'smstemplate', 'scanning_popup', 'contact_popup',
         'status', 'created_by'
