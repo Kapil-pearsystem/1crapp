@@ -618,7 +618,7 @@
                                 <div class="user_proff new_paert">
                                     <div class="user_pickks">
                                         <div class="pic_araea">
-                                            <img class="logo" src="{{ url('home/img/pro_perty_bg.jpg')}}" alt="Logo" />
+                                            <img class="logo" src="{{ $card->photo ?? '' }}" alt="Logo" />
                                         </div>
                                         <h4>{{ $card->first_name ?? '' }} {{ $card->last_name ?? '' }}</h4>
                                         <p>{{ $card->designation ?? '' }}</p>
@@ -648,7 +648,7 @@
                                             </li>
                                             <li>
                                                 <span class="usr_icoos"><i class="fa fa-comment-o"></i></span>
-                                                <span class="cntents"><a href="javascript:void(0);" data-toggle="modal" data-target="#chat_mesages">Talk with My AI Assistant</a></span>
+                                                <span class="cntents"><a href="javascript:void(0);" data-toggle="modal" data-target="#chat_mesages">{{ @$card->r_bot }}</a></span>
                                             </li>
                                         </ul>
                                     </div>

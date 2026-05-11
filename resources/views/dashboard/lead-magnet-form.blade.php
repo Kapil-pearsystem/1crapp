@@ -588,8 +588,7 @@ function setMediaInput(type) {
     }
 
     if(type === 'video'){
-        uploadBox.style.display = 'block';
-        fileInput.setAttribute('accept', 'video/*');
+        linkBox.style.display = 'block';
     }
 }
 </script>

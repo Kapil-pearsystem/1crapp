@@ -814,6 +814,8 @@
     </div>
 </div>
 @endif
+
+
  <section class="tital_mg_cntss">
  <img src="{{ url('home/img/top_al_pgss.png')}}" class="bg_al_cntxt" alt="" />
   <div class="midils_contnts">
@@ -831,10 +833,19 @@
 				<div class="col-lg-9">
                     <div class="d-flex justify-content-between align-items-center mb-3">
                         <h3>lead Magnet Page Preview</h3>
+                        <div class="shr_linkss" style="width:450px; height:40px; margin-top:-10px;">
+                            <input type="text" class="" placeholder="" id="referral_link" value="{{ url('/').'/lets-connect/'.$page->page_url }}" />
+                            <button id="copyButton" onclick="copyReferralLink()">Copy & share</button>
+                        </div>
+                        
                         <a href="{{ route('lead-magnet-form') }}">
                             <button class="btn btn-primary"><i class="fa fa-edit"></i> Edit Page</button>
                         </a>
                     </div>
+                    
+                    <!-- <div class="share_araea">
+                        
+                    </div> -->
                   <!--- Header Part ---->
                     <section class="shadow othr_pgss_lde" id="myHeader">
                         <div class="top_menuues">
@@ -961,12 +972,6 @@
                             </div>
                         </div>
                     </div>
-                    <div class="share_araea">
-                        <div class="shr_linkss">
-                            <input type="text" class="" placeholder="" id="referral_link" value="{{ url('/').'/lets-connect/'.$page->page_url }}" />
-                            <button id="copyButton" onclick="copyReferralLink()">Copy & share</button>
-                        </div>
-                    </div>
                     <div class="add_area_parts_show mt-5">
                         @if($page && $page->company_logo)
                         <div class="prof_imgsss">
@@ -1008,11 +1013,19 @@
                             </div>
                         </div>
                     </section>
+                    
+                    <div class="share_araea">
+                        <div class="shr_linkss">
+                            <input type="text" class="" placeholder="" id="referral_link" value="{{ url('/').'/lets-connect/'.$page->page_url }}" />
+                            <button id="copyButton" onclick="copyReferralLink()">Copy & share</button>
+                        </div>
+                    </div>
                 </div>
 			</div>
 		</div>
 	</section>
 @include('front.layouts.footer')
+
 
 
     @if($page && $page->countdown_visible && $page->countdown_datetime && \Carbon\Carbon::parse($page->countdown_datetime)->isFuture())

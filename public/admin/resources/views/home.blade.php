@@ -42,7 +42,7 @@ use Illuminate\Support\Str;
                         <div class="col mr-2">
                             <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
                                 Total Users</div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ DB::table('users')->count() }}</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ DB::where('type', 1)->table('users')->count() }}</div>
                         </div>
                         <div class="col-auto">
                             <i class="fas fa-users fa-2x text-gray-300"></i>
@@ -130,12 +130,12 @@ use Illuminate\Support\Str;
                             @endforeach
                         </div>
                         <!-- Controls -->
-                        <!-- <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+                        <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
                             <span class="carousel-control-prev-icon"></span>
                         </a>
                         <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
                             <span class="carousel-control-next-icon"></span>
-                        </a> -->
+                        </a>
                     </div>
                 </div>
             </div>
@@ -238,7 +238,7 @@ use Illuminate\Support\Str;
                                 </div>
                                 <div class="row no-gutters align-items-center">
                                     <div class="col-auto">
-                                        <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">{{ DB::table('users')->where('agent_id', auth()->id())->count() }} </div>
+                                        <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">{{ DB::table('users')->where(['agent_id'=> auth()->id(), 'type'=>1])->count() }} </div>
                                     </div>
                                     <div class="col">
                                         <div class="progress progress-sm mr-2">
@@ -454,4 +454,7 @@ use Illuminate\Support\Str;
             loadChart($(this).val());
         });
     </script>
+    @if(auth()->user()->role_id != 1)
+        {!! DB::table('adb_dashboard')->where('chatbot_code_enable', 1)->value('chatbot_code') !!}
+    @endif
     @endsection

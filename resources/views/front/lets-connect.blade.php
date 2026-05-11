@@ -11,6 +11,7 @@
     <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.css'>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css">
     <link rel='stylesheet' href="{{ url('home/css/style.css')}}">
+    <script type="text/javascript" src="https://platform-api.sharethis.com/js/sharethis.js" defer></script>
 </head>
 <style>
     .shadow.othr_pgss_lde .top_menuues {
@@ -884,6 +885,14 @@
     .error-btn:hover {
         background: #b91c1c;
     }
+    
+    #st-1 .st-btn[data-network="sharethis"],
+    #st-1 .st-btn[data-network="sharethis"]:hover {
+    background-color: transparent !important;
+    }
+    #st-1 .st-btn > img{
+        left:-50px;
+    }
 </style>
 <!-- Form Modal -->
  @if($page && $page->popup_enable)
@@ -1087,12 +1096,7 @@
                         </div>
                     </div>
                     
-                    <div class="share_araea">
-                        <div class="shr_linkss">
-                            <input type="text" class="" placeholder="" id="referral_link" value="{{ url('/').'/lets-connect/'.$page->page_url }}" />
-                            <button id="copyButton" onclick="copyReferralLink()">Copy & share</button>
-                        </div>
-                    </div>
+                    
                     <div class="add_area_parts_show mt-5">
                         @if($page && $page->company_logo)
                         <div class="prof_imgsss">
@@ -1131,6 +1135,14 @@
                             </div>
                         </div>
                     </section>
+                    <div class="share_araea">
+                        <div class="shr_linkss d-flex">
+                            <input type="text" class="" placeholder="" id="referral_link" value="{{ url('/').'/lets-connect/'.$page->page_url }}" />
+                            <div class="sharethis-share-buttons" data-type="inline-share-buttons">
+                                <span data-network="sharethis"></span>
+                            </div>
+                        </div>
+                    </div><br>
                 </div>
             </div>
         </div>
