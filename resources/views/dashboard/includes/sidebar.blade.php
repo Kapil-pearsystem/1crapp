@@ -2,12 +2,14 @@
 $firstSegment = request()->segment(1);
 use App\Models\User;
 use App\Models\CdbPlanModel;
+use App\Models\BusinessCardModel;
 $user_data = User::select('users.profile_image as user_profile','users.*','user_details.*','user_company_details.*','user_social_networks.*')
         ->leftjoin('user_details','user_details.user_id','=','users.id')
         ->leftjoin('user_company_details','user_company_details.user_id','=','users.id')
         ->leftjoin('user_social_networks','user_social_networks.user_id','=','users.id')
         ->where('users.id', Auth::id())->first();
 $package = CdbPlanModel::where('id', $user_data->package_id)->first();
+$b_card = BusinessCardModel::where('user_id', Auth::id())->first();
 @endphp
 <style>
     .custom-dropdown {
@@ -86,6 +88,15 @@ $package = CdbPlanModel::where('id', $user_data->package_id)->first();
     </div>
     <div class="user_liststst">
         <ul>
+            <li class="d-flex"> 
+                <a href="{{ route('customer.business-card') }}" class="@if($firstSegment === 'business-card') actet @endif"><img src="{{ url('home/img/edit_ic.jpg')}}" alt="" />Business Card </a>
+                @if(!is_null($b_card) && $b_card->link_slug)
+                    <i class="fa fa-copy copy-icon ml-4 mt-1" data-url="{{ url('/').'/mydigitalcard/'.$b_card->link_slug }}" aria-hidden="true"></i>&ensp; 
+                    <a href="{{ url('/').'/mydigitalcard/'.$b_card->link_slug }}" target="_blank" class="text-right mt-1">
+                        <i class="fa fa-external-link" aria-hidden="true"></i>
+                    </a>
+                @endif
+            </li>
             <li>
                 <a href="{{ route('my-profile') }}" class="@if($firstSegment === 'my-profile') actet @endif"><img src="{{ url('home/img/my-profile.png')}}" alt="" /> My profile</a>
             </li>
@@ -189,4 +200,24 @@ document.querySelectorAll('.custom-dropdown > a').forEach(function(el){
         this.parentElement.classList.toggle('active');
     });
 });
+</script>
+<script>
+    // Select all elements with the 'copy-icon' class
+    document.querySelectorAll('.copy-icon').forEach(function(icon) {
+        icon.addEventListener('click', function() {
+            const urlToCopy = this.getAttribute('data-url'); // Get URL from the data attribute
+            navigator.clipboard.writeText(urlToCopy).then(() => {
+                this.classList.remove('fa-copy'); // Remove copy icon class
+                this.classList.add('fa-check', 'text-success'); // Add checkmark icon class
+
+                // Optional: Reset the icon after a few seconds
+                setTimeout(() => {
+                    this.classList.remove('fa-check', 'text-success'); // Remove checkmark icon class
+                    this.classList.add('fa-copy'); // Add copy icon class back
+                }, 10000);
+            }).catch(err => {
+                console.error('Error copying text: ', err);
+            });
+        });
+    });
 </script>

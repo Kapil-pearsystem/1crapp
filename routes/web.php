@@ -22,6 +22,7 @@ use App\Http\Controllers\PntController;
 use App\Http\Controllers\PbmController;
 use App\Http\Controllers\CdbFeaturesController;
 use App\Http\Controllers\AppointmentsController;
+use App\Http\Controllers\BusinessCard;
 use App\Models\BannerModel;
 use App\Models\ServiceCategoryModel;
 use App\Models\ServiceModel;
@@ -520,6 +521,12 @@ Route::group(['middleware' => 'auth'], function () {
     // generate pdf 
     Route::get('/download-property-pdf/{id}', [PropertyMarketController::class, 'downloadSinglePropertyPdf'])->name('download.property.pdf');
     Route::get('/property/{propertyId}/payment-pdf', [PropertyMarketController::class, 'generatePDF'])->name('payment.pdf');
+
+    // business card
+    Route::get('/customer/business-card', [BusinessCard::class, 'index'])->name('customer.business-card');
+    Route::post('/customer/business-card/save', [BusinessCard::class, 'save'])->name('customer.business-card.save');
+    
+Route::get('/mydigitalcard/{slug}',[WebController::class, 'CustomerBusinessCard'])->name('my-business-card');
 });
 Route::get('/clear', function () {
     Artisan::call('optimize:clear');
