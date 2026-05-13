@@ -36,12 +36,23 @@
 <!-- Chat Part Modal -->
 <div class="modal fade" id="chat_mesages" role="dialog">
     <div class="modal-dialog">
-        <!-- Modal content-->
         <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h5 class="modal-title">Chat</h5>
+
+                <!-- Bootstrap 4 Close Button -->
+                <button type="button" class="close" data-dismiss="modal">
+                    <span>&times;</span>
+                </button>
+            </div>
+
+            <!-- Modal Body -->
             <div class="modal-body">
                 {!! $card->chatboat !!}
-                <!-- <iframe src="https://chat.digitalramjee.com/chatbot-iframe/9baff73a5f33415196c1680a465c56c5" id="chatbot-iframe" style="border: 1px solid #e5e7eb" width="470px" height="600px" frameborder="0"></iframe> -->
             </div>
+
         </div>
     </div>
 </div>
@@ -656,22 +667,22 @@
                                         <h6>Connect with me on</h6>
                                         <ul>
                                             <li>
-                                                <a href="{{ @$card?$card->facebook:'javascript:void(0);' }}"><i class="fa fa-facebook-square"></i></a>
+                                                <a href="{{ @$card?$card->facebook:'javascript:void(0);' }}" target="_blank"><i class="fa fa-facebook-square"></i></a>
                                             </li>
                                             <li>
-                                                <a href="{{ @$card?$card->linkedin:'javascript:void(0);' }}"><i class="fa fa-linkedin-square"></i></a>
+                                                <a href="{{ @$card?$card->linkedin:'javascript:void(0);' }}" target="_blank"><i class="fa fa-linkedin-square"></i></a>
                                             </li>
                                             <li>
-                                                <a href="{{ @$card?$card->twitter:'javascript:void(0);' }}"><i class="fa fa-twitter"></i></a>
+                                                <a href="{{ @$card?$card->twitter:'javascript:void(0);' }}" target="_blank"><i class="fa fa-twitter"></i></a>
                                             </li>
                                             <li>
-                                                <a href="{{ @$card?$card->whatsapp:'javascript:void(0);' }}"><i class="fa fa-whatsapp"></i></a>
+                                                <a href="{{ @$card?$card->whatsapp:'javascript:void(0);' }}" target="_blank"><i class="fa fa-whatsapp"></i></a>
                                             </li>
                                             <li>
-                                                <a href="mailto:{{ @$card?$card->email:'javascript:void(0);' }}"><i class="fa fa-envelope"></i></a>
+                                                <a href="mailto:{{ @$card?$card->email:'javascript:void(0);' }}" target="_blank"><i class="fa fa-envelope"></i></a>
                                             </li>
                                             <li>
-                                                <a href="{{ @$card?$card->instagram:'javascript:void(0);' }}"><i class="fa fa-instagram"></i></a>
+                                                <a href="{{ @$card?$card->instagram:'javascript:void(0);' }}" target="_blank"><i class="fa fa-instagram"></i></a>
                                             </li>
                                         </ul>
                                     </div>

@@ -3,6 +3,7 @@ $firstSegment = request()->segment(1);
 use App\Models\User;
 use App\Models\CdbPlanModel;
 use App\Models\BusinessCardModel;
+use Illuminate\Support\Facades\DB;
 $user_data = User::select('users.profile_image as user_profile','users.*','user_details.*','user_company_details.*','user_social_networks.*')
         ->leftjoin('user_details','user_details.user_id','=','users.id')
         ->leftjoin('user_company_details','user_company_details.user_id','=','users.id')
@@ -10,7 +11,18 @@ $user_data = User::select('users.profile_image as user_profile','users.*','user_
         ->where('users.id', Auth::id())->first();
 $package = CdbPlanModel::where('id', $user_data->package_id)->first();
 $b_card = BusinessCardModel::where('user_id', Auth::id())->first();
+$d_video = DB::table('adb_dashboard')->where('created_by', app('currentAgent')->id)->first();
+
+$communities = DB::table('tbl_joincommunity')->where('created_by', app('currentAgent')->id)->orderBy('priority', 'asc')->limit(8)->get();
 @endphp
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+
+<!-- Popper -->
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+
+<!-- Bootstrap JS -->
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <style>
     .custom-dropdown {
         position: relative;
@@ -97,8 +109,13 @@ $b_card = BusinessCardModel::where('user_id', Auth::id())->first();
                     </a>
                 @endif
             </li>
-            <li>
-                <a href="{{ route('my-profile') }}" class="@if($firstSegment === 'my-profile') actet @endif"><img src="{{ url('home/img/my-profile.png')}}" alt="" /> My profile</a>
+            <li class="d-flex">
+                <a href="{{ route('my-profile') }}" class="@if($firstSegment === 'my-profile') actet @endif"><img src="{{ url('home/img/my-profile.png')}}" alt="" /> My profile </a>
+                @if(!is_null($d_video))
+                @if($d_video->demo_link_enable == 1)
+                        &ensp; &ensp; &ensp; <a href="javascript:void(0);" data-toggle="modal" data-target=".bd-example-modal-lg"><img src="{{ url('home/img/vvdio_ic.png')}}" alt="" /></a>
+                    @endif
+                @endif
             </li>
             <!--<li>-->
             <!--    <a href="{{ route('wallet') }}" class="@if($firstSegment === 'wallet') actet @endif"><img src="{{ url('home/img/my-profile.png')}}" alt="" /> Wallet</a>-->
@@ -193,6 +210,54 @@ $b_card = BusinessCardModel::where('user_id', Auth::id())->first();
             </li>
         </ul>
     </div>
+</div>
+<div class="profll_area mt-4">
+    <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+        <!-- Carousel Items -->
+        <div class="carousel-inner text-light">
+            <!-- Item 1 -->
+            @foreach($communities as $key=>$community)
+            <div class="carousel-item @if($key ==0) active @endif">
+                <div class="community-card text-center">
+                    <div class="community-icon">
+                        <i class="fa {{ $community->icon }}"></i>
+                    </div>
+                    <h6 style="font-weight:900;">{{ Str::limit($community->title, 25) }}</h6>
+                    <small>
+                        {{ Str::limit($community->content, 80) }}
+                    </small><br>
+                    <a href="{{ $community->btn_link }}" target="_blank" class="btn btn-sm btn-light">
+                        {{ $community->btn_text }}
+                    </a>
+                </div>
+            </div>
+            @endforeach
+        </div>
+        <!-- Controls -->
+        <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+            <span class="carousel-control-prev-icon"></span>
+        </a>
+        <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+            <span class="carousel-control-next-icon"></span>
+        </a>
+    </div>
+</div>
+<div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-header">
+    <h5 class="modal-title" id="exampleModalLabel">View Demo</h5>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+    </div>
+    <div class="modal-content" style="height:80%;">
+        @if(!is_null($d_video))
+            @if($d_video->demo_link_enable == 1)
+                <iframe src="{{ $d_video->demo_link }}" height="100%" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+            @endif
+        @endif
+    </div>
+  </div>
 </div>
 <script>
 document.querySelectorAll('.custom-dropdown > a').forEach(function(el){

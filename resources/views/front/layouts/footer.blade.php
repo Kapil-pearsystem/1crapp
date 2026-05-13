@@ -338,7 +338,7 @@
 		</div>
     </div>
 </footer>
-
+  {!! DB::table('adb_dashboard')->where('created_by', app('currentAgent')->id)->where('chatbot_code_enable', 1)->value('chatbot_code') !!}
 <!-- Modal for Success Message -->
 <div id="subscribeModal" class="modal" tabindex="-1" role="dialog" style="margin-top:10%;">
     <div class="modal-dialog" role="document">

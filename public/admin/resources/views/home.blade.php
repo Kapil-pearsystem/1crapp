@@ -173,9 +173,9 @@ use Illuminate\Support\Str;
             <!-- <div class="card shadow h-100">
                     <div class="card-body"> -->
             @if($adb_setting->demo_link_enable == 1)
-            @if($adb_setting->demo_link)
-            <iframe src="{{ $adb_setting->demo_link }}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-            @endif
+                @if($adb_setting->demo_link)
+                <iframe src="{{ $adb_setting->demo_link }}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                @endif
             @endif
             <!-- </div>
                 </div> -->
@@ -454,7 +454,4 @@ use Illuminate\Support\Str;
             loadChart($(this).val());
         });
     </script>
-    @if(auth()->user()->role_id != 1)
-        {!! DB::table('adb_dashboard')->where('chatbot_code_enable', 1)->value('chatbot_code') !!}
-    @endif
     @endsection

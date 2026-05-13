@@ -12,10 +12,10 @@ use Illuminate\Validation\Rule;
 class AgentSettingController extends Controller
 {
     public function index()
-{
-    $lists = AgentSettingModel::orderBy('created_at', 'desc')->get();
-    return view('agent-setting.index', compact('lists'));
-}
+    {
+        $lists = AgentSettingModel::orderBy('created_at', 'desc')->get();
+        return view('agent-setting.index', compact('lists'));
+    }
    public function create()
    {
     return view('agent-setting.create');
@@ -76,8 +76,8 @@ public function edit($id)
 
 public function adb_index()
 {
-    $settings = AdbSettingsModel::first();
-    $communities = JoinCommunityModel::orderBy('id', 'desc')->get();
+    $settings = AdbSettingsModel::where('created_by', auth()->id())->first();
+    $communities = JoinCommunityModel::where('created_by', auth()->id())->orderBy('id', 'desc')->get();
     return view('agent-setting.adb-index', compact('settings','communities'));
 }
 public function store_community(Request $request)

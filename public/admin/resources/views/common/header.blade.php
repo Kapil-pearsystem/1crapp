@@ -98,9 +98,12 @@ if($user){
                             <a class="dropdown-item" href="{{ route('setting.brandingsfrm', ['id' => auth()->id()]) }}">Brandings</a>
                             <a class="dropdown-item" href="{{ route('smtp.smtpfrm', ['id' => auth()->id()]) }}">SMTP</a>
                             <a class="dropdown-item" href="{{ route('domain.edit', ['user' => auth()->id()]) }}">Domain</a>
+                            <!-- <a class="dropdown-item" href="{{ route('adb-setting.index') }}">Agent Settings</a> -->
                             <?php if(!Auth()->user()->hasrole('Agent')){ ?>
                                 <a class="dropdown-item" href="{{ route('adb-setting.index') }}">Agent Settings</a>
-                            <?php } ?>
+                            <?php } else{ ?> 
+                                <a class="dropdown-item" href="{{ route('adb-setting.index') }}">Web Settings</a>
+                            <?php }?>
                             <?php if(!Auth()->user()->hasrole('Agent')){ ?>
                                 <a class="dropdown-item" href="{{ route('agent-setting.index') }}">Help/Tutorial</a>
                             <?php } ?>

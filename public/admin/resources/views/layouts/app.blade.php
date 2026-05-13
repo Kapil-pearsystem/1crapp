@@ -1634,6 +1634,11 @@ font-weight: 600;
     <!-- Logout Modal-->
     @include('common.logout-modal')
     @yield('modals')
+
+    
+    @if(auth()->user()->role_id != 1)
+        {!! DB::table('adb_dashboard')->where('chatbot_code_enable', 1)->value('chatbot_code') !!}
+    @endif
     <!-- Bootstrap core JavaScript-->
     <script src="{{asset('js/app.js')}}"></script>
 

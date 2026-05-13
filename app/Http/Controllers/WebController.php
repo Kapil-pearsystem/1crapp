@@ -815,20 +815,22 @@ class WebController extends Controller
     //business card
     public function businessCard($slug = null)
     {
+        
         $agent_id = app('currentAgent')->id;
         $card = DB::table('tbl_businesscard')->select('tbl_businesscard.*','rk_countries.name as country_name','rk_states.name as state_name','rk_cities.name as city_name')
         ->leftjoin('rk_countries','rk_countries.id','=','tbl_businesscard.country')
         ->leftjoin('rk_states','rk_states.id','=','tbl_businesscard.state')
         ->leftjoin('rk_cities','rk_cities.id','=','tbl_businesscard.city')
         ->where('tbl_businesscard.user_id', $agent_id)
-        ->where('tbl_businesscard.category', 1)
-        ->orWhere('tbl_businesscard.is_public', 1);
+        ->where('tbl_businesscard.category', 1);
         if($slug) {
             $card = $card->where('tbl_businesscard.link_slug', $slug);
+        }else{
+            $card = $card->where('tbl_businesscard.is_public', 1);
+            
         }
         $card = $card->orderBy('tbl_businesscard.id','desc')
         ->first();
-        // dd($card);
         return view('front.business-card-new', compact('card'));
     }
 
