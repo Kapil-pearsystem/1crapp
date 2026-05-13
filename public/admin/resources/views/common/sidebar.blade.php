@@ -726,6 +726,7 @@ $finalUrl = $scheme . '://' . $host;
 					<li><a href="javascript:void(0);">Footer Top</a></li>
 					<li><a href="javascript:void(0);">Footer Bottom</a></li>
 					<li><a href="javascript:void(0);">Legal & Compliances</a></li>
+					<li><a href="{{ route('custom-layout.index') }}">Custom Layout</a></li>
 				   </ul>
 				 </div>
 				</div>
