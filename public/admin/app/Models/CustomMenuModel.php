@@ -22,6 +22,7 @@ class CustomMenuModel extends Model
     protected $fillable = [
         'icon',
         'title',
+        'page_url',
         'parent_id',
         'type',
         'open_new_tab',

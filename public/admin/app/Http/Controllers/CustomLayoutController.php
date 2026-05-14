@@ -13,14 +13,25 @@ class CustomLayoutController extends Controller
     public function index()
     {
         $layout = CustomLayoutModel::where('created_by', auth()->user()->id)->first();
-        $menus = CustomMenuModel::select('tbl_custommenu.*', 'cm.title as parent_title')->where('tbl_custommenu.created_by', auth()->user()->id)
-        ->leftjoin('tbl_custommenu as cm', 'cm.parent_id', '=', 'tbl_custommenu.id')
-        ->orderBy('tbl_custommenu.id', 'DESC')->get();
-        $parents = CustomMenuModel::select('id', 'title')->where('parent_id', NULL)
-        ->orderBy('tbl_custommenu.title', 'ASC')->get();
+
+        $menus = CustomMenuModel::select(
+                'tbl_custommenu.*',
+                'cm.title as parent_title'
+            )
+            ->leftJoin('tbl_custommenu as cm', 'tbl_custommenu.parent_id', '=', 'cm.id')
+            ->where('tbl_custommenu.created_by', auth()->user()->id)
+            ->orderBy('tbl_custommenu.id', 'DESC')
+            ->get();
+
+        $parents = CustomMenuModel::select('id', 'title')
+            ->whereNull('parent_id')
+            ->orderBy('title', 'ASC')
+            ->get();
+
         return view('custom-layout.index', compact('layout', 'menus', 'parents'));
     }
-   public function save(Request $request)
+
+    public function save(Request $request)
     {
         if ($request->id) {
             $setting = CustomLayoutModel::find($request->id);
@@ -66,6 +77,7 @@ class CustomLayoutController extends Controller
         }
         $menu->icon = $request->icon;
         $menu->title = $request->title;
+        $menu->page_url = $request->page_url;
         $menu->parent_id = $request->parent_id;
         $menu->type = $request->type;
         $menu->open_new_tab = $request->open_new_tab;

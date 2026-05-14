@@ -48,7 +48,7 @@ use Illuminate\Support\Str;
                                     <td>{{ $index + 1 }}</td>
                                     <td>@if($menu->icon)<i class="fa {{ $menu->icon }}"></i>@endif {{ $menu->title }}</td>
                                     <td>{{ $menu->parent_title }}</td>
-                                    <td>{{ ($menu->type == 1)?'Headet':'Footer' }}</td>
+                                    <td>{{ ($menu->type == 1)?'Header':'Footer' }}</td>
                                     <td>{{ $menu->created_at->format('Y-m-d') }}</td>
                                     <td>
                                         @if($menu->status == 1)
@@ -162,6 +162,9 @@ use Illuminate\Support\Str;
                         <input type="text" placeholder="Enter Title" class="form-control" name="title" required>
                     </div>
                     <div class="form-group">
+                        <input type="text" name="page_url" placeholder="Enter Page Url" value="javascript:void(0);" required class="form-control" />
+                    </div>
+                    <div class="form-group">
                         <select class="form-control" name="parent_id">
                             <option value="">Parent Menu</option>
                             @foreach($parents as $p_menu)
@@ -220,7 +223,9 @@ use Illuminate\Support\Str;
                     <div class="form-group">
                         <input type="text" placeholder="Enter Title" class="form-control" id="title" name="title" required>
                     </div>
-                    
+                    <div class="form-group">
+                        <input type="text" id="page_url" name="page_url" placeholder="Enter Page Url" value="javascript:void(0);" required class="form-control" />
+                    </div>
                     <div class="form-group">
                         <select class="form-control" id="parent_id" name="parent_id">
                             <option value="">Parent Menu</option>
@@ -281,6 +286,7 @@ use Illuminate\Support\Str;
         $('#id').val(data.id);
         $('#icon').val(data.icon);
         $('#title').val(data.title);
+        $('#page_url').val(data.page_url);
         $('#parent_id').val(data.parent_id);
         $('#type').val(data.type);
         $('#open_new_tab').val(data.open_new_tab);
