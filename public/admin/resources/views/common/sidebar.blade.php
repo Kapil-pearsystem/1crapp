@@ -594,6 +594,7 @@ $finalUrl = $scheme . '://' . $host;
 				<div class="accordion_body" style="display: none;">
 				 <div class="user_listst_links">
 				   <ul>
+                        <li><a href="{{ route('core-page.index') }}">list</a></li>
                         <li><a href="javascript:void(0);">About Us</a></li>
                         <li><a href="javascript:void(0);">Home Page</a></li>
 					    <li><a href="javascript:void(0);">How It Works</a></li>

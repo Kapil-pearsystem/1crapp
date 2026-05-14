@@ -65,6 +65,7 @@ use App\Http\Controllers\ScheduleAppointmentController;
 use App\Http\Controllers\UserHeroSectionController;
 use App\Http\Controllers\UserOnboardController;
 use App\Http\Controllers\CustomLayoutController;
+use App\Http\Controllers\CorePageController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -953,5 +954,10 @@ Route::middleware('auth')->prefix('custom-layout')->name('custom-layout.')->grou
     Route::post('/save', [CustomLayoutController::class, 'save'])->name('save');
     Route::post('/menu/save', [CustomLayoutController::class, 'save_menu'])->name('menu.save');
     Route::get('/menu/delete/{id}', [CustomLayoutController::class, 'delete_menu'])->name('menu.delete');
+});
+Route::middleware('auth')->prefix('core-page')->name('core-page.')->group(function(){
+    Route::get('/', [CorePageController::class, 'index'])->name('index');
+    Route::get('/create', [CorePageController::class, 'create'])->name('create');
+    Route::post('/save', [CorePageController::class, 'save'])->name('save');
 });
 
