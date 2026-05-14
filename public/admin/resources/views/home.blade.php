@@ -3,6 +3,7 @@
 @section('content')
 @php
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\DB;
 @endphp
 <div class="container-fluid">
     <!-- Page Heading -->
@@ -42,7 +43,7 @@ use Illuminate\Support\Str;
                         <div class="col mr-2">
                             <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
                                 Total Users</div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ DB::where('type', 1)->table('users')->count() }}</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ DB::table('users')->where('type', 1)->count() }}</div>
                         </div>
                         <div class="col-auto">
                             <i class="fas fa-users fa-2x text-gray-300"></i>

@@ -1,3 +1,8 @@
+@php 
+    use Illuminate\Support\Facades\DB;
+    $menus = DB::table('tbl_custommenu')->where(['type'=> 1, 'parent_id'=> null])->where('created_by', app('currentAgent')->id)->get();
+    $layouts = DB::table('tbl_customlayout')->where('created_by', app('currentAgent')->id)->first();
+@endphp
 <html lang="en" >
 <head>
   <meta charset="UTF-8">
@@ -12,9 +17,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css">
   <link rel='stylesheet' href="{{ url('home/css/style.css')}}">
 </head>
-
 <!-- End Form Modal -->
-
 <style>
     .shadow.othr_pgss_lde .top_menuues {
         margin: 0;
@@ -176,6 +179,71 @@
     .ftr_new_other .ftr_content .crt_arar img.logo {
         margin-right: 15px;
     }
+    .navbar-nav {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+        list-style: none;
+        margin: 0;
+        padding: 0;
+    }
+
+    .navbar-nav > li {
+        position: relative;
+    }
+
+    .navbar-nav > li > a {
+        color: #fff;
+        text-decoration: none;
+        padding: 15px 12px;
+        display: block;
+    }
+
+    /* Submenu */
+    .submenu {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        background: #111;
+        min-width: 220px;
+        padding: 10px 0;
+        z-index: 99999;
+        border-radius: 5px;
+    }
+
+    .submenu li {
+        width: 100%;
+        list-style: none;
+    }
+
+    .submenu li a {
+        display: block;
+        padding: 10px 15px;
+        color: #fff;
+        white-space: nowrap;
+    }
+
+    .submenu li a:hover {
+        background: #222;
+        color: #fff;
+        text-decoration: none;
+    }
+     
+
+    .has-submenu{
+        position:relative;
+    }
+
+    .has-submenu:hover .submenu{
+        display:block !important;
+        position:absolute;
+        top:100%;
+        left:0;
+        background:#000;
+        min-width:220px;
+        z-index:99999;
+    }
 </style>
 <body>
 <!--- Header Part ---->
@@ -185,20 +253,75 @@
 		  <div class="row">
 		   <div class="col-lg-2 col-2">
 		    <div class="othr_logges">
-			 <a class="nav-brand" href="javascript:void(0);"><img class="logo" src="{{ url('home/img/logo 1.png')}}" alt="Logo" /></a>
+                @if($layouts && $layouts->logo)
+                    <a class="nav-brand" href="{{ url('/') }}"><img class="logo" src="{{ $layouts->logo }}" alt="Logo" /></a>
+                @endif
 			</div>
 		   </div>
 		   <div class="col-lg-10 col-10">
 		    <div class="top_sec_menu cnt_parts">
+                @if(!is_null($menus))
+                <ul class="navbar-nav">
+                   @foreach($menus as $menu)
+                    @php
+                        $chield_menues = DB::table('tbl_custommenu')
+                            ->where([
+                                'type' => 1,
+                                'parent_id' => $menu->id
+                            ])
+                            ->where('created_by', app('currentAgent')->id)
+                            ->get();
+                    @endphp
+                    @if($chield_menues->isEmpty())
+                        <li>
+                            <a href="{{ $menu->page_url }}"
+                            @if($menu->open_new_tab == 1) target="_blank" @endif>
+                                @if($menu->icon)
+                                    <i class="fa {{ $menu->icon }}"></i>
+                                @endif
+                                <span>{{ $menu->title }}</span>
+                            </a>
+                        </li>
+                    @else
+                        <li class="has-submenu">
+                            <a href="javascript:void(0)">
+                                @if($menu->icon)
+                                    <i class="fa {{ $menu->icon }}"></i>
+                                @endif
+                                <span>{{ $menu->title }} <i class="fa fa-chevron-down"></i></span>
+                            </a>
+                            <ul class="submenu d-none" >
+                                @foreach($chield_menues as $child)
+                                    <a href="{{ $child->page_url }}"
+                                        @if($child->open_new_tab == 1) target="_blank" @endif>
+                                        <li>
+                                            
+                                            @if($child->icon)
+                                                <i class="fa {{ $child->icon }}"></i>
+                                            @endif
+                                            <span>{{ $child->title }}</span>
+                                        </li>
+                                    </a>
+                                @endforeach
+                            </ul>
+                        </li>
+                    @endif
+                @endforeach
+                    <!-- <li class="callss"><i class="fa fa-whatsapp"></i> <span>+91-9966680133</span></li> -->
+                    @if($layouts && $layouts->logo)
+                        <li><a href="{{ $layouts->btn_link }}" class="gt_it_nnw" @if($layouts->open_new_tab == 1) target="_blank" @endif style="background-color:{{ $layouts->btn_bg_color }}; color:{{ $layouts->btn_text_color }};">{{ $layouts->btn_text}}</a></li>
+                    @endif
+                </ul>
+                @else 
                 <ul>
 				    <li><a href="{{ url('help') }}"><i class="fa fa-phone"></i> <span>Help ?</span></a></li>
                     <li class="callss"><i class="fa fa-whatsapp"></i> <span>+91-9966680133</span></li>
                     <li><a href="javascript:void(0);" class="gt_it_nnw" data-toggle="modal" data-target="#sub_m_al_frms">Get it now</a></li>
                 </ul>
+                @endif
             </div>
 		   </div>
 		  </div>
-
         </div>
     </div>
 </section>

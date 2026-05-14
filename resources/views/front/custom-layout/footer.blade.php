@@ -1,25 +1,41 @@
+@php 
+    use Illuminate\Support\Facades\DB;
+    $f_menus = DB::table('tbl_custommenu')->where(['type'=> 2, 'parent_id'=> null])->where('created_by', app('currentAgent')->id)->get();
+    $layouts = DB::table('tbl_customlayout')->where('created_by', app('currentAgent')->id)->first();
+@endphp
 <section class="ftr_new_other">
     <div class="container">
         <div class="ftr_content">
             <div class="lgo">
-                <a href="javascript:void(0);"><img class="logo" src="{{ url('home/img/logo 1.png')}}" alt="Logo" /></a>
+                @if($layouts && $layouts->logo)
+                    <a href="{{ url('/') }}"><img class="logo" src="{{ $layouts->logo }}" alt="Logo" /></a>
+                @endif
             </div>
 
             <div class="menu_ftrr">
-                <a href="javascript:void(0);">Blog</a>
-                <a href="javascript:void(0);">DMCA Policy</a>
+                @foreach($f_menus as $fmenu)
+                    <a href="{{ $fmenu->page_url }}"  @if($fmenu->open_new_tab == 1) target="_blank" @endif>{{ $fmenu->title }}</a>
+                @endforeach
+                <!-- <a href="javascript:void(0);">DMCA Policy</a>
                 <a href="javascript:void(0);">Earnings Disclaimer</a>
                 <a href="javascript:void(0);">Privacy Policy</a>
-                <a href="javascript:void(0);">Terms & Conditions</a>
+                <a href="javascript:void(0);">Terms & Conditions</a> -->
             </div>
 
             <div class="crt_arar mt-0 mb-4">
-                Copyright 2024 @ 1crapp.com, G-10, Green View, Jaipur, Rajasthan. India 301725
+                @if($layouts && $layouts->copyright_text)
+                    {{ $layouts->copyright_text }}
+                @endif
             </div>
-
+            @php 
+            $branding = DB::table('branding_setting')->select('logo', 'message')->where('user_id', 8)->first();
+            @endphp
+            @if($branding)
             <div class="crt_arar">
-                <img class="logo" src="{{ url('home/img/logo 1.png')}}" alt="Logo" /> Create your lead mannet and capture the leads easily with 1CR APP
+                <img class="logo" src="{{ $branding->logo }}" alt="Logo" /> {{ $branding->message }}
             </div>
+            @endif
+
 
         </div>
     </div>

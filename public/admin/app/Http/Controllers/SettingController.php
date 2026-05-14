@@ -1,7 +1,5 @@
 <?php
-
 namespace App\Http\Controllers;
-
 use App\Models\User;
 use App\Models\PaymentSetting; 
 use App\Models\BrandingSetting;
@@ -16,7 +14,6 @@ use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rules\Password;
 // use App\Helper\Helper as Helper;
-
 class SettingController extends Controller
 {
     /**
@@ -30,13 +27,7 @@ class SettingController extends Controller
         $this->middleware('permission:smtp', ['only' => ['smtpfrm','updateSmtp']]);
         $this->middleware('permission:payment-gateway', ['only' => ['paymentgatways','updatePaymentGateway']]);
         $this->middleware('permission:branding', ['only' => ['brandingsfrm','updateBranding']]);  
-         
-
-
     }
-
- 
-
     /**
      * Update Payment Gateway Setting
      * @param Integer $status
@@ -55,7 +46,6 @@ class SettingController extends Controller
         if(is_null($data)){
             return redirect()->back()->with('error','No Data Found!');
         }
-        
         // dd($data);
         $paymentdata = PaymentSetting::where('user_id',$data->id)->where('gateway_type','razor_pay')->first();
         $paymentdata2 = PaymentSetting::where('user_id',$user_id)->where('gateway_type','instamojo')->first(); 
@@ -64,8 +54,6 @@ class SettingController extends Controller
     public function updatePaymentGateway(Request $request)
     {
         // Validation
-       
-        
        $request->validate([
             'user_id'    => 'required',
             'role_id'    => 'required',
@@ -73,25 +61,19 @@ class SettingController extends Controller
             'api_secret'     => 'required',
             'callback_url'         => 'required',
             'status' => 'required',
-            
         ]);
-
         $user_id = $request->user_id;
         $role_id = $request->role_id;
         // If Validations Fails
       /*  if($validate->fails()){
             return redirect()->route('setting.paymentgatways')->with('error', $validate->errors()->first());
         }*/
-        
         if($request->status==1 && $request->instamojo_status==1){
             return redirect()->back()->with('error', 'Only one payment gateway can be active');
         }
-
         try {
             DB::beginTransaction();
-                
                 $razordata = PaymentSetting::where('user_id',$user_id)->where('gateway_type','razor_pay')->first();
-                
                 if(!$razordata){
                       PaymentSetting::insert([
                             'api_key'   => $request->api_key,
@@ -113,10 +95,7 @@ class SettingController extends Controller
                             'updated_at'    => now()
                          ]);
                 }
-                
-                
                 $instamojodata = PaymentSetting::where('user_id',$user_id)->where('gateway_type','instamojo')->first();
-                
                 if(!$razordata){
                       PaymentSetting::insert([
                             'api_key'   => $request->instamojo_api_key,
@@ -138,24 +117,15 @@ class SettingController extends Controller
                             'updated_at'    => now()
                          ]);
                 }
-           
-              
-            
-             
-
             // Commit And Redirect on index with Success Message
             DB::commit();
             return redirect()->back()->with('success','Payment Setting Updated Successfully!');
         } catch (\Throwable $th) {
-
             // Rollback & Return Error Message
             DB::rollBack();
             return redirect()->back()->with('error', $th->getMessage());
         }
     }
-
-    
-
     /**
      * Update Payment Gateway Setting
      * @param Integer $status
@@ -175,13 +145,10 @@ class SettingController extends Controller
             return redirect()->back()->with('error','No Data Found!');
         }
         $brandingdata = BrandingSetting::where('user_id',$data->id)->first();
-        
         return view('setting.brandings', ['admin' => 0,'brandingdata'=>$brandingdata,'data'=>$data]);
     }
     public function updateBranding(Request $request)
     {
-       
-        
         $request->validate([
             'user_id'    => 'required',
             'role_id'    => 'required',
@@ -190,9 +157,7 @@ class SettingController extends Controller
             'email'        => 'required',
             'phone' => 'required',
         ]);
-
         // dd($request->all());
-
         // If Validations Fails
        /* if($validate->fails()){
             return redirect()->route('setting.brandings')->with('error', $validate->errors()->first());
@@ -209,23 +174,16 @@ class SettingController extends Controller
                 $favicon = '';
                 $logo = '';
             }
-           
-            
-        if(!empty($request->logo))
-		{
-	    	$profile_imagefileName = time().rand().'.'.$request->logo->extension();		
+       if (!empty($request->logo)) {
+            $profile_imagefileName = time().rand().'.'.$request->logo->extension();
             $request->logo->move(public_path('img'), $profile_imagefileName);
-			$logo =$profile_imagefileName;
-		}
-		
-		 if(!empty($request->favicon))
-		{
-	    	$profile_imagefileName2 = time().rand().'.'.$request->favicon->extension();		
+            $logo = asset('img/'.$profile_imagefileName);
+        }
+        if (!empty($request->favicon)) {
+            $profile_imagefileName2 = time().rand().'.'.$request->favicon->extension();
             $request->favicon->move(public_path('img'), $profile_imagefileName2);
-			$favicon =$profile_imagefileName2;
-		}
-		
-
+            $favicon = asset('img/'.$profile_imagefileName2);
+        }
         // Update Status with reason
        BrandingSetting::updateOrCreate(
             ['user_id' => $user_id], // condition to check
@@ -237,25 +195,21 @@ class SettingController extends Controller
                 'email'       => $request->email,
                 'logo'        => $logo,
                 'favicon'     => $favicon,
-                'theme_color'     => $request->color,
+                'theme_color' => $request->color,
+                'message'     => $request->message,
                 'updated_at'  => now(),
                 'created_at'  => now(), // not required – Laravel handles this on create
             ]
         );
-       
-            
             // Commit And Redirect on index with Success Message
             DB::commit();
             return redirect()->back()->with('success','Branding Setting Updated Successfully!');
         } catch (\Throwable $th) {
-            
             // Rollback & Return Error Message
             DB::rollBack();
             return redirect()->back()->with('error', $th->getMessage());
         }
     }
-
-    
     /**
      * Update Payment Gateway Setting
      * @param Integer $status
@@ -271,7 +225,6 @@ class SettingController extends Controller
                 return redirect()->back()->with('error','You Entered Wrond Url.');
             }
         }
-       
         if(is_null($data)){
             return redirect()->back()->with('error','No Data Found!');
         }
@@ -301,7 +254,6 @@ class SettingController extends Controller
         if($existingdata){
              // Update Status with reason
             SmtpSetting::where('user_id',$user_id)->update([
-
                 'mailer'   => $request->mailer,
                 'host'   => $request->host,
                 'username'    => $request->username,
@@ -314,7 +266,6 @@ class SettingController extends Controller
             ]);
         }else{
              SmtpSetting::where('user_id',$user_id)->insert([
-
                 'mailer'   => $request->mailer,
                 'host'   => $request->host,
                 'user_id'   => $user_id,
@@ -329,25 +280,13 @@ class SettingController extends Controller
                 'updated_at'    => now()
             ]);
         }
-
-
             // Commit And Redirect on index with Success Message
             DB::commit();
             return redirect()->back()->with('success','SMTP Setting Updated Successfully!');
         } catch (\Throwable $th) {
-
             // Rollback & Return Error Message
             DB::rollBack();
             return redirect()->back()->with('error', $th->getMessage());
         }
     }
-
-
-   
-
-    
-
-  
-    
-
 }

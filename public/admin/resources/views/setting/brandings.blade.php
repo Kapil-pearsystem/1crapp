@@ -48,7 +48,7 @@
 					  Brand Logo
 					 <input type="file" id="" placeholder="File Upload" name="logo" value="{{ @$brandingdata->logo }}"   class="form-control form-control-user" />
 					  @if(@$brandingdata->logo)
-					 <img src="{{ url('img') }}/{{ @$brandingdata->logo }}" width="100px"/>
+					 <img src="{{ @$brandingdata->logo }}" width="100px"/>
 					 @endif
 					</div>
 
@@ -56,7 +56,7 @@
 					  Brand Logo Fav (50x50)
 					 <input type="file" id="" placeholder="File Upload" name="favicon" value="{{ @$brandingdata->favicon }}"   class="form-control form-control-user" />
 					 @if(@$brandingdata->favicon)
-					  <img src="{{ url('img') }}/{{ @$brandingdata->favicon }}" width="100px"/>
+					  <img src="{{ @$brandingdata->favicon }}" width="100px"/>
 					  @endif
 					</div>
 
@@ -65,6 +65,12 @@
                       <div class="bothss_area">
 					   <input type="color" id="colorpicker" name="color" pattern="^#+([a-fA-F0-9]{6}|[a-fA-F0-9]{3})$" value="{{ old('color') ? old('color') :  @$brandingdata->theme_color }}" />
                        <input type="text" name="theme_color" pattern="^#+([a-fA-F0-9]{6}|[a-fA-F0-9]{3})$" value="{{ old('theme_color') ? old('theme_color') : @$brandingdata->theme_color }}" id="hexcolor"></input>
+					  </div>
+					</div>
+                    <div class="col-sm-12 mb-3 mt-3 mb-sm-0" id="cl_themess">
+					  Message
+                      <div class="bothss_area">
+					    <textarea name="message" id="message" class="form-control">{{ @$brandingdata->message }}</textarea>
 					  </div>
 					</div>
                 </div>

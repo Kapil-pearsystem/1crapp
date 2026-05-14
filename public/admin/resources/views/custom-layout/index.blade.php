@@ -110,7 +110,7 @@ use Illuminate\Support\Str;
                             </div>
                             <div class="col-sm-6 mb-3">
                                 <label>Button Link<span style="color: red;">*</span></label>
-                                <input type="color" name="btn_link" placeholder="" value="{{ old('btn_link', $layout->btn_link ?? '') }}" required class="form-control" />
+                                <input type="url" name="btn_link" placeholder="" value="{{ old('btn_link', $layout->btn_link ?? '') }}" required class="form-control" />
                                 @error('btn_link')
                                     <span class="text-danger">{{ $message }}</span>
                                 @enderror
@@ -156,7 +156,7 @@ use Illuminate\Support\Str;
                     <div class="form-group">
                         <span class="form-text text-muted">Please enter fontawesome icon classes only like <code>fa-check</code> for <i class="fa fa-check"></i> To get icons got to <a href="https://fontawesome.com/v4/icons/" target="_blank">Font Awesome Icons <i class="fas fa-external-link-alt"></i></a></span>
                         <hr>
-                        <input type="text" class="form-control" placeholder="Enter Icon Class" name="icon" required>
+                        <input type="text" class="form-control" placeholder="Enter Icon Class" name="icon">
                     </div>
                     <div class="form-group">
                         <input type="text" placeholder="Enter Title" class="form-control" name="title" required>
