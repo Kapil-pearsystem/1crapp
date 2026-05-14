@@ -110,16 +110,16 @@ use Illuminate\Support\Str;
                                 2
                             ) { ?> style="display:block;" <?php } else { ?>style="display:none;" <?php } ?>>
                                 Pest Embeded Code
-                                <textarea id="media_link" placeholder="Pest Embeded Code.. " name="demo_embeded_link" class="form-control form-control-user">{{ old('demo_link')??(isset($settings)?$settings->demo_link :? '')}}</textarea>
+                                <textarea id="media_link" placeholder="Pest Embeded Code.. " name="demo_embeded_link" class="form-control form-control-user">{{ old('demo_link')??(isset($settings)?$settings->demo_link : '')}}</textarea>
                                 <span id="demo_linkError" class="err text-danger"></span> @if(session('demo_link_error')) <span class="text-danger"> {{ session('demo_link_error') }} </span> @endif
-                                @if($settings->demo_link)<iframe width="100%" height="400" src="{{ $settings->demo_link }}" frameborder="0" allowfullscreen></iframe>@endif
+                                @if($settings->demo_link){!! $settings->demo_link !!}@endif
                             </div>
                             <div class="col-sm-6 mb-2 mt-1 mb-sm-0" id="video_link" <?php if (
                                 (old("media_type") ?? ($settings->media_type ?? "")) ==
                                 3
                             ) { ?> style="display:block;" <?php } else { ?>style="display:none;" <?php } ?>>
                                 Enter URL or Link
-                                <input type="url" id="media_link" placeholder="Pest URL or Link" name="demo_video_link" value="{{ old('demo_link')??($settings->demo_link ?? '')}}" class="form-control form-control-user" />
+                                <input type="text" id="media_link" placeholder="Pest URL or Link" name="demo_video_link" value="{{ old('demo_link')??($settings->demo_link ?? '')}}" class="form-control form-control-user" />
                                 <span id="mediaLinkError" class="err text-danger"></span> @if(session('demo_link_error')) <span class="text-danger"> {{ session('demo_link_error') }} </span> @endif
                                 @if($settings->demo_link)<video width="100%" controls><source src="{{ $settings->demo_link }}"></video>@endif
                             </div>

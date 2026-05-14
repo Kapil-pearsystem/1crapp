@@ -1,8 +1,8 @@
 
-<!--// pre login-->
-@if($page_data->custom_header_visible == 1)
+<!--// post login-->
+@if($page_data->layout == 2)
     @include('front.custom-layout.header')
-@else
+@elseif($page_data->layout == 1)
     @include('front.layouts.user-header')
     <section class="tital_mg_cntss">
         <img src="{{ url('home/img/top_al_pgss.png')}}" class="bg_al_cntxt" alt="" />
@@ -13,8 +13,16 @@
             </div>
         </div>
     </section>
+@else
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>External Page</title>
+</head>
+<body>
 @endif
-
 <div class="container mt-5">
     <div class="row">
         <div class="col-12">
@@ -22,8 +30,11 @@
         </div>
     </div>
 </div>
-@if($page_data->custom_footer_visible == 1)
+@if($page_data->layout == 1)
+    @include('front.layouts.footer')
+@elseif($page_data->layout == 2)
     @include('front.custom-layout.footer')
 @else
-    @include('front.layouts.footer')
+</body>
+</html>
 @endif

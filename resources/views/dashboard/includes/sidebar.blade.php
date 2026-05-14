@@ -23,6 +23,10 @@ $communities = DB::table('tbl_joincommunity')->where('created_by', app('currentA
 
 <!-- Bootstrap JS -->
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 <style>
     .custom-dropdown {
         position: relative;
@@ -221,7 +225,7 @@ $communities = DB::table('tbl_joincommunity')->where('created_by', app('currentA
                 <div class="community-card text-center">
                     <div class="community-icon">
                         <i class="fa {{ $community->icon }}"></i>
-                    </div>
+                    </div><br>
                     <h6 style="font-weight:900;">{{ Str::limit($community->title, 25) }}</h6>
                     <small>
                         {{ Str::limit($community->content, 80) }}
