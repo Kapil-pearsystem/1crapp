@@ -11,6 +11,7 @@ class AdbSettingsModel extends Model
     protected $table = 'adb_dashboard';
     protected $primaryKey = 'id';
     protected $fillable = [
+        'media_type',
         'demo_link',
         'demo_link_enable',
         'chatbot_code',

@@ -12,7 +12,7 @@ if (str_starts_with($host, 'admin.')) {
 
 $finalUrl = $scheme . '://' . $host;
 ?>
-@section('title', 'Embed Page List')
+@section('title', 'External Page List')
 
 <link href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css" rel="stylesheet">
 
@@ -21,7 +21,7 @@ $finalUrl = $scheme . '://' . $host;
 
     <!-- Page Heading -->
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-        <h1 class="h3 mb-0 text-gray-800">Embed Page List</h1>
+        <h1 class="h3 mb-0 text-gray-800">External Page List</h1>
         <div class="row">
             <div class="col-md-12">
                 <a href="{{ route('embed-page.create') }}" class="btn btn-sm btn-primary">

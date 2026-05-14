@@ -122,14 +122,6 @@ public function delete_community($id){
 }
 public function store_chatbot(Request $request)
 {
-    $validator = Validator::make($request->all(), [
-        'demo_link' => 'required|string|max:255',
-        'chatbot_code' => 'required'
-    ]);
-
-    if ($validator->fails()) {
-        return back()->withErrors($validator)->withInput();
-    }
     if($request->id){
         $adbSettings = AdbSettingsModel::find($request->id);
         $msg = 'Setting updated successfully.';
@@ -137,7 +129,27 @@ public function store_chatbot(Request $request)
         $adbSettings = new AdbSettingsModel();
         $msg = 'Setting added successfully.';
     }
-    $adbSettings->demo_link = $request->demo_link;
+    if($request->media_type == 1){
+        try {
+            if ($request->hasFile('demo_link')) {
+                $file_name = time() . '.' . $request->demo_link->getClientOriginalExtension();
+                $request->demo_link->move(public_path('uploads'), $file_name);
+                $adbSettings->demo_link = asset('uploads/' . $file_name);
+                if (file_exists($request->old_demo_link)) {
+                   unlink($request->old_demo_link);
+                }
+            }
+        } catch (\Exception $e) {
+            // Handle exception
+            return redirect()->back()->withErrors(['error' => 'Upload failed: ' . $e->getMessage()]);
+        }
+    }elseif($request->media_type == 2){
+        $adbSettings->demo_link = $request->demo_embeded_link;
+    }else{
+        $adbSettings->demo_link = $request->demo_video_link;  
+    }
+    // dd($adbSettings->demo_link);
+    $adbSettings->media_type = $request->media_type;
     $adbSettings->demo_link_enable = $request->demo_link_enable??0;
     $adbSettings->chatbot_code = $request->chatbot_code;
     $adbSettings->chatbot_code_enable = $request->chatbot_code_enable??0;

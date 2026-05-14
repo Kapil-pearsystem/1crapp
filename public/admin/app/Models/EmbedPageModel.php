@@ -16,8 +16,7 @@ class EmbedPageModel extends Model
         'page_url',
         'embed_link',
         'embed_code',
-        'custom_header_visible',
-        'custom_footer_visible',
+        'layout',
         'status',
         'created_by',
     ];

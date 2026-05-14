@@ -252,8 +252,18 @@ $communities = DB::table('tbl_joincommunity')->where('created_by', app('currentA
     </div>
     <div class="modal-content" style="height:80%;">
         @if(!is_null($d_video))
-            @if($d_video->demo_link_enable == 1)
-                <iframe src="{{ $d_video->demo_link }}" height="100%" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+            @if($d_video->media_type == 2)
+                {!! $d_video->demo_link !!}
+            @else
+                @if($d_video->demo_link_enable == 1)
+                    @if(Str::contains($d_video->demo_link, 'youtube.com') || Str::contains($d_video->demo_link, 'youtu.be'))
+                        <iframe width="100%" src="{{ $d_video->demo_link }}" frameborder="0" allowfullscreen></iframe>
+                    @elseif(in_array(pathinfo($d_video->demo_link, PATHINFO_EXTENSION), ['jpg','jpeg','png','gif']))
+                        <img src="{{ $d_video->demo_link }}" class="img-fluid">
+                    @elseif(in_array(pathinfo($d_video->demo_link, PATHINFO_EXTENSION), ['mp4','webm']))
+                        <video width="100%" controls><source src="{{ $d_video->demo_link }}"></video>
+                    @endif
+                @endif
             @endif
         @endif
     </div>

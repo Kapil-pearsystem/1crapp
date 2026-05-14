@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', isset($details) ? 'Edit Embed Page' : 'Add Embed Page')
+@section('title', isset($details) ? 'Edit External Page' : 'Add External Page')
 
 @section('content')
 
@@ -8,7 +8,7 @@
 
     <!-- Page Heading -->
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-        <h1 class="h3 mb-0 text-gray-800">{{ isset($details) ? 'Edit Embed Page' : 'Add Embed Page' }}</h1>
+        <h1 class="h3 mb-0 text-gray-800">{{ isset($details) ? 'Edit External Page' : 'Add External Page' }}</h1>
         <a href="{{ route('embed-page.index') }}" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
             <i class="fas fa-arrow-left fa-sm text-white-50"></i> Back
         </a>
@@ -16,7 +16,6 @@
 
     {{-- Alert Messages --}}
     @include('common.alert')
-
     <!-- Embed Page Form -->
     <div class="card shadow mb-4">
         <form method="POST" action="{{ route('embed-page.store') }}" enctype="multipart/form-data">
@@ -26,7 +25,7 @@
                 <div class="form-group row">
 
                     <!-- Title -->
-                    <div class="col-sm-8 mb-3 mt-3 mb-sm-0">
+                    <div class="col-sm-6 mb-3 mt-3 mb-sm-0">
                         <span style="color: red;">*</span> Title
                         <input type="text" name="title" class="form-control form-control-user"
                             placeholder="Enter the Title"
@@ -35,7 +34,22 @@
                             <span class="text-danger">{{ $message }}</span>
                         @enderror
                     </div>
-                    <div class="col-sm-2 mb-3 swich_bntts">
+                    <div class="col-sm-6 mb-3 mt-3 mb-sm-0">
+                        <span style="color: red;">*</span> Layout <br>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="layout" id="inlineRadio1" value="1" {{ (old('layout', $details->layout ?? 0) == 1) ? 'checked' : '' }}>
+                            <label class="form-check-label" for="inlineRadio1">Default</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="layout" id="inlineRadio2" value="2" {{ (old('layout', $details->layout ?? 0) == 2) ? 'checked' : '' }}>
+                            <label class="form-check-label" for="inlineRadio2">Custom</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="layout" id="inlineRadio3" value="0" {{ (old('layout', $details->layout ?? 0) == 0) ? 'checked' : '' }} {{ isset($details)?'':'checked' }}>
+                            <label class="form-check-label" for="inlineRadio3">None</label>
+                        </div>
+                    </div>
+                    <!-- <div class="col-sm-2 mb-3 swich_bntts">
                          <label>Custom Header</label>
                         <div class="block_araea mt-1">
                             <label class="switch">
@@ -54,11 +68,11 @@
                                 <small></small>
                             </label>
                         </div>
-                    </div>
+                    </div> -->
                     
                     <!-- Embed Link -->
                     <div class="col-sm-12 mb-3 mt-3 mb-sm-0">
-                        <span style="color: red;">*</span> Embed Code
+                        <span style="color: red;">*</span> External Code
                         <!-- <input type="url" name="embed_link"  class="form-control form-control-user" value="{{ old('embed_link', $details->embed_link ?? '') }}"
                             placeholder="Paste the Embed Code here..."  required/> -->
                             <textarea
@@ -96,10 +110,8 @@
                             <span class="text-danger">{{ $message }}</span>
                         @enderror
                     </div>
-
                 </div>
             </div>
-
             <div class="card-footer">
                 <button type="submit" class="btn btn-success btn-user float-right mb-3">
                     {{ isset($details) ? 'Update' : 'Save' }}

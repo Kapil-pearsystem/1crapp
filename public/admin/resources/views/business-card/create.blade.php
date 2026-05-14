@@ -67,8 +67,8 @@
                         <textarea name="chatboat" id="" class="form-control" placeholder="Enter Chatbot Message">{{ old('chatboat', $details->chatboat ?? '') }}</textarea>
                     </div>
                     <div class="col-sm-6 mb-3 mt-3 mb-sm-0">
-                        <label>Digital Ramjee Bot</label>
-                        <input type="text" name="r_bot" value="{{ old('r_bot', $details->r_bot ?? '') }}" class="form-control" placeholder="Enter Digital Ramjee Bot" />
+                        <label>Chatbot Lable</label>
+                        <input type="text" name="r_bot" value="{{ old('r_bot', $details->r_bot ?? '') }}" class="form-control" placeholder="Enter Chatbot Lable" />
                     </div>
                     <div class="col-sm-6 mb-3 mt-3 mb-sm-0">
                         <label>Organizations :</label>

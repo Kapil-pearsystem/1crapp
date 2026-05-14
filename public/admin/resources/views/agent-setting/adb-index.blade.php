@@ -79,11 +79,69 @@ use Illuminate\Support\Str;
 
                     <div class="card-body">
                         <div class="form-group row">
-                            <div class="col-sm-10 mb-3">
+                            <div class="col-sm-5 mt-1 mb-3 mb-sm-0"> Media Type <select
+                                    name="media_type" id="media_type" class="form-control form-control-user"
+                                    onchange="setMedia(this.value)">
+                                    <option selected="selected" disabled="disabled">Select Media Type</option>
+                                    <option value="1"
+                                        {{ (old('media_type') ?? ($settings->media_type ?? '')) == 1 ? 'selected' : '' }}>Image
+                                    </option>
+                                    <option value="2"
+                                        {{ (old('media_type') ?? ($settings->media_type ?? '')) == 2 ? 'selected' : '' }}>Embed
+                                        Link</option>
+                                    <option value="3"
+                                        {{ (old('media_type') ?? ($settings->media_type ?? '')) == 3 ? 'selected' : '' }}>Video
+                                    </option>
+                                </select>
+                            </div>
+                            <div class="col-sm-6 mb-2 mt-1 mb-sm-0" id="media_type_file"
+                                <?php if (
+                                    (old("media_type") ??
+                                        ($settings->media_type ?? "")) !=
+                                    1
+                                ) { ?> style="display:none;"
+                                <?php } ?>> Media File 
+                                <input type="file" id="" placeholder="Enter Media File" name="demo_link" value="{{ old('demo_link')}}" class="form-control form-control-user" /> 
+                                <input type="hidden" name="old_demo_link" value="{{ isset($settings)?$settings->demo_link : ''}}" />
+                                @if($settings->demo_link)<img src="{{ $settings->demo_link }}" class="img-fluid">@endif
+                            </div>
+                            <div class="col-sm-6 mb-2 mt-1 mb-sm-0" id="media_type_link" <?php if (
+                                (old("media_type") ?? ($settings->media_type ?? "")) ==
+                                2
+                            ) { ?> style="display:block;" <?php } else { ?>style="display:none;" <?php } ?>>
+                                Pest Embeded Code
+                                <textarea id="media_link" placeholder="Pest Embeded Code.. " name="demo_embeded_link" class="form-control form-control-user">{{ old('demo_link')??(isset($settings)?$settings->demo_link :? '')}}</textarea>
+                                <span id="demo_linkError" class="err text-danger"></span> @if(session('demo_link_error')) <span class="text-danger"> {{ session('demo_link_error') }} </span> @endif
+                                @if($settings->demo_link)<iframe width="100%" height="400" src="{{ $settings->demo_link }}" frameborder="0" allowfullscreen></iframe>@endif
+                            </div>
+                            <div class="col-sm-6 mb-2 mt-1 mb-sm-0" id="video_link" <?php if (
+                                (old("media_type") ?? ($settings->media_type ?? "")) ==
+                                3
+                            ) { ?> style="display:block;" <?php } else { ?>style="display:none;" <?php } ?>>
+                                Enter URL or Link
+                                <input type="url" id="media_link" placeholder="Pest URL or Link" name="demo_video_link" value="{{ old('demo_link')??($settings->demo_link ?? '')}}" class="form-control form-control-user" />
+                                <span id="mediaLinkError" class="err text-danger"></span> @if(session('demo_link_error')) <span class="text-danger"> {{ session('demo_link_error') }} </span> @endif
+                                @if($settings->demo_link)<video width="100%" controls><source src="{{ $settings->demo_link }}"></video>@endif
+                            </div>
+                            <div class="col-sm-1 mb-1 mt-1 mb-sm-0 swich_bntts"> Visible
+                                <div class="block_araea mt-1">
+                                    <label class="switch"> <input value="1" type="checkbox" @isset($settings) @if($settings->demo_link_enable == 1) checked @endif @endisset name="demo_link_enable"> <small></small></label>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- <div class="form-group row">
+                            <div class="col-sm-5 mb-3">
                                 <label> Demo Video Link<span style="color: red;">*</span></label>
                                 <input type="url" name="demo_link" placeholder="Enter Video Link" value="{{ old('demo_link', $settings->demo_link ?? '') }}" required class="form-control" />
                                 @error('demo_link')
-                                    <span class="text-danger">{{ $message }}</span>
+                                <span class="text-danger">{{ $message }}</span>
+                                @enderror
+                            </div>
+                            <div class="col-sm-5 mb-3">
+                                <label> Demo Video Link<span style="color: red;">*</span></label>
+                                <input type="url" name="demo_link" placeholder="Enter Video Link" value="{{ old('demo_link', $settings->demo_link ?? '') }}" required class="form-control" />
+                                @error('demo_link')
+                                <span class="text-danger">{{ $message }}</span>
                                 @enderror
                             </div>
                             <div class="col-sm-2 mb-2 mt-3 mb-sm-0 swich_bntts">
@@ -92,6 +150,8 @@ use Illuminate\Support\Str;
                                     <label class="switch"><input value="1" {{ (old('demo_link_enable') ?? ($settings->demo_link_enable ?? '')) == 1 ? 'checked' : '' }} type="checkbox" name="demo_link_enable" /> <small></small></label>
                                 </div>
                             </div>
+                        </div> -->
+                        <div class="form-group row">
                             <div class="col-sm-10 mb-3">
                                 <label>Chatbot Code<span style="color: red;">*</span></label>
                                 <textarea name="chatbot_code" id="chatbot_code" rows="4" class="form-control" placeholder="Enter Chatbot Code">{{ old('chatbot_code') ?? (isset($settings)?$settings->chatbot_code: '') }}</textarea>
@@ -243,5 +303,23 @@ use Illuminate\Support\Str;
         $('#priority').val(data.priority);
         $('#status').val(data.status);
     }
+</script>
+
+<script>
+function setMedia(media_type) {
+    if (media_type == 2) {
+        $('#video_link').attr('style', 'display: none !important');
+        $('#media_type_file').attr('style', 'display: none !important');
+        $('#media_type_link').attr('style', 'display: block !important');
+    }else if(media_type == 3){
+        $('#video_link').attr('style', 'display: block !important');
+        $('#media_type_file').attr('style', 'display: none !important');
+        $('#media_type_link').attr('style', 'display: none !important');
+    }else {
+        $('#video_link').attr('style', 'display: none !important');
+        $('#media_type_file').attr('style', 'display: block !important');
+        $('#media_type_link').attr('style', 'display: none !important');
+    }
+}
 </script>
 @endsection

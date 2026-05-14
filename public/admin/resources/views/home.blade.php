@@ -174,7 +174,17 @@ use Illuminate\Support\Str;
                     <div class="card-body"> -->
             @if($adb_setting->demo_link_enable == 1)
                 @if($adb_setting->demo_link)
-                <iframe src="{{ $adb_setting->demo_link }}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                    @if($adb_setting->media_type == 2)
+                        {!! $adb_setting->demo_link !!}
+                    @else
+                        @if(Str::contains($adb_setting->demo_link, 'youtube.com') || Str::contains($adb_setting->demo_link, 'youtu.be'))
+                        <iframe width="100%" src="{{ $adb_setting->demo_link }}" frameborder="0" allowfullscreen> </iframe>
+                        @elseif(in_array(pathinfo($adb_setting->demo_link, PATHINFO_EXTENSION), ['jpg','jpeg','png','gif']))
+                            <img src="{{ $adb_setting->demo_link }}" class="img-fluid">
+                        @elseif(in_array(pathinfo($adb_setting->demo_link, PATHINFO_EXTENSION), ['mp4','webm']))
+                            <video width="100%" controls><source src="{{ $adb_setting->demo_link }}"></video>
+                        @endif
+                    @endif
                 @endif
             @endif
             <!-- </div>
