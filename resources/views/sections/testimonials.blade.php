@@ -1,16 +1,16 @@
 <?php
-    use App\Models\OurClientsModel;
-    $clients = OurClientsModel::where(['status'=> 1,'created_by'=>app('currentAgent')->id])->orderBy('id', 'DESC')->limit(12)->get();
+use App\Models\TestimonialsModel;
+$testimonials = TestimonialsModel::where(['status' => 1, 'created_by' => app('currentAgent')->id])->orderBy('id', 'DESC')->limit(6)->get();
 ?>
 <!--- What clients are saying about our 1cr app --->
 <section class="al_sec_araea testy_bx mg_bg_setss what_cl" id="">
     <div class="testi_bgr">
-        <h4>What clients are saying about our 1cr app</h4>
+        <h4>Testimonials</h4>
     </div>
     <div class="al_text_box">
         <div class="container">
             <div class="owl-carousel owl-theme" id="testimonials">
-                @foreach($clients as $key=>$client)
+                @foreach($testimonials as $key=>$client)
                 <div class="item">
                     <div class="it_emms">
 						<div class="usr_mgss"><img src="{{ ASSETS_PATH.$client->image }}" alt="" /></div>
@@ -26,20 +26,24 @@
                                     <i class="fa fa-star-o"></i>
                                 @endif
                             @endfor
+                            <!-- <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star-o"></i> -->
                         </div>
 						<div class="w_numbber">
 						 <a target="_blank" href="https://api.whatsapp.com/send/?phone=%2B{{ $client->contact }}&amp;text=Hi&amp;app_absent=0">
-						 <i class="fa fa-whatsapp"></i> +91 {{ $client->contact }}</a>
+						 <i class="fa fa-whatsapp "></i> +91 {{ $client->contact }}</a>
 						</div>
 						
 						<div class="snd_btnns">
 						     @if(!empty($client->video))
                                 <a href="{{ $client->video }}" >
-                                    <i class="fa fa-play-circle-o"></i> Watch Video
+                                    <i class="fa fa-play"></i> Watch Video
                                 </a>
                             @else
                                 <a href="javascript:void(0);" style="pointer-events: none; opacity: 0.6;">
-                                    <i class="fa fa-play-circle-o"></i> No Video
+                                    <i class="fa fa-play"></i> No Video
                                 </a>
                             @endif
 					    </div>

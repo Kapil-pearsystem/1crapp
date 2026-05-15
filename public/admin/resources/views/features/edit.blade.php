@@ -57,7 +57,7 @@
                         <!-- Display the current image if available -->
                         @if ($feature->image)
                             <div class="mt-2">
-                                <img src="{{ asset(''). $feature->image }}" alt="Feature Image" width="100" height="100">
+                                <img src="{{ $feature->image }}" alt="Feature Image" width="100" height="100">
                             </div>
                         @endif
                     </div>

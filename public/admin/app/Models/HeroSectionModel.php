@@ -5,24 +5,18 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class CorePageSecModel extends Model
+class HeroSectionModel extends Model
 {
     use HasFactory;
 
-    protected $table = 'tbl_cp_sections';
+    protected $table = 'tbl_herosection';
 
     protected $primaryKey = 'id';
 
     protected $fillable = [
-        'type',
-        'section_id',
-        'cp_id',
+        'title',
+        'status',
     ];
 
     public $timestamps = true;
-    
-    public function page()
-    {
-        return $this->belongsTo(CorePageModel::class, 'cp_id', 'id');
-    }
 }

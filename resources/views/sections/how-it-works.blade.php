@@ -1,4 +1,3 @@
-<div id="how_al_pgss">
 @php
 use App\Models\HowItWorkModel;
 
@@ -640,6 +639,13 @@ if (!empty($step3?->images)) {
     @endif
 
 </section>
-
+<?php /*
 <!--- End Step 3 ---->
-</div>
+<div id="how_al_pgss" class="mt_50p">
+<section class="al_sec_araea pb-0">
+ <div class="container">
+   <h4 class="text-left">HOW IT WORKS</h4>
+ </div>
+</section>
+    @include('web.pages.how-it-works-data')
+</div> */ ?>

@@ -26,10 +26,11 @@ class FeaturesController extends Controller
             $imageName = time() . '_' . $request->image->getClientOriginalName();
             // dd($logoName);
             $request->image->move(public_path('uploads'), $imageName);
-            $image_name = 'uploads/'.$imageName;
+            $image_name = asset('uploads/'.$imageName);
         }else{
             $image_name = base64_decode($request->old_image);
         }
+        
         FeatureModel::create([
             'title' => $request->title,
             'description' => $request->description,
@@ -57,7 +58,7 @@ class FeaturesController extends Controller
         if($request->hasFile('image')) {
             $imageName = time() . '_' . $request->image->getClientOriginalName();
             $request->image->move(public_path('uploads'), $imageName);
-            $image_name = 'uploads/'.$imageName;
+            $image_name = asset('uploads/'.$imageName);
             $data['image'] = $image_name;
         }
 

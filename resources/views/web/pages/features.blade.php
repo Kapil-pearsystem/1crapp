@@ -23,7 +23,7 @@
                     <div class="col-lg-6">
                         <div class="fur_boxx_cnt">
                             <div class="us_mg_arara">
-                                <img src="{{ ASSETS_PATH.$feature->image }}" alt="Feature Image" />
+                                <img src="{{ $feature->image }}" alt="Feature Image" />
                             </div>
 
                             <div class="us_cntentts">

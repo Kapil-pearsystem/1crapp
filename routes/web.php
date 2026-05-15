@@ -580,6 +580,7 @@ Route::get('/disclaimers',[WebController::class,'disclaimers'])->name('disclaime
 Route::get('/accessibility',[WebController::class,'accessibility'])->name('accessibility');
 
 Route::get('/pages/{slug}', [PageController::class, 'embed_pages'])->name('pages');
+Route::get('/core-page/{slug}', [PageController::class, 'core_page'])->name('core_page');
 
 Route::get('/pepm-enquiry-type', function () {
     return view('front.pepm-enquiry-type');

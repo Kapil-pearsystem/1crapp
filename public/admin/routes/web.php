@@ -959,5 +959,8 @@ Route::middleware('auth')->prefix('core-page')->name('core-page.')->group(functi
     Route::get('/', [CorePageController::class, 'index'])->name('index');
     Route::get('/create', [CorePageController::class, 'create'])->name('create');
     Route::post('/save', [CorePageController::class, 'save'])->name('save');
+    Route::get('/edit/{id}', [CorePageController::class, 'edit'])->name('edit');
+    Route::get('/delete/{id}', [CorePageController::class, 'delete'])->name('delete');
+    Route::get('view-section', [CorePageController::class, 'viewSection'])->name('view-section');
 });
 

@@ -542,11 +542,11 @@ body a {
 
 
 #testimonials .owl-nav.disabled {position:absolute; top:45%; width:100%; display:block;}
-#testimonials .owl-nav.disabled button.owl-prev {position:absolute; left:-35px; margin:0;}
+#testimonials .owl-nav.disabled button.owl-prev {position:absolute; left:0px; margin:0;}
 #testimonials .owl-nav.disabled button.owl-prev i {font-size:40px; -webkit-text-stroke:5px #bedaff;}
 #testimonials .owl-nav.disabled button.owl-prev:focus {outline: none; border: none;}
 
-#testimonials .owl-nav.disabled button.owl-next {position:absolute; right:-35px; margin:0;}
+#testimonials .owl-nav.disabled button.owl-next {position:absolute; right:0px; margin:0;}
 #testimonials .owl-nav.disabled button.owl-next i {font-size:40px; -webkit-text-stroke:5px #bedaff;}
 #testimonials .owl-nav.disabled button.owl-next:focus {outline: none; border: none;}
 

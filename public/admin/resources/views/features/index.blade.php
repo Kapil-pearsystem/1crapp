@@ -49,7 +49,7 @@
                             <!-- Display image if available -->
                             <td>
                                 @if ($feature->image)
-                                <img src="{{ asset('').$feature->image }}" alt="Feature Image" width="50" height="50">
+                                <img src="{{ $feature->image }}" alt="Feature Image" width="50" height="50">
                                 @else
                                 No Image
                                 @endif

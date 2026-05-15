@@ -122,4 +122,51 @@ class PageController extends Controller
         }
         
     }
+
+    public function core_page($slug){
+        $agent_id = app('currentAgent')->id;
+        $agent_id = 78;
+        $bodyData = '';
+        $is_banner = 0;
+        $page_data = DB::table('tbl_core_pages')->where(['slug'=>$slug,'status'=>1, 'created_by'=> $agent_id])->first();
+        if($page_data){
+            $sections = DB::table('tbl_cp_sections')->where('cp_id', $page_data->id)->get();
+            foreach($sections as $section){
+                if($section->type == 2){
+                    $embedpage_data = DB::table('tbl_embedded_pages')->where(['id'=>$section->section_id, 'status'=>'active', 'created_by'=> $agent_id])->first();
+                    if($embedpage_data){
+                        $bodyData .= view('sections.embed-page',compact('embedpage_data'))->render();
+                    }
+                }else{
+                    if($section->section_id == 1){
+                        $is_banner = 1;
+                        $bodyData .= view('sections.banner')->render();
+                    }else if($section->section_id == 2){
+                        $bodyData .= view('sections.about-us')->render();
+                    }else if($section->section_id == 5){
+                        $bodyData .= view('sections.testimonials')->render();
+                    }else if($section->section_id == 6){
+                        $bodyData .= view('sections.features')->render();
+                    }else if($section->section_id == 7){
+                        $bodyData .= view('sections.easy-to-share')->render();
+                    }else if($section->section_id == 9){
+                        $bodyData .= view('sections.easy-to-use')->render();
+                    }else if($section->section_id == 10){
+                        $bodyData .= view('sections.work-matrix')->render();
+                    }else if($section->section_id == 16){
+                        $bodyData .= view('sections.need-help')->render();
+                    }else if($section->section_id == 17){
+                        $bodyData .= view('sections.how-it-works')->render();
+                    }else if($section->section_id == 18){
+                        $bodyData .= view('sections.faq')->render();
+                    }else if($section->section_id == 30){
+                        $bodyData .= view('sections.company')->render();
+                    }
+                }
+            }
+            // dd($bodyData);
+            return view('sections.core-page',compact('bodyData', 'page_data', 'is_banner'));
+        }
+        return redirect()->route('404');
+    }
 }
