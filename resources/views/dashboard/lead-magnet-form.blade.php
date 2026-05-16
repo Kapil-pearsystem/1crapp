@@ -175,14 +175,15 @@
 
                                             {{-- ✅ LINK (YouTube / Embed) --}}
                                             @elseif(($details->media_type ?? '') == 'link' && !empty($details->media_path))
-                                                <iframe 
+                                                <!-- <iframe 
                                                     width="250" 
                                                     height="140" 
                                                     src="{{ $details->media_path }}" 
                                                     frameborder="0" 
                                                     allowfullscreen
                                                     style="border-radius:8px;">
-                                                </iframe>
+                                                </iframe> -->
+                                                 {!! $details->media_path !!}
                                             @endif
 
                                         </div>
@@ -214,14 +215,15 @@
 
                                             {{-- ✅ LINK (YouTube / Embed) --}}
                                             @elseif(($details->media_type ?? '') == 'link' && !empty($details->media_path))
-                                                <iframe 
+                                                <!-- <iframe 
                                                     width="250" 
                                                     height="140" 
                                                     src="{{ $details->media_path }}" 
                                                     frameborder="0" 
                                                     allowfullscreen
                                                     style="border-radius:8px;">
-                                                </iframe>
+                                                </iframe> -->
+                                                {!! $details->media_path !!}
                                             @endif
 
                                         </div>

@@ -12,7 +12,7 @@ class CorePageController extends Controller
 {
     public function index()
     {
-        $lists = CorePageModel::with('sections')->orderBy('created_at', 'desc')->get();
+        $lists = CorePageModel::with('sections')->where('created_by', auth()->user()->id)->orderBy('created_at', 'desc')->get();
         return view('core-page.index', compact('lists'));
     }
     public function create()

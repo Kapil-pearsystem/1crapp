@@ -134,12 +134,9 @@
                                 <label>Custom Sections</label>
                                 <select name="custom_section[]" class="form-control">
                                     <option value="">Select Custom Section</option>
-                                    <select name="custom_section[]" class="form-control">
-                                        <option value="">Select Custom Section</option>
-                                        @foreach($extsections as $ext)
-                                        <option value="{{ $ext->id }}"> {{ $ext->title }}</option>
-                                        @endforeach
-                                    </select>
+                                    @foreach($extsections as $ext)
+                                    <option value="{{ $ext->id }}"> {{ $ext->title }}</option>
+                                    @endforeach
                                 </select>
                             </div>
                         </div>

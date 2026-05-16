@@ -903,14 +903,15 @@
                                             {{-- ✅ LINK (YouTube / Embed) --}}
                                             @elseif(($page->media_type ?? '') == 'link' && !empty($page->media_path))
 
-                                                <iframe
+                                                <!-- <iframe
                                                     width="100%"
                                                     height="100%"
                                                     src="{{ $page->media_path }}"
                                                     frameborder="0"
                                                     allowfullscreen
                                                     style="border-radius:8px;">
-                                                </iframe>
+                                                </iframe> -->
+                                                {!! $page->media_path !!}
 
                                             @endif
 
