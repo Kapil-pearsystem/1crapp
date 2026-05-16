@@ -241,6 +241,8 @@ class HomeController extends Controller
                     'email' => $request->email,
                     'phone' => $request->phone,
                     'user_message' => $request->message,
+                    'attachment' => $mail_data->attachment,
+                    'attachment_text' => $mail_data->attachment_text
                 ];
                 // dd($data);
                 // return view('front.Mail.cdb-letsconnect-mail', $data);
@@ -317,6 +319,8 @@ class HomeController extends Controller
                 'email' => $lead->email,
                 'phone' => $lead->phone,
                 'user_message' => $lead->message,
+                'attachment' => $mail_data->attachment,
+                'attachment_text' => $mail_data->attachment_text
             ];
             $cc_email = $mail_data->cc_mailid;
             $attachment = $mail_data->attachment;
@@ -605,6 +609,7 @@ class HomeController extends Controller
                 'content' => $request->content,
                 'status' => $request->status,
                 'logo' => $logoPath,
+                'attachment_text' => $request->attachment_text,
                 'attachment' => $request->attachment,
                 'cc_mailid' => $request->cc_mailid,
             ]

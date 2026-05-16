@@ -66,6 +66,7 @@ use App\Http\Controllers\UserHeroSectionController;
 use App\Http\Controllers\UserOnboardController;
 use App\Http\Controllers\CustomLayoutController;
 use App\Http\Controllers\CorePageController;
+use App\Http\Controllers\FooterController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -962,5 +963,17 @@ Route::middleware('auth')->prefix('core-page')->name('core-page.')->group(functi
     Route::get('/edit/{id}', [CorePageController::class, 'edit'])->name('edit');
     Route::get('/delete/{id}', [CorePageController::class, 'delete'])->name('delete');
     Route::get('view-section', [CorePageController::class, 'viewSection'])->name('view-section');
+});
+Route::middleware('auth')->prefix('footer-top')->name('footer-top.')->group(function(){
+    Route::get('/', [FooterController::class, 'index'])->name('index');
+    Route::post('/save', [FooterController::class, 'save_top'])->name('save');
+});
+Route::middleware('auth')->prefix('footer-bottom')->name('footer-bottom.')->group(function(){
+    Route::get('/', [FooterController::class, 'index'])->name('index');
+});
+Route::middleware('auth')->prefix('compliances')->name('compliances.')->group(function(){
+    Route::get('/', [FooterController::class, 'compliances'])->name('index');
+    Route::post('/save', [FooterController::class, 'save_compliances'])->name('save');
+    Route::delete('/{id}/delete', [FooterController::class, 'destroy_compliances'])->name('destroy');
 });
 

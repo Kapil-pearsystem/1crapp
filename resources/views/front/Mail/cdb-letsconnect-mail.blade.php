@@ -64,7 +64,29 @@
                             </tr>
                             @endif
                         </table>
+                        @if(!empty($attachment))
+                        <div style="margin:25px 0; text-align:center;">
+                            <a href="{{ $attachment }}"
+                                target="_blank"
+                                style="
+                                    display:inline-block;
+                                    background:#111827;
+                                    color:#ffffff;
+                                    text-decoration:none;
+                                    padding:12px 28px;
+                                    border-radius:6px;
+                                    font-size:15px;
+                                    font-weight:600;
+                                    font-family:Arial, sans-serif;
+                                    letter-spacing:0.3px;
+                                ">
 
+                                {{ $attachment_text }}
+
+                            </a>
+
+                        </div>
+                        @endif
                         <p style="margin-top:30px;">
                             Thanks,<br>
                             <strong>1CR Team</strong>

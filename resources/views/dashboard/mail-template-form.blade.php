@@ -89,6 +89,7 @@
                                             id="attachment_text" placeholder="Enter Attachment Text" value="{{ isset($details->attachment_text) ? $details->attachment_text : '' }}">
                                     </div>
                                 </div>
+                                
                                 <div class="col-lg-6" >
                                     <div class="form-group">
                                         <label>Attachment Link</label>
