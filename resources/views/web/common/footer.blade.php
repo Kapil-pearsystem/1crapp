@@ -187,15 +187,18 @@
 }
 </style>
 
-
+@php
+  $topFooter = DB::table('tbl_topfooter')->where('created_by', app('currentAgent')->id)->where('status', 1)->first();
+  $compliances = DB::table('tbl_compliances')->where('created_by', app('currentAgent')->id)->where('status', 1)->orderBy('priority', 'ASC')->get();
+@endphp
 <footer id="ftr_alsss">
     <div class="container">
         <div class="row">
             <div class="col-lg-2">
-                <div class="lgo_areaa">
-                    <div class="lgo"><a href="{{ url('property-list')}}"><img src="{{ url('img/lgo_botms.png')}}" alt="" /></a></div>
-                    <div class="lg_ply"><a href="javascript:void(0);"><img src="{{ url('img/gl_play.png')}}" alt="" /></a></div>
-                </div>
+              <div class="lgo_areaa">
+                @if(@$topFooter->logo_enable == 1)<div class="lgo"><a href="{{ @$topFooter->logo_link }}"><img src="{{ @$topFooter->logo?$topFooter->logo:url('img/lgo_botms.png'); }}" alt="" /></a></div>@endif
+                @if(@$topFooter->playstore_enable == 1)<div class="lg_ply"><a href="{{ @$topFooter->playstore_link }}" target="_blank"><img src="{{ @$topFooter->playstore_logo?@$topFooter->playstore_logo:url('img/gl_play.png'); }}" alt="" /></a></div>@endif
+              </div>
             </div>
             <div class="col-lg-2">
                 <div class="usr_likts">
@@ -249,35 +252,34 @@
 
 
 			<div class="col-lg-2">
-				<div class="usr_likts">
-					<div class="urs_bx_rgss d_bluee">
-					    <div class="bg_ctxtx">Wants to take control of the Reale state INSIDE DEAL??</div>
-						<div class="cnt_txt_bx">
-							<h4>Get Free e-Book!</h4>
-							<p>Ultimote 4 Step Guide: How to be the agent of choice?</p>
-						</div>
+        <div class="usr_likts">
+          <div class="urs_bx_rgss d_bluee">
+            <div class="bg_ctxtx">{{ @$topFooter->promo_title }}</div>
+            <div class="cnt_txt_bx">
+              <h4>{{ @$topFooter->promo_subtitle }}</h4>
+              <p>{{ @$topFooter->promo_content }}</p>
+            </div>
 
-						<div class="mg_bx_araeae">
-							<img src="{{ url('home/img/bk_images.png')}}" alt="" />
-						</div>
-					</div>
-					<a href="javascript:void(0);" class="dwn_ldss">Download Now</a>
-
-					<div class="social_lk_partss">
-					 <a href="javascript:void(0);"><i class="fa fa-facebook"></i></a>
-					 <a href="javascript:void(0);"><i class="fa fa-instagram"></i></a>
-					 <a href="javascript:void(0);"><i class="fa fa-youtube-play"></i></a>
-					 <a href="javascript:void(0);"><i class="fa fa-linkedin"></i></a>
-					 <a href="javascript:void(0);"><i class="fa fa-twitter"></i></a>
-					 <a href="javascript:void(0);"><i class="fa fa-whatsapp"></i></a>
-					 <a href="javascript:void(0);"><i class="fa fa-google-plus"></i></a>
-					</div>
-				</div>
-			</div>
+            <div class="mg_bx_araeae">
+              <img src="{{ @$topFooter->promo_icon?@$topFooter->promo_icon:url('img/bk_images.png'); }}" alt="" />
+            </div>
+          </div>
+          <a href="{{ @$topFooter->promo_btn_link }}" target="_blank" class="dwn_ldss">{{ @$topFooter->promo_btn_text }}</a>
+          <div class="social_lk_partss">
+            <a href="javascript:void(0);"><i class="fa fa-facebook"></i></a>
+            <a href="javascript:void(0);"><i class="fa fa-instagram"></i></a>
+            <a href="javascript:void(0);"><i class="fa fa-youtube-play"></i></a>
+            <a href="javascript:void(0);"><i class="fa fa-linkedin"></i></a>
+            <a href="javascript:void(0);"><i class="fa fa-twitter"></i></a>
+            <a href="javascript:void(0);"><i class="fa fa-whatsapp"></i></a>
+            <a href="javascript:void(0);"><i class="fa fa-google-plus"></i></a>
+          </div>
+        </div>
+      </div>
 
         </div>
 
-        <div class="row mt_50p">
+      <div class="row mt_50p">
 		 <div class="col-lg-3">
 		  <div class="jn_communtys">
 		   <div class="jn_cmmuny_mgs">
@@ -321,16 +323,18 @@
 		 <div class="row">
 		  <div class="col-lg-8">
 		   <div class="lkns_bntsss">
-			<a href="{{ route('terms-conditions') }}">Terms of Service </a>
-			<a href="{{ route('privacy-policy') }}">Privacy Policy</a>
-			<a href="{{ route('editorial-policy') }}">Editorial Policy </a>
-			<a href="{{ route('cookie-policy') }}">Cookie Policy</a>
-			<a href="{{ route('disclaimers') }}">Disclaimers</a>
-			<a href="{{ route('accessibility') }}">Accessibility</a>
-		   </div>
+            @foreach($compliances as $compliance)
+              <a href="{{ $compliance->link }}" @if($compliance->new_tab == 1) target="_blank" @endif>{{ $compliance->title }}</a>
+            @endforeach
+            <!-- <a href="{{ route('privacy-policy') }}">Privacy Policy</a>
+            <a href="{{ route('editorial-policy') }}">Editorial Policy </a>
+            <a href="{{ route('cookie-policy') }}">Cookie Policy</a>
+            <a href="{{ route('disclaimers') }}">Disclaimers</a>
+            <a href="{{ route('accessibility') }}">Accessibility</a> -->
+          </div>
 		  </div>
 
-		  <div class="col-lg-4"> Copyright 2023 <a href="{{ url('') }}">{{ request()->getHost() }}</a> all rights reserved </div>
+		  <div class="col-lg-4"> Copyright {{ date('Y') }} <a href="{{ url('') }}">{{ request()->getHost() }}</a> all rights reserved </div>
 		 </div>
 		</div>
     </div>
