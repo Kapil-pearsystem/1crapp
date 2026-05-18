@@ -67,8 +67,12 @@
                        <input type="text" name="theme_color" pattern="^#+([a-fA-F0-9]{6}|[a-fA-F0-9]{3})$" value="{{ old('theme_color') ? old('theme_color') : @$brandingdata->theme_color }}" id="hexcolor"></input>
 					  </div>
 					</div>
+                    <div class="col-sm-6 mb-3 mt-3 mb-sm-0">
+                        Copy Right Year
+                        <input type="text" minlength="4" maxlength="4" placeholder="Enter Copyright Year" name="copyright_year" value="{{ old('copyright_year') ? old('copyright_year') : @$brandingdata->copyright_year }}" class="form-control form-control-user" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');"/>
+					</div>
                     <div class="col-sm-12 mb-3 mt-3 mb-sm-0" id="cl_themess">
-					  Message
+					  Powered By
                       <div class="bothss_area">
 					    <textarea name="message" id="message" class="form-control">{{ @$brandingdata->message }}</textarea>
 					  </div>

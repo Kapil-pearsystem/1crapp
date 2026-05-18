@@ -109,7 +109,7 @@ $communities = DB::table('tbl_joincommunity')->where('created_by', app('currentA
                 @if(!is_null($b_card) && $b_card->link_slug)
                     <i class="fa fa-copy copy-icon ml-4 mt-1" data-url="{{ url('/').'/mydigitalcard/'.$b_card->link_slug }}" aria-hidden="true"></i>&ensp; 
                     <a href="{{ url('/').'/mydigitalcard/'.$b_card->link_slug }}" target="_blank" class="text-right mt-1">
-                        <i class="fa fa-external-link" aria-hidden="true"></i>
+                        <i class="fas fa-external-link-alt" aria-hidden="true"></i>
                     </a>
                 @endif
             </li>

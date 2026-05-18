@@ -26,6 +26,7 @@ class BottomFooterModel extends Model
         'review_enable',
         'subscribe_title',
         'subscribe_content',
+        'subscribe_embededcode',
         'subscribe_enable',
         'status',
         'created_by',

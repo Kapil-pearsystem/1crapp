@@ -1,10 +1,10 @@
 @extends('layouts.app')
-@section('title', isset($details) ? 'Edit Footer Top' : 'Add Footer Top')
+@section('title', isset($details) ? 'Edit Footer Bottom' : 'Add Footer Bottom')
 @section('content')
 <div class="container-fluid">
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-        <h1 class="h3 mb-0 text-gray-800">{{ isset($details) ? 'Edit' : 'Add' }} Footer Top</h1>
-        <a href="{{ route('need-help.index') }}" class="btn btn-sm btn-primary shadow-sm">
+        <h1 class="h3 mb-0 text-gray-800">{{ isset($details) ? 'Edit' : 'Add' }} Footer Bottom</h1>
+        <a href="#" onclick="window.history.back()" class="btn btn-sm btn-primary shadow-sm">
             <i class="fas fa-arrow-left fa-sm text-white-50"></i> Back
         </a>
     </div>
@@ -12,82 +12,89 @@
     @include('common.alert')
 
     <div class="card shadow mb-4">
-        <form method="POST" action="{{ route('footer.save-top') }}" enctype="multipart/form-data">
+        <form method="POST" action="{{ route('footer-bottom.save') }}" enctype="multipart/form-data">
             @csrf
             <input type="hidden" name="id" value="{{ $details->id ?? '' }}">
 
             <div class="card-body">
                 <div class="form-group row">
                     <!-- Image Upload -->
-                    <div class="col-sm-6 mb-2">
-                        <label><span style="color: red;">*</span> Logo</label>
-                        <input type="file" name="logo" class="form-control" />
-
-                        @if(isset($details) && $details->logo)
+                    <div class="col-sm-5 mb-2">
+                        <label>Image</label>
+                        <input type="file" name="image" class="form-control" />
+                        @if(isset($details) && $details->image)
                         <div class="mt-2">
-                            <img src="{{ asset($details->logo) }}" width="100" alt="Current logo">
-                            <input type="hidden" name="old_logo" value="{{ base64_encode($details->logo) }}">
+                            <img src="{{ asset($details->image) }}" width="100" alt="Current image">
+                            <input type="hidden" name="old_image" value="{{ base64_encode($details->image) }}">
                         </div>
                         @endif
-
                         @error('image')
                         <span class="text-danger">{{ $message }}</span>
                         @enderror
                     </div>
+                    <div class="col-sm-1 mb-2 swich_bntts">
+                        <label>Visible</label>
+                        <div class="block_araea mt-1">
+                            <label class="switch">
+                                <input type="checkbox" name="image_visible" value="1" {{ (old('image_visible', $details->image_visible ?? 0) == 1) ? 'checked' : '' }} />
+                                <small></small>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-5 mb-3">
+                        <label>Button CTA Text</label>
+                        <input type="text" name="btn_text" class="form-control" 
+                            value="{{ old('btn_text', $details->btn_text ?? '') }}" placeholder="Enter Button CTA Text" />
+                        @error('btn_text')
+                        <span class="text-danger">{{ $message }}</span>
+                        @enderror
+                    </div>
+
+                    <div class="col-sm-5 mb-2">
+                        <label>Button Link</label>
+                        <input type="url" name="btn_link" placeholder="Enter Button Link" 
+                            value="{{ old('btn_link', $details->btn_link ?? '') }}" class="form-control" />
+                        @error('btn_link')
+                        <span class="text-danger">{{ $message }}</span>
+                        @enderror
+                    </div>
+                    <!-- Open in new tab -->
+                    <div class="col-sm-2 mb-2 swich_bntts">
+                        <label>Left Section Enable</label>
+                        <div class="block_araea mt-1">
+                            <label class="switch">
+                                <input type="checkbox" name="left_enable" value="1" {{ (old('left_enable', $details->left_enable ?? 0) == 1) ? 'checked' : '' }} />
+                                <small></small>
+                            </label>
+                        </div>
+                    </div>
+                    <hr>
                     <div class="col-sm-6 mb-3">
-                        <label><span style="color: red;">*</span> Title</label>
-                        <input type="text" name="title" class="form-control" required
+                        <label>Title</label>
+                        <input type="text" name="title" class="form-control" 
                             value="{{ old('title', $details->title ?? '') }}" placeholder="Enter title" />
                         @error('title')
                         <span class="text-danger">{{ $message }}</span>
                         @enderror
                     </div>
-
-                    <div class="col-sm-4 mb-2">
-                        <label><span style="color: red;">*</span> URL</label>
-                        <input type="url" name="url" placeholder="Enter URL" required
-                            value="{{ old('url', $details->url ?? '') }}" class="form-control" />
-                        @error('url')
-                        <span class="text-danger">{{ $message }}</span>
-                        @enderror
-                    </div>
-
-                    <!-- Open in new tab -->
-                    <div class="col-sm-2 mb-2 swich_bntts">
-                        <label>Open in New Tab</label>
-                        <div class="block_araea mt-1">
-                            <label class="switch">
-                                <input type="checkbox" name="url_new_tab" value="1" {{ (old('url_new_tab', $details->url_new_tab ?? 0) == 1) ? 'checked' : '' }} />
-                                <small></small>
-                            </label>
-                        </div>
-                    </div>
                     <div class="col-sm-6 mb-3">
-                        <label><span style="color: red;">*</span> Link Name</label>
-                        <input type="text" name="link_name" class="form-control" required
-                            value="{{ old('link_name', $details->link_name ?? '') }}" placeholder="Enter title" />
-                        @error('link_name')
-                        <span class="text-danger">{{ $message }}</span>
-                        @enderror
-                    </div>
-                    
-                    <div class="col-sm-6 mb-3">
-                        <label><span style="color: red;">*</span> Priority</label>
-                        <input type="number" name="priority" class="form-control" required value="{{ old('priority', $details->priority ?? '') }}" placeholder="Enter priority (e.g. 1, 2, 3)" />
-                        @error('priority')
+                        <label>Description</label>
+                        <textarea name="description" placeholder="Enter Description" class="form-control" id="">{{ old('description', $details->description ?? '') }}</textarea>
+                        @error('description')
                         <span class="text-danger">{{ $message }}</span>
                         @enderror
                     </div>
 
                     <!-- Image Upload -->
-                    <div class="col-sm-6 mb-2">
-                        <label><span style="color: red;">*</span> Image</label>
-                        <input type="file" name="image" class="form-control" {{ isset($details) ? '' : 'required' }} />
+                    <div class="col-sm-5 mb-2">
+                        <label>Google Review Image</label>
+                        <input type="file" name="google_review_image" class="form-control" />
 
-                        @if(isset($details) && $details->image)
+                        @if(isset($details) && $details->google_review_image)
                         <div class="mt-2">
-                            <img src="{{ asset($details->image) }}" width="100" alt="Current Image">
-                            <input type="hidden" name="old_image" value="{{ base64_encode($details->image) }}">
+                            <img src="{{ asset($details->google_review_image) }}" width="100" alt="Current google review image">
+                            <input type="hidden" name="old_google_review_image" value="{{ base64_encode($details->google_review_image) }}">
                         </div>
                         @endif
 
@@ -95,8 +102,67 @@
                         <span class="text-danger">{{ $message }}</span>
                         @enderror
                     </div>
+                    <!-- Image Upload -->
+                    <div class="col-sm-5 mb-2">
+                        <label>Google Review Image</label>
+                        <input type="file" name="trust_pilot_image" class="form-control" />
 
+                        @if(isset($details) && $details->trust_pilot_image)
+                        <div class="mt-2">
+                            <img src="{{ asset($details->trust_pilot_image) }}" width="100" alt="Current google review image">
+                            <input type="hidden" name="old_trust_pilot_image" value="{{ base64_encode($details->trust_pilot_image) }}">
+                        </div>
+                        @endif
 
+                        @error('image')
+                        <span class="text-danger">{{ $message }}</span>
+                        @enderror
+                    </div>
+                    <!-- Open in new tab -->
+                    <div class="col-sm-2 mb-2 swich_bntts">
+                        <label>Review Enable</label>
+                        <div class="block_araea mt-1">
+                            <label class="switch">
+                                <input type="checkbox" name="review_enable" value="1" {{ (old('review_enable', $details->review_enable ?? 0) == 1) ? 'checked' : '' }} />
+                                <small></small>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <hr>
+                    <div class="col-sm-6 mb-3">
+                        <label>Subscribe Title</label>
+                        <input type="text" name="subscribe_title" class="form-control" 
+                            value="{{ old('subscribe_title', $details->subscribe_title ?? '') }}" placeholder="Enter sub title" />
+                        @error('subscribe_title')
+                        <span class="text-danger">{{ $message }}</span>
+                        @enderror
+                    </div>
+                    <div class="col-sm-6 mb-3">
+                        <label>Subscribe Content</label>
+                        <textarea name="subscribe_content" placeholder="Enter Subscribe Content" class="form-control"  id="">{{ old('subscribe_content', $details->subscribe_content ?? '') }}</textarea>
+                        @error('subscribe_content')
+                        <span class="text-danger">{{ $message }}</span>
+                        @enderror
+                    </div>
+                    <div class="col-sm-10 mb-3">
+                        <label>Subscribe Embed Code</label>
+                        <textarea name="subscribe_embededcode" placeholder="Enter Subscribe Embeded code" class="form-control" id="">{{ old('subscribe_embededcode', $details->subscribe_embededcode ?? '') }}</textarea>
+                        @error('subscribe_embededcode')
+                        <span class="text-danger">{{ $message }}</span>
+                        @enderror
+                    </div>
+                    
+                    <!-- Open in new tab -->
+                    <div class="col-sm-2 mb-2 swich_bntts">
+                        <label>Subscribe Enable</label>
+                        <div class="block_araea mt-1">
+                            <label class="switch">
+                                <input type="checkbox" name="subscribe_enable" value="1" {{ (old('subscribe_enable', $details->subscribe_enable ?? 0) == 1) ? 'checked' : '' }} />
+                                <small></small>
+                            </label>
+                        </div>
+                    </div>
                     <!-- Status -->
                     <div class="col-sm-6 mb-3">
                         <label><span style="color: red;">*</span> Status</label>

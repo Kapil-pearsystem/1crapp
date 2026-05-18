@@ -967,9 +967,13 @@ Route::middleware('auth')->prefix('core-page')->name('core-page.')->group(functi
 Route::middleware('auth')->prefix('footer-top')->name('footer-top.')->group(function(){
     Route::get('/', [FooterController::class, 'index'])->name('index');
     Route::post('/save', [FooterController::class, 'save_top'])->name('save');
+    Route::get('/menu', [FooterController::class, 'menu'])->name('menu');
+    Route::post('/menu/save', [FooterController::class, 'save_menu'])->name('menu.save');
+    Route::delete('/{id}/menu/delete', [FooterController::class, 'destroy_menu'])->name('menu.destroy');
 });
 Route::middleware('auth')->prefix('footer-bottom')->name('footer-bottom.')->group(function(){
-    Route::get('/', [FooterController::class, 'index'])->name('index');
+    Route::get('/', [FooterController::class, 'footer_bottom'])->name('index');
+    Route::post('/save', [FooterController::class, 'save_bottom'])->name('save');
 });
 Route::middleware('auth')->prefix('compliances')->name('compliances.')->group(function(){
     Route::get('/', [FooterController::class, 'compliances'])->name('index');

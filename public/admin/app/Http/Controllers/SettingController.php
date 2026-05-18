@@ -197,6 +197,7 @@ class SettingController extends Controller
                 'favicon'     => $favicon,
                 'theme_color' => $request->color,
                 'message'     => $request->message,
+                'copyright_year'=> $request->copyright_year,
                 'updated_at'  => now(),
                 'created_at'  => now(), // not required – Laravel handles this on create
             ]

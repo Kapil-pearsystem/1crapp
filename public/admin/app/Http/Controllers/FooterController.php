@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\DB;
 use App\Models\BottomFooterModel;
 use App\Models\TopDefaultFooterModel;
 use App\Models\CompliancesModel;
+use App\Models\FooterMenu;
+use App\Models\FooterSocialLink;
 
 
 class FooterController extends Controller
@@ -15,9 +17,10 @@ class FooterController extends Controller
     {
         // $bottom_footer = BottomFooterModel::where('created_by', auth()->user()->id)->first();
         $details = TopDefaultFooterModel::where('created_by', auth()->user()->id)->first();
+        $socialLinks = FooterSocialLink::where('created_by', auth()->user()->id)->get();
         // $compliances = CompliancesModel::where('created_by', auth()->user()->id)->orderBy('priority', 'DESC')->get();
 
-        return view('footer.footer-top', compact('details'));
+        return view('footer.footer-top', compact('details', 'socialLinks'));
 
     }
     public function save_top(Request $request){
@@ -55,14 +58,82 @@ class FooterController extends Controller
         $data->status       = $request->status;
         $data->created_by   = auth()->user()->id;
         $data->save();
+        FooterSocialLink::where('created_by', auth()->id())->delete();
+        foreach($request->icon as $key => $icon){
+            FooterSocialLink::create([
+                'icon' => $icon,
+                'link' => $request->link[$key],
+                'created_by' => auth()->id()
+            ]);
+        }
         return redirect()->back()->with('success', 'Top Footer Data Saved Successfully.');
+    }
+    public function menu()
+    {
+        $lists = FooterMenu::where('created_by', auth()->user()->id)->orderBy('id', 'DESC')->get();
+        return view('footer.footer-menu', compact('lists'));
+    }
+    public function save_menu(Request $request){
+        $data = $request->id ? FooterMenu::find($request->id) : new FooterMenu();
+        $data->category     = $request->category;
+        $data->title     = $request->title;
+        $data->link     = $request->link;
+        $data->new_tab     = $request->new_tab??0;
+        $data->status       = $request->status;
+        $data->created_by   = auth()->user()->id;
+        $data->save();
+        return redirect()->back()->with('success', 'Menu Saved Successfully.');
+    }
+    
+    public function destroy_menu($id)
+    {
+        $data = FooterMenu::findOrFail($id);
+        $data->delete();
+        return redirect()->back()->with('success', 'Menu deleted successfully!');
     }
     public function footer_bottom()
     {
         $details = BottomFooterModel::where('created_by', auth()->user()->id)->first();
         return view('footer.footer-bottom', compact('details'));
-
     }
+    public function save_bottom(Request $request)
+    {
+       $data = $request->id ? BottomFooterModel::find($request->id) : new BottomFooterModel();
+        if(!empty($request->image))
+		{
+	    	$imagefileName = time().rand().'.'.$request->image->extension();		
+            $request->image->move(public_path('img'), $imagefileName);
+			$data->image  = asset('img/'.$imagefileName);
+		}
+        if(!empty($request->google_review_image))
+		{
+	    	$google_review_imagefileName = time().rand().'.'.$request->google_review_image->extension();		
+            $request->google_review_image->move(public_path('img'), $google_review_imagefileName);
+			$data->google_review_image  = asset('img/'.$google_review_imagefileName);
+		}
+        if(!empty($request->trust_pilot_image))
+		{
+	    	$trust_pilot_imagefileName = time().rand().'.'.$request->trust_pilot_image->extension();		
+            $request->trust_pilot_image->move(public_path('img'), $trust_pilot_imagefileName);
+			$data->trust_pilot_image  = asset('img/'.$trust_pilot_imagefileName);
+		}
+        $data->image_visible     = $request->image_visible??0;
+        $data->btn_text     = $request->btn_text;
+        $data->btn_link     = $request->btn_link;
+        $data->left_enable     = $request->left_enable??0;
+        $data->title     = $request->title;
+        $data->description     = $request->description;
+        $data->review_enable     = $request->review_enable??0;
+        $data->subscribe_title     = $request->subscribe_title;
+        $data->subscribe_content     = $request->subscribe_content;
+        $data->subscribe_embededcode     = $request->subscribe_embededcode;
+        $data->subscribe_enable     = $request->subscribe_enable??0;
+        $data->status       = $request->status;
+        $data->created_by   = auth()->user()->id;
+        $data->save();
+        return redirect()->back()->with('success', 'Bottom Footer Saved Successfully.');
+    }
+
     public function compliances()
     {
         $compliances = CompliancesModel::where('created_by', auth()->user()->id)->orderBy('priority', 'DESC')->get();
