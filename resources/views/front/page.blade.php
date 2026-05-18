@@ -712,12 +712,16 @@
                             <div id="cstm_frm_id"></div>
                             @endif
                             @endif
+                            @if($page_data->popup_status == 1)
                             <h5>{{ $page_data->cta_button_text }}</h5>
                             <span>{{ $page_data->cta_button_subtext }}</span>
+                            @endif
                         </a>
                 </div>
-                @if($page_data->ps_text_status == 1)
-                @if($page_data->ps_text)<div class="tx_v_ars"><span class="red_tx"><strong>P.S.</strong></span> : {{ $page_data->ps_text }}</div>@endif
+                @if($page_data->popup_status == 1)
+                    @if($page_data->ps_text_status == 1)
+                    @if($page_data->ps_text)<div class="tx_v_ars"><span class="red_tx"><strong>P.S.</strong></span> : {{ $page_data->ps_text }}</div>@endif
+                    @endif
                 @endif
             </div>
             @if($page_data->addination_cta_status == 1)

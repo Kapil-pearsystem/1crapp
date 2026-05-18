@@ -48,6 +48,7 @@ class FormController extends Controller
         ->leftjoin('tbl_formsource','tbl_formsource.id','=','tbl_form.source_id')
         ->leftjoin('tbl_filedrive','tbl_filedrive.id','=','tbl_form.drivefile_id')
         ->leftjoin('tbl_giftcollection','tbl_giftcollection.id','=','tbl_form.sequence_id')
+        ->where('tbl_form.created_by', auth()->user()->id)
         ->orderBy('tbl_form.id','DESC')
         ->get();
         // dd($lists);

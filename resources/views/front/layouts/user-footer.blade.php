@@ -432,12 +432,14 @@ $compliances = DB::table('tbl_compliances')->where('created_by', app('currentAge
                         @endforeach
                     </div>
                 </div>
-                <div class="col-lg-4"> Copyright {{ date('Y') }} <a href="{{ url('') }}">{{ request()->getHost() }}</a> all rights reserved </div>
+                <div class="col-lg-4"> Copyright {{ DB::table('branding_setting')->where('user_id', app('currentAgent')->id)->value('copyright_year')??date('Y') }} <a href="{{ url('') }}">{{ request()->getHost() }}</a> all rights reserved </div>
             </div>
         </div>
     </div>
 </footer>
 @include('front.custom-layout.poweredby-footer')
+
+
 {!! DB::table('adb_dashboard')->where('created_by', app('currentAgent')->id)->where('chatbot_code_enable', 1)->value('chatbot_code') !!}
 <!-- Modal for Success Message -->
 <div id="subscribeModal" class="modal" tabindex="-1" role="dialog" style="margin-top:10%;">

@@ -410,7 +410,35 @@ $menus = \App\Models\NavigationModel::select(
     ->where('tbl_header_navigation.parent_page_id',0)
     ->orderBy('tbl_header_navigation.priority','ASC')
     ->get();
+$d_video = DB::table('adb_dashboard')->where('created_by', app('currentAgent')->id)->first();
 @endphp
+<div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-header">
+    <h5 class="modal-title" id="exampleModalLabel">View Demo</h5>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+    </div>
+    <div class="modal-content" style="height:70%;">
+        @if(!is_null($d_video))
+            @if($d_video->media_type == 2)
+                {!! $d_video->demo_link !!}
+            @else
+                @if($d_video->demo_link_enable == 1)
+                    @if(Str::contains($d_video->demo_link, 'youtube.com') || Str::contains($d_video->demo_link, 'youtu.be'))
+                        <iframe width="100%" src="{{ $d_video->demo_link }}" frameborder="0" allowfullscreen></iframe>
+                    @elseif(in_array(pathinfo($d_video->demo_link, PATHINFO_EXTENSION), ['jpg','jpeg','png','gif']))
+                        <img src="{{ $d_video->demo_link }}" class="img-fluid">
+                    @elseif(in_array(pathinfo($d_video->demo_link, PATHINFO_EXTENSION), ['mp4','webm']))
+                        <video width="100%" controls><source src="{{ $d_video->demo_link }}"></video>
+                    @endif
+                @endif
+            @endif
+        @endif
+    </div>
+  </div>
+</div>
 <!--- Header Part ---->
 <section class="shadow" id="myHeader">
     <div class="top_menuues">
@@ -423,13 +451,24 @@ $menus = \App\Models\NavigationModel::select(
     					<li><a href="{{ url('wallet') }}"><span>Rewards <span class="countss">0</span></span></a></li>
     					<li><span>Welcome - <span class="user_nmss">Ramjee</span></span></li>
                         <li class="mb_view_nn"><a href="{{ url('my-profile') }}"> <span>My Account</span></a></li>
+                        @if(!is_null($d_video))
+                            @if($d_video->demo_link_enable == 1)
+                            <li><a href="javascript:void(0);" data-toggle="modal" data-target=".bd-example-modal-lg"><img src="{{ url('home/img/vvdio_ic.png')}}" alt="" /></a></li>
+                            @endif
+                        @endif
+                        <li><a href="{{ url('help') }}"><i class="fa fa-info-circle" aria-hidden="true"></i> <span>Instant Help ?</span></a></li>
     					<li class="mb_view_nn"><a href="{{ route('logout') }}"> <span>Logout</span></a></li>
                     </ul>
                 @else
                     <ul>
                         <li><i class="fa fa-whatsapp"></i> <span>+91-9966680133</span></li>
                         <li><a href="{{ url('about-us') }}"><i class="fa fa-user"></i> <span>About Us</span></a></li>
-                        <li><a href="{{ url('help') }}"><i class="fa fa-phone"></i> <span>Help ?</span></a></li>
+                        @if(!is_null($d_video))
+                            @if($d_video->demo_link_enable == 1)
+                            <li><a href="javascript:void(0);" data-toggle="modal" data-target=".bd-example-modal-lg"><img src="{{ url('home/img/vvdio_ic.png')}}" alt="" /></a></li>
+                            @endif
+                        @endif
+                        <li><a href="{{ url('help') }}"><i class="fa fa-info-circle" aria-hidden="true"></i> <span>Instant Help ?</span></a></li>
                     </ul>
                 @endif
             </div>

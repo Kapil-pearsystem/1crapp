@@ -246,33 +246,7 @@ $communities = DB::table('tbl_joincommunity')->where('created_by', app('currentA
         </a>
     </div>
 </div>
-<div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-lg">
-    <div class="modal-header">
-    <h5 class="modal-title" id="exampleModalLabel">View Demo</h5>
-    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-        <span aria-hidden="true">&times;</span>
-    </button>
-    </div>
-    <div class="modal-content" style="height:80%;">
-        @if(!is_null($d_video))
-            @if($d_video->media_type == 2)
-                {!! $d_video->demo_link !!}
-            @else
-                @if($d_video->demo_link_enable == 1)
-                    @if(Str::contains($d_video->demo_link, 'youtube.com') || Str::contains($d_video->demo_link, 'youtu.be'))
-                        <iframe width="100%" src="{{ $d_video->demo_link }}" frameborder="0" allowfullscreen></iframe>
-                    @elseif(in_array(pathinfo($d_video->demo_link, PATHINFO_EXTENSION), ['jpg','jpeg','png','gif']))
-                        <img src="{{ $d_video->demo_link }}" class="img-fluid">
-                    @elseif(in_array(pathinfo($d_video->demo_link, PATHINFO_EXTENSION), ['mp4','webm']))
-                        <video width="100%" controls><source src="{{ $d_video->demo_link }}"></video>
-                    @endif
-                @endif
-            @endif
-        @endif
-    </div>
-  </div>
-</div>
+
 <script>
 document.querySelectorAll('.custom-dropdown > a').forEach(function(el){
     el.addEventListener('click', function(){
