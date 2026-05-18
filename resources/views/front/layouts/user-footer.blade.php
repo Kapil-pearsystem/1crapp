@@ -381,7 +381,7 @@ $compliances = DB::table('tbl_compliances')->where('created_by', app('currentAge
         $btmFooter = DB::table('tbl_btmfooter')->where('created_by', app('currentAgent')->id)->where('status', 1)->first();
         @endphp
         <div class="row mt_50p">
-            @if($btmFooter->left_enable == 1)
+            @if(@$btmFooter->left_enable == 1)
             <div class="col-lg-3">
                 <div class="jn_communtys">
                     <div class="jn_cmmuny_mgs">
@@ -391,7 +391,7 @@ $compliances = DB::table('tbl_compliances')->where('created_by', app('currentAge
                 </div>
             </div>
             @endif
-            @if($btmFooter->review_enable == 1)
+            @if(@$btmFooter->review_enable == 1)
             <div class="col-lg-5">
                 <div class="rev_gl_rv">
                     <h4>{{ @$btmFooter->title }}</h4>
@@ -403,22 +403,22 @@ $compliances = DB::table('tbl_compliances')->where('created_by', app('currentAge
                 </div>
             </div>
             @endif
-            @if($btmFooter->subscribe_enable == 1)
+            @if(@$btmFooter->subscribe_enable == 1)
             <div class="col-lg-4">
                 <div class="rev_gl_rv news_ltrss">
                     <h4>{{ @$btmFooter->subscribe_title }}</h4>
                     <p>{{ @$btmFooter->subscribe_content }}</p>
                     {!! @$btmFooter->subscribe_embededcode !!}
                     <?/*<form id="subscribeForm" action="{{ route('subscribe') }}" method="POST">
-            <div class="form-group nwss_frm">
-              <input type="email" name="email" id="email" class="form-control" placeholder="Enter your email" required />
-              <!-- Display validation errors dynamically -->
-              @error('email')
-              <div class="text-danger">{{ $message }}</div>
-              @enderror
-              <button type="submit">SIGN UP</button>
-            </div>
-          </form>*/ ?>
+                        <div class="form-group nwss_frm">
+                        <input type="email" name="email" id="email" class="form-control" placeholder="Enter your email" required />
+                        <!-- Display validation errors dynamically -->
+                        @error('email')
+                        <div class="text-danger">{{ $message }}</div>
+                        @enderror
+                        <button type="submit">SIGN UP</button>
+                        </div>
+                    </form>*/ ?>
                 </div>
             </div>
             @endif
@@ -437,6 +437,7 @@ $compliances = DB::table('tbl_compliances')->where('created_by', app('currentAge
         </div>
     </div>
 </footer>
+@include('front.custom-layout.poweredby-footer')
 {!! DB::table('adb_dashboard')->where('created_by', app('currentAgent')->id)->where('chatbot_code_enable', 1)->value('chatbot_code') !!}
 <!-- Modal for Success Message -->
 <div id="subscribeModal" class="modal" tabindex="-1" role="dialog" style="margin-top:10%;">

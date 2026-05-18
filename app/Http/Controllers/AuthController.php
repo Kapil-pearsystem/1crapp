@@ -125,6 +125,10 @@ class AuthController extends Controller
                 return redirect()->away($previous_loc);
             }
             // return redirect()->route('prices').with('success', 'You have logged in successfully!');
+            if(app('currentAgent')->id == 8){
+                return redirect('/')
+                    ->with('success', 'You have logged in successfully!');
+            }
             return redirect()->route('user-home')->with('success', 'You have logged in successfully!');
         } else {
             return redirect()->route('login')->with('fail', 'Login details are not valid');
