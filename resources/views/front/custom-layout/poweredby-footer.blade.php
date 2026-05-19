@@ -1,7 +1,7 @@
 @if(app('currentAgent')->id != 8)
 <div class="ftr_content text-center " style="background-color:#000000;">
     @php
-    $branding = DB::table('branding_setting')->select('logo', 'message')->where('user_id', 8)->first();
+    $branding = DB::table('branding_setting')->select('*')->where('user_id', 8)->first();
     @endphp
     <div class="lgo">
         @if($branding && $branding->logo)
@@ -13,8 +13,9 @@
         {{ $branding->message }}
     </div>
     <div class="crt_arar mt-0">
-        <button class="btn btn-danger">Get it now</button>
-        <!-- <a href="javascript:void(0);" class="gt_it_nnw" data-toggle="modal" data-target="#sub_m_al_frms">Get it now</a> -->
+        @if($branding && $branding->btn_enable == 1)
+            <a href="{{ $branding->btn_link }}" @if($branding->btn_new_tab == 1) target="_blank" @endif><button class="btn " style="background-color:{{ $branding->btn_bg_color }}; color:{{ $branding->btn_text_color }};">{{ $branding->btn_title }}</button></a>
+        @endif
     </div>
     @endif
 </div>

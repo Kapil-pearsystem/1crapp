@@ -391,18 +391,20 @@ $compliances = DB::table('tbl_compliances')->where('created_by', app('currentAge
                 </div>
             </div>
             @endif
-            @if(@$btmFooter->review_enable == 1)
             <div class="col-lg-5">
                 <div class="rev_gl_rv">
                     <h4>{{ @$btmFooter->title }}</h4>
                     <p>{{ @$btmFooter->description }}</p>
                     <div class="rv_usr_lgo">
-                        <a href="javascript:void(0);"><img src="{{ @$btmFooter->google_review_image?@$btmFooter->google_review_image:url('home/img/gl_reviews.png')}}" alt="" /></a>
-                        <a href="javascript:void(0);"><img src="{{ @$btmFooter->trust_pilot_image?@$btmFooter->trust_pilot_image:url('home/img/revie_on_us1.png')}}" alt="" /></a>
+                        @if(@$btmFooter->google_review_enable == 1)
+                            <a href="{{ @$btmFooter->google_review_url }}" target="_blank"><img src="{{ @$btmFooter->google_review_image?@$btmFooter->google_review_image:url('home/img/gl_reviews.png')}}" alt="" /></a>
+                        @endif
+                        @if(@$btmFooter->trust_pilot_enable == 1)
+                            <a href="{{ @$btmFooter->trust_pilot_url }}" target="_blank"><img src="{{ @$btmFooter->trust_pilot_image?@$btmFooter->trust_pilot_image:url('home/img/revie_on_us1.png')}}" alt="" /></a>
+                        @endif
                     </div>
                 </div>
             </div>
-            @endif
             @if(@$btmFooter->subscribe_enable == 1)
             <div class="col-lg-4">
                 <div class="rev_gl_rv news_ltrss">
