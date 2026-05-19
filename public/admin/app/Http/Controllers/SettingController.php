@@ -198,6 +198,12 @@ class SettingController extends Controller
                 'theme_color' => $request->color,
                 'message'     => $request->message,
                 'copyright_year'=> $request->copyright_year,
+                'btn_title'=> $request->btn_title,
+                'btn_link'=> $request->btn_link,
+                'btn_text_color'=> $request->btn_text_color,
+                'btn_bg_color'=> $request->btn_bg_color,
+                'btn_new_tab'=> $request->btn_new_tab??0,
+                'btn_enable'=> $request->btn_enable??0,
                 'updated_at'  => now(),
                 'created_at'  => now(), // not required – Laravel handles this on create
             ]

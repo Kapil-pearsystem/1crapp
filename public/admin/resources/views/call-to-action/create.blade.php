@@ -20,7 +20,19 @@
 
     <div class="card-body">
         <div class="form-group row">
-
+            <div class="col-sm-6 mb-3">
+                <label><span style="color: red;">*</span> Type</label>
+                <select name="type" class="form-control" required>
+                    <option value="">Select Type</option>
+                    <option value="1" {{ old('type', $details->type ?? '') == '1' ? 'selected' : '' }}>Type A</option>
+                    <option value="2" {{ old('type', $details->type ?? '') == '2' ? 'selected' : '' }}>Type B</option>
+                    <option value="3" {{ old('type', $details->type ?? '') == '3' ? 'selected' : '' }}>Type C</option>
+                    <option value="4" {{ old('type', $details->type ?? '') == '4' ? 'selected' : '' }}>Type D</option>
+                </select>
+                @error('type')
+                <span class="text-danger">{{ $message }}</span>
+                @enderror
+            </div>
             <!-- Title -->
             <div class="col-sm-6 mb-3">
                 <label><span style="color: red;">*</span> Title</label>

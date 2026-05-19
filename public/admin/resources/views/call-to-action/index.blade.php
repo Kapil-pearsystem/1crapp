@@ -5,11 +5,17 @@ use Illuminate\Support\Str;
 @extends('layouts.app')
 
 @section('title', 'Call to Action List')
-
+@php
+$type = array(
+    1=>'Type A',
+    2=>'Type B',
+    3=>'Type C',
+    4=>'Type D',
+);
+@endphp
 <link href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css" rel="stylesheet">
 @section('content')
 <div class="container-fluid">
-
     <!-- Page Heading -->
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
         <h1 class="h3 mb-0 text-gray-800">Call to Action List</h1>
@@ -31,8 +37,9 @@ use Illuminate\Support\Str;
                     <thead>
                         <tr>
                             <th>Sr. No.</th>
-                            <th>Section</th>
+                            <!-- <th>Section</th> -->
                             <th>Title</th>
+                            <th>Type</th>
                             <th>Description</th>
                             <th>Left-link Title</th>
                             <th>Right-link Title</th>
@@ -46,8 +53,9 @@ use Illuminate\Support\Str;
                         @foreach($data as $key => $list)
                         <tr>
                             <td>{{ ++$key }}</td>
-                            <td>{{ $list->section }}</td>
+                            <!-- <td>{{ $list->section }}</td> -->
                             <td>{{ $list->title }}</td>
+                            <td>{{ $type[$list->type]??'N/A' }}</td>
                             <td>{{ $list->description }}</td>
                             <td>{{ $list->left_link_title }}</td>
                             <td>{{ $list->right_link_title }}</td>

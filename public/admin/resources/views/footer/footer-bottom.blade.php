@@ -102,33 +102,57 @@
                         <span class="text-danger">{{ $message }}</span>
                         @enderror
                     </div>
-                    <!-- Image Upload -->
-                    <div class="col-sm-5 mb-2">
-                        <label>Google Review Image</label>
-                        <input type="file" name="trust_pilot_image" class="form-control" />
-
-                        @if(isset($details) && $details->trust_pilot_image)
-                        <div class="mt-2">
-                            <img src="{{ asset($details->trust_pilot_image) }}" width="100" alt="Current google review image">
-                            <input type="hidden" name="old_trust_pilot_image" value="{{ base64_encode($details->trust_pilot_image) }}">
-                        </div>
-                        @endif
-
-                        @error('image')
+                    <div class="col-sm-5 mb-3">
+                        <label>Google Review Link</label>
+                        <input type="text" name="google_review_url" class="form-control" 
+                            value="{{ old('google_review_url', $details->google_review_url ?? '') }}" placeholder="Enter google Review Url" />
+                        @error('google_review_url')
                         <span class="text-danger">{{ $message }}</span>
                         @enderror
                     </div>
                     <!-- Open in new tab -->
                     <div class="col-sm-2 mb-2 swich_bntts">
-                        <label>Review Enable</label>
+                        <label>Enable</label>
                         <div class="block_araea mt-1">
                             <label class="switch">
-                                <input type="checkbox" name="review_enable" value="1" {{ (old('review_enable', $details->review_enable ?? 0) == 1) ? 'checked' : '' }} />
+                                <input type="checkbox" name="google_review_enable" value="1" {{ (old('google_review_enable', $details->google_review_enable ?? 0) == 1) ? 'checked' : '' }} />
                                 <small></small>
                             </label>
                         </div>
                     </div>
                     
+                    <!-- Image Upload -->
+                    <div class="col-sm-5 mb-2">
+                        <label>Trust Pilot Image</label>
+                        <input type="file" name="trust_pilot_image" class="form-control" />
+                        @if(isset($details) && $details->trust_pilot_image)
+                        <div class="mt-2">
+                            <img src="{{ asset($details->trust_pilot_image) }}" width="100" alt="Current trust pilot image">
+                            <input type="hidden" name="old_trust_pilot_image" value="{{ base64_encode($details->trust_pilot_image) }}">
+                        </div>
+                        @endif
+                        @error('trust_pilot_image')
+                        <span class="text-danger">{{ $message }}</span>
+                        @enderror
+                    </div>
+                    <div class="col-sm-5 mb-3">
+                        <label>Trust Pilot Link</label>
+                        <input type="text" name="trust_pilot_url" class="form-control" 
+                            value="{{ old('trust_pilot_url', $details->trust_pilot_url ?? '') }}" placeholder="Enter Trust Pilot Url" />
+                        @error('trust_pilot_url')
+                        <span class="text-danger">{{ $message }}</span>
+                        @enderror
+                    </div>
+                    <!-- Open in new tab -->
+                    <div class="col-sm-2 mb-2 swich_bntts">
+                        <label>Enable</label>
+                        <div class="block_araea mt-1">
+                            <label class="switch">
+                                <input type="checkbox" name="trust_pilot_enable" value="1" {{ (old('trust_pilot_enable', $details->trust_pilot_enable ?? 0) == 1) ? 'checked' : '' }} />
+                                <small></small>
+                            </label>
+                        </div>
+                    </div>
                     <hr>
                     <div class="col-sm-6 mb-3">
                         <label>Subscribe Title</label>

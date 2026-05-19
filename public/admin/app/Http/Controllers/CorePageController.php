@@ -4,6 +4,7 @@ use App\Models\CorePageModel;
 use App\Models\CorePageSecModel;
 use App\Models\HeroSectionModel;
 use App\Models\EmbedPageModel;
+use App\Models\CalltoActionModel;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
@@ -17,9 +18,10 @@ class CorePageController extends Controller
     }
     public function create()
     {
+        $ctasections = CalltoActionModel::orderBy('id', 'desc')->where('created_by', auth()->user()->id)->get();
         $extsections = EmbedPageModel::where('status', 'active')->where('created_by', auth()->user()->id)->orderBy('title', 'asc')->get();
         $herosections = HeroSectionModel::where('status', 1)->orderBy('title', 'asc')->get();
-        return view('core-page.create', compact('herosections', 'extsections'));
+        return view('core-page.create', compact('herosections', 'extsections', 'ctasections'));
     }
     public function save(Request $request)
     {
@@ -54,6 +56,9 @@ class CorePageController extends Controller
                 if ($type == 2) {
                     $sectionValue = $request->custom_section[$key] ?? null;
                 }
+                if ($type == 3) {
+                    $sectionValue = $request->cta_section[$key] ?? null;
+                }
                 if ($sectionValue) {
                     CorePageSecModel::create([
                         'cp_id' => $page->id,
@@ -68,9 +73,10 @@ class CorePageController extends Controller
     public function edit($id)
     {
         $details = CorePageModel::with('sections')->findOrFail($id);
+        $ctasections = CalltoActionModel::orderBy('id', 'desc')->where('created_by', auth()->user()->id)->get();
         $extsections = EmbedPageModel::where('status', 'active')->where('created_by', auth()->user()->id)->orderBy('title', 'asc')->get();
         $herosections = HeroSectionModel::where('status', 1)->orderBy('title', 'asc')->get();
-        return view('core-page.create', compact('herosections', 'extsections', 'details'));
+        return view('core-page.create', compact('herosections', 'extsections','ctasections', 'details'));
     }
     public function delete($id)
     {

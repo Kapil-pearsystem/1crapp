@@ -77,6 +77,10 @@
                                         {{ $sect->type == 2 ? 'selected' : '' }}>
                                         Custom Section
                                     </option>
+                                    <option value="3"
+                                        {{ $sect->type == 3 ? 'selected' : '' }}>
+                                        CTA Section
+                                    </option>
                                 </select>
                             </div>
                             <!-- Hero Section -->
@@ -99,6 +103,15 @@
                                     @endforeach
                                 </select>
                             </div>
+                            <div class="col-sm-6 mb-3 ctaSection  {{ $sect->type == 3 ? '' : 'd-none' }}">
+                                <label>CTA Sections</label>
+                                <select name="cta_section[]" class="form-control">
+                                    <option value="">Select CTA Section</option>
+                                    @foreach($ctasections as $cta)
+                                    <option value="{{ $cta->id }}" {{ $sect->section_id == $cta->id ? 'selected' : '' }}> {{ $cta->title }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
                         </div>
                     </div>
                     @endforeach
@@ -117,6 +130,7 @@
                                     <option value="">Select Section Type</option>
                                     <option value="1">Hero Section</option>
                                     <option value="2">Custom Section</option>
+                                    <option value="3">CTA Section</option>
                                 </select>
                             </div>
                             <!-- Hero Section -->
@@ -136,6 +150,15 @@
                                     <option value="">Select Custom Section</option>
                                     @foreach($extsections as $ext)
                                     <option value="{{ $ext->id }}"> {{ $ext->title }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="col-sm-6 mb-3 ctaSection d-none">
+                                <label>CTA Sections</label>
+                                <select name="cta_section[]" class="form-control">
+                                    <option value="">Select CTA Section</option>
+                                    @foreach($ctasections as $cta)
+                                    <option value="{{ $cta->id }}"> {{ $cta->title }}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -184,18 +207,14 @@
             let sectionType = $(this).find('.sectionType').val();
             let heroSection = $(this).find('select[name="hero_section[]"]').val();
             let customSection = $(this).find('select[name="custom_section[]"]').val();
+            // let ctaSection = $(this).find('select[name="cta_section[]"]').val();
             if (sectionType == '') {
                 alert('Please select section type in section #' + (index + 1));
                 isValid = false;
                 return false;
             }
-            if (sectionType == 'hero' && heroSection == '') {
+            if (sectionType == 1 && heroSection == '') {
                 alert('Please select hero section in section #' + (index + 1));
-                isValid = false;
-                return false;
-            }
-            if (sectionType == 'custom' && customSection == '') {
-                alert('Please select custom section in section #' + (index + 1));
                 isValid = false;
                 return false;
             }
@@ -229,6 +248,7 @@
                         <option value="">Select Section Type</option>
                         <option value="1">Hero Section</option>
                         <option value="2">Custom Section</option>
+                        <option value="3">CTA Section</option>
                     </select>
                 </div>
                 <!-- Hero Section -->
@@ -255,6 +275,15 @@
                         @endforeach
                     </select>
                 </div>
+                <div class="col-sm-6 mb-3 ctaSection d-none">
+                    <label>CTA Sections</label>
+                    <select name="cta_section[]" class="form-control">
+                        <option value="">Select CTA Section</option>
+                        @foreach($ctasections as $cta)
+                            <option value="{{ $cta->id }}"> {{ $cta->title }}</option>
+                        @endforeach
+                    </select>
+                </div>
             </div>
         </div>
         `;
@@ -276,15 +305,20 @@
             // Hide all
             parent.find('.heroSection').addClass('d-none');
             parent.find('.customSection').addClass('d-none');
+            parent.find('.ctaSection').addClass('d-none');
             // Reset select values
             parent.find('.heroSection select').val('');
             parent.find('.customSection select').val('');
+            parent.find('.ctaSection select').val('');
             // Show according to selected type
             if (value == 1) {
                 parent.find('.heroSection').removeClass('d-none');
             }
             if (value == 2) {
                 parent.find('.customSection').removeClass('d-none');
+            }
+            if (value == 3) {
+                parent.find('.ctaSection').removeClass('d-none');
             }
         });
     });

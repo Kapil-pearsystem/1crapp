@@ -123,7 +123,10 @@ class FooterController extends Controller
         $data->left_enable     = $request->left_enable??0;
         $data->title     = $request->title;
         $data->description     = $request->description;
-        $data->review_enable     = $request->review_enable??0;
+        $data->google_review_enable     = $request->google_review_enable??0;
+        $data->trust_pilot_enable     = $request->trust_pilot_enable??0;
+        $data->google_review_url     = $request->google_review_url;
+        $data->trust_pilot_url     = $request->trust_pilot_url;
         $data->subscribe_title     = $request->subscribe_title;
         $data->subscribe_content     = $request->subscribe_content;
         $data->subscribe_embededcode     = $request->subscribe_embededcode;

@@ -12,7 +12,7 @@ class CalltoActionController extends Controller
     // Show all records
     public function index()
     {
-        $data = CalltoActionModel::orderBy('id', 'desc')->get();
+        $data = CalltoActionModel::orderBy('id', 'desc')->where('created_by', auth()->user()->id)->get();
         return view('call-to-action.index', compact('data'));
     }
 
@@ -26,6 +26,7 @@ class CalltoActionController extends Controller
     public function store(Request $request)
     {
         $request->validate([
+            'type'         => 'required|numeric|between:1,4',
             'title'         => 'required|string|max:255',
             'description'   => 'required|string',
             'section' => 'required|numeric|between:1,9',
@@ -36,6 +37,7 @@ class CalltoActionController extends Controller
         ]);
 
         $data = $request->only([
+            'type',
             'title',
             'description',
             'left_link_title',
@@ -87,14 +89,11 @@ class CalltoActionController extends Controller
     public function delete($id)
     {
         $record = CalltoActionModel::findOrFail($id);
-
         // Delete associated image
         if ($record->image && File::exists(public_path($record->image))) {
             File::delete(public_path($record->image));
         }
-
         $record->delete();
-
         return redirect()->back()->with('success', 'Call to Action deleted successfully.');
     }
 }

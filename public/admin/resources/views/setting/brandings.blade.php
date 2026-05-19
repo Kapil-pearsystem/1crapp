@@ -77,6 +77,43 @@
 					    <textarea name="message" id="message" class="form-control">{{ @$brandingdata->message }}</textarea>
 					  </div>
 					</div>
+                    <!-- <hr> -->
+                    <!-- //Button -->
+                    <div class="col-sm-12">
+                        <p class="text-info">Footer Button Info</p>
+                    </div>
+                    <div class="col-sm-6 mb-3 mb-sm-0">
+                        Button Text
+                        <input type="text" id="" placeholder="Button Text" name="btn_title" value="{{ old('btn_title') ? old('btn_title') : @$brandingdata->btn_title }}" class="form-control form-control-user"/>
+					</div>
+                    <div class="col-sm-6 mb-3 mb-sm-0">
+                        Button Link
+                        <input type="url" id="" placeholder="Button Url" name="btn_link" value="{{ old('btn_link') ? old('btn_link') : @$brandingdata->btn_link }}" class="form-control form-control-user"/>
+					</div>
+                    <div class="col-sm-6 mb-3 mt-3 mb-sm-0">
+                        Button Text Color
+                        <input type="color" id="" placeholder="Button Text Color" name="btn_text_color" value="{{ old('btn_text_color') ? old('btn_text_color') : @$brandingdata->btn_text_color }}" class="form-control form-control-user"/>
+					</div>
+                    <div class="col-sm-6 mb-3 mt-3 mb-sm-0">
+                        Button Background Color
+                        <input type="color" id="" placeholder="Button Background Color" name="btn_bg_color" value="{{ old('btn_bg_color') ? old('btn_bg_color') : @$brandingdata->btn_bg_color }}" class="form-control form-control-user"/>
+					</div>
+                    <div class="col-sm-3 mb-3 mt-1 mb-sm-0 swich_bntts"> 
+                        Button Open On new Tab
+                        <div class="block_araea mt-1">
+                            <label class="switch">
+                                <input value="1" type="checkbox" @isset($brandingdata) @if($brandingdata->btn_new_tab == 1) checked @endif @endisset name="btn_new_tab"> <small></small>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-sm-3 mb-3 mt-1 mb-sm-0 swich_bntts"> 
+                        Button Enable
+                        <div class="block_araea mt-1">
+                            <label class="switch">
+                                <input value="1" type="checkbox" @isset($brandingdata) @if($brandingdata->btn_enable == 1) checked @endif @endisset name="btn_enable"> <small></small>
+                            </label>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="card-footer">

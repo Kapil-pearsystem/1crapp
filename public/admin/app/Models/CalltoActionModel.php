@@ -14,6 +14,7 @@ class CalltoActionModel extends Model
 
     // Mass assignable attributes
     protected $fillable = [
+        'type',
         'title',
         'description',
         'left_link_title',
