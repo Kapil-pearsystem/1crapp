@@ -22,6 +22,12 @@ $layouts = DB::table('tbl_customlayout')->where('created_by', app('currentAgent'
                 <a href="javascript:void(0);">Terms & Conditions</a> -->
             </div>
 
+            <div class="">
+                @if($layouts && $layouts->btn_link)
+                    <!-- <a href="{{ $layouts->btn_link }}" class="gt_it_nnw" @if($layouts->open_new_tab == 1) target="_blank" @endif> <button style="background-color:{{ $layouts->btn_bg_color }}; color:{{ $layouts->btn_text_color }};">{{ $layouts->btn_text}} </button></a><br/> -->
+                    <a href="{{ $layouts->btn_link }}" @if($layouts->open_new_tab == 1) target="_blank" @endif><button class="btn " style="background-color:{{ $layouts->btn_bg_color }}; color:{{ $layouts->btn_text_color }};">{{ $layouts->btn_text}}</button></a>
+                @endif
+            </div><br>
             <div class="crt_arar mt-0 mb-4">
                 @if($layouts && $layouts->copyright_text)
                 {{ $layouts->copyright_text }}

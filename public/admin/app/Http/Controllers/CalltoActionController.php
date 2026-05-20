@@ -27,6 +27,7 @@ class CalltoActionController extends Controller
     {
         $request->validate([
             'type'         => 'required|numeric|between:1,4',
+            'name'         => 'required|string|max:255',
             'title'         => 'required|string|max:255',
             'description'   => 'required|string',
             'section' => 'required|numeric|between:1,9',
@@ -37,11 +38,7 @@ class CalltoActionController extends Controller
         ]);
 
         $data = $request->only([
-            'type',
-            'title',
-            'description',
-            'left_link_title',
-            'left_link_new_tab',
+            'type', 'name', 'title', 'description', 'left_link_title', 'left_link_new_tab',
             'right_link_title',
             'right_link_new_tab',
             'left_link_url',

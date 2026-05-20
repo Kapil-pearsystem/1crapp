@@ -1,7 +1,5 @@
 <?php
-
 namespace App\Http\Controllers;
-
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
@@ -15,9 +13,8 @@ use App\Models\ProductServiceCategory;
 use App\Models\ProductService;
 use App\Models\EmbedPageModel;
 use App\Models\FormModel;
-
+use Illuminate\Support\Facades\Http;
 // use function Adminer\redirect;
-
 class PageController extends Controller
 {
     public function index($slug = NULL){
@@ -25,7 +22,6 @@ class PageController extends Controller
         // $agent_id = 78;
         $page_data = PageModel::where(['slug'=>$slug,'status'=>1, 'created_by'=>$agent_id])->first();
         // dd($page_data);
-        
         if(!is_null($page_data)){
             if($page_data->addination_cta_type == 'custom_url'){
                 $page_data->addination_url = $page_data->addination_url;
@@ -43,9 +39,8 @@ class PageController extends Controller
         return redirect()->route('404');
     }
     public function get_page_popup_info(Request $request){
-
         $request->validate(['id'=>'required|integer']);
-        $page_data = PageModel::select('id','popup_content','popup_image','embed_form_code','embed_form_status','popup_image_status','popup_content_status')->where('id',$request->id)->first();
+        $page_data = PageModel::select('id','form_id', 'popup_content','popup_image','embed_form_code','embed_form_status','popup_image_status','popup_content_status')->where('id',$request->id)->first();
         $cdo_category = CDOCategoryModel::select('id','name')->where('status',1)->get();
         $product_category = ProductServiceCategory::select('id','name')->where('status',1)->get();
         // return $cdo_category;
@@ -77,32 +72,90 @@ class PageController extends Controller
             return response()->json(['status'=>false,'data'=>NULL,'message'=>'Failed!']);
         }
     }
-    public function save_page_popup_data(Request $request){
+    public function save_page_popup_data(Request $request)
+    {
         $request->validate([
-            'page_id'=>'required|integer',
-            'name'=>'required',
-            'source'=>'required',
-            'email'=>'required',
-            'cdo_category'=>'required',
-            'phone'=>'required|numeric',
-            'product_category'=>'required|integer',
-            'message'=>'required',
+            'page_id'            => 'required|integer',
+            'name'               => 'required',
+            'source'             => 'required',
+            'email'              => 'required|email',
+            'cdo_category'       => 'required',
+            'phone'              => 'required|numeric',
+            'product_category'   => 'required|integer',
+            'message'            => 'required',
         ]);
-        $other_product = $request->other_product_and_service;
-        $other_cod = $request->other_cod;
-        $page_data = PageModel::where(['id'=>$request->page_id,'status'=>1, 'created_by'=>app('currentAgent')->id])->first();
-        // dd($request->all());
-        // dd($page_data);
-
-        $product_data = ProductService::select('id','prod_name')->where('prod_category',$request->id)->get();
-        // return $cdo_category;
-        if(!is_null($product_data)){
-            return redirect()->back()->with('success','Your information has been submitted successfully!');
-            return response()->json(['status'=>true,'data'=>$product_data,'message'=>'Success!']);
-        }else{
-            return response()->json(['status'=>false,'data'=>NULL,'message'=>'Failed!']);
+        $page_data = PageModel::where([
+            'id'         => $request->page_id,
+            'status'     => 1,
+            'created_by' => app('currentAgent')->id
+        ])->first();
+        if(!$page_data){
+            return back()->with('error','Page not found');
         }
+        // API Payload
+        $payload = [
+            // required by API
+            'form_id' => base64_encode($page_data->form_id),
+            'name' => $request->name,
+            'email' => $request->email,
+            'contact_no' => $request->phone,
+            'message' => $request->message,
+            // company => CDO
+            'company' => $request->cdo_id ?? $request->cdo_category,
+            // product service
+            'ps_id' => $request->product_id,
+            // optional extra data
+            'page_id' => $request->page_id,
+            'source' => $request->source,
+            'tag_id' => $page_data->tag_id,
+            'list_id' => $page_data->list_id,
+            'other_cod' => $request->other_cod,
+            'other_product_and_service' => $request->other_product_and_service,
+        ];
+        // Call external API
+        $apiUrl = request()->getSchemeAndHttpHost() . '/admin/api/save-leads';
+        $response = Http::post($apiUrl, $payload);
+        dd($response);
+        if($response->successful()){
+            return redirect()
+                ->back()
+                ->with(
+                    'success',
+                    'Lead submitted successfully'
+                );
+        }
+        return redirect()
+            ->back()
+            ->with(
+                'error',
+                'Lead submission failed'
+            );
     }
+    // public function save_page_popup_data(Request $request){
+    //     $request->validate([
+    //         'page_id'=>'required|integer',
+    //         'name'=>'required',
+    //         'source'=>'required',
+    //         'email'=>'required',
+    //         'cdo_category'=>'required',
+    //         'phone'=>'required|numeric',
+    //         'product_category'=>'required|integer',
+    //         'message'=>'required',
+    //     ]);
+    //     $other_product = $request->other_product_and_service;
+    //     $other_cod = $request->other_cod;
+    //     $page_data = PageModel::where(['id'=>$request->page_id,'status'=>1, 'created_by'=>app('currentAgent')->id])->first();
+    //     dd($request->all(), $page_data);
+    //     // dd($page_data);
+    //     $product_data = ProductService::select('id','prod_name')->where('prod_category',$request->id)->get();
+    //     // return $cdo_category;
+    //     if(!is_null($product_data)){
+    //         return redirect()->back()->with('success','Your information has been submitted successfully!');
+    //         // return response()->json(['status'=>true,'data'=>$product_data,'message'=>'Success!']);
+    //     }else{
+    //         return response()->json(['status'=>false,'data'=>NULL,'message'=>'Failed!']);
+    //     }
+    // }
     public function embed_pages($slug = NULL){
         $user_id = auth()->id();
         $agent_id = app('currentAgent')->id;
@@ -120,9 +173,7 @@ class PageController extends Controller
             }
             return view('dashboard.embed-page',compact('page_data')); // after login
         }
-        
     }
-
     public function core_page($slug){
         $agent_id = app('currentAgent')->id;
         $agent_id = 78;
@@ -136,6 +187,11 @@ class PageController extends Controller
                     $embedpage_data = DB::table('tbl_embedded_pages')->where(['id'=>$section->section_id, 'status'=>'active', 'created_by'=> $agent_id])->first();
                     if($embedpage_data){
                         $bodyData .= view('sections.embed-page',compact('embedpage_data'))->render();
+                    }
+                }elseif($section->type == 3){
+                    $cta_data = DB::table('tbl_call_to_actions')->where(['id'=>$section->section_id, 'status'=>1, 'created_by'=> $agent_id])->first();
+                    if($cta_data){
+                        $bodyData .= view('sections.cta-page',compact('cta_data'))->render();
                     }
                 }else{
                     if($section->section_id == 1){

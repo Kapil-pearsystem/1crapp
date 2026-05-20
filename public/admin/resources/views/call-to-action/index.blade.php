@@ -38,7 +38,7 @@ $type = array(
                         <tr>
                             <th>Sr. No.</th>
                             <!-- <th>Section</th> -->
-                            <th>Title</th>
+                            <th>Name</th>
                             <th>Type</th>
                             <th>Description</th>
                             <th>Left-link Title</th>
@@ -54,7 +54,7 @@ $type = array(
                         <tr>
                             <td>{{ ++$key }}</td>
                             <!-- <td>{{ $list->section }}</td> -->
-                            <td>{{ $list->title }}</td>
+                            <td>{{ $list->name }}</td>
                             <td>{{ $type[$list->type]??'N/A' }}</td>
                             <td>{{ $list->description }}</td>
                             <td>{{ $list->left_link_title }}</td>

@@ -16,10 +16,15 @@
     </div>
     @else
 <div class="frm_al_suprtsss">
-    <form action="{{ route('save-page-popup-data') }}" method="post">
+    @php 
+        $apiUrl = request()->getSchemeAndHttpHost() . '/admin/api/save-leads'
+    @endphp
+    <form action="{{ $apiUrl }}" method="post">
+    <!-- <form action="{{ route('save-page-popup-data') }}" method="post"> -->
         @csrf
         <div class="form-group marges_ic">
             <i class="fa fa-user"></i>
+            <input type="hidden" name="form_id" value="{{ base64_encode($page_data->form_id) }}"/>
             <input type="hidden" name="page_id" value="{{ $id }}"/>
             <input type="hidden" name="source" value="General Page"/>
             <input type="text" name="name" value="" class="form-control" placeholder="Enter Name" />

@@ -108,7 +108,7 @@
                                 <select name="cta_section[]" class="form-control">
                                     <option value="">Select CTA Section</option>
                                     @foreach($ctasections as $cta)
-                                    <option value="{{ $cta->id }}" {{ $sect->section_id == $cta->id ? 'selected' : '' }}> {{ $cta->title }}</option>
+                                    <option value="{{ $cta->id }}" {{ $sect->section_id == $cta->id ? 'selected' : '' }}> {{ $cta->name }}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -158,7 +158,7 @@
                                 <select name="cta_section[]" class="form-control">
                                     <option value="">Select CTA Section</option>
                                     @foreach($ctasections as $cta)
-                                    <option value="{{ $cta->id }}"> {{ $cta->title }}</option>
+                                    <option value="{{ $cta->id }}"> {{ $cta->name }}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -280,7 +280,7 @@
                     <select name="cta_section[]" class="form-control">
                         <option value="">Select CTA Section</option>
                         @foreach($ctasections as $cta)
-                            <option value="{{ $cta->id }}"> {{ $cta->title }}</option>
+                            <option value="{{ $cta->id }}"> {{ $cta->name }}</option>
                         @endforeach
                     </select>
                 </div>

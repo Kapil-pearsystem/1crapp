@@ -364,15 +364,8 @@ $compliances = DB::table('tbl_compliances')->where('created_by', app('currentAge
                         $socialLinks = DB::table('tbl_footer_sociallinks')->where('created_by', app('currentAgent')->id)->get();
                         @endphp
                         @foreach($socialLinks as $sLinks)
-                        <a href="{{ $sLinks->link }}" @if($sLinks->new_tab == 1) target="_blank" @endif><i class="fa {{ $sLinks->icon }}"></i></a>
+                        <a href="{{ $sLinks->link }}"  target="_blank" @if($sLinks->new_tab == 1) @endif><i class="fa {{ $sLinks->icon }}"></i></a>
                         @endforeach
-                        <!-- <a href="javascript:void(0);"><i class="fa fa-facebook"></i></a>
-            <a href="javascript:void(0);"><i class="fa fa-instagram"></i></a>
-            <a href="javascript:void(0);"><i class="fa fa-youtube-play"></i></a>
-            <a href="javascript:void(0);"><i class="fa fa-linkedin"></i></a>
-            <a href="javascript:void(0);"><i class="fa fa-twitter"></i></a>
-            <a href="javascript:void(0);"><i class="fa fa-whatsapp"></i></a>
-            <a href="javascript:void(0);"><i class="fa fa-google-plus"></i></a> -->
                     </div>
                 </div>
             </div>

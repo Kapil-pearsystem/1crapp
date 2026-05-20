@@ -35,6 +35,11 @@
             </div>
             <!-- Title -->
             <div class="col-sm-6 mb-3">
+                <label><span style="color: red;">*</span> Name</label>
+                <input type="text" name="name" class="form-control" required value="{{ old('name', $details->name ?? '') }}" placeholder="Enter name" />
+            </div>
+            
+            <div class="col-sm-6 mb-3">
                 <label><span style="color: red;">*</span> Title</label>
                 <input type="text" name="title" class="form-control" required
                     value="{{ old('title', $details->title ?? '') }}" placeholder="Enter title" />
