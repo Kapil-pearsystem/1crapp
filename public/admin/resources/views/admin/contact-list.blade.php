@@ -94,11 +94,8 @@
 							<td>{{ $list->name }}</td>
 
 							<td><a href="{{ url('enquiry-list').'?list='.$list->id }}">
-						        {{ \App\Models\EnquiryModel::
-                                join('users','users.id','=','tbl_enquiry.customer_id')
-                                ->leftJoin('tbl_form','tbl_form.id','=','tbl_enquiry.form_id')
-                                ->where('tbl_form.created_by', auth()->user()->id)
-                                ->where('users.type', 2)->where('tbl_enquiry.list_id', $list->id)->count(); }} 
+                                {{ DB::table('tbl_user_list')->join('tbl_enquiry', 'tbl_enquiry.customer_id', '=', 'tbl_user_list.user_id')->where('tbl_enquiry.agent_id',auth()->id())->where('tbl_user_list.list_id', $list->id)->distinct('tbl_user_list.user_id')->count('tbl_user_list.user_id')}}
+						        <!-- {{ DB::table('tbl_user_list')->join('tbl_enquiry', 'tbl_enquiry.customer_id', '=', 'tbl_user_list.user_id')->where('tbl_enquiry.agent_id', auth()->user()->id)->count(); }}  -->
                             <i class="fas fa-external-link-alt" aria-hidden="true"></i>
                             </a></td>
 							<td>{{ $list->list_id }}</td>
