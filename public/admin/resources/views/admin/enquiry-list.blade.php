@@ -3,7 +3,8 @@
 use Illuminate\Support\Str;
 ?>
 @section('title', 'Enquiry List')
-<link href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css" rel="stylesheet">
+<link href="https://cdn.datatables.net/2.0.3/css/dataTables.dataTables.min.css" rel="stylesheet">
+<link href="https://cdn.datatables.net/buttons/3.0.1/css/buttons.dataTables.min.css" rel="stylesheet">
 
 <style>
  .flt_liststs {
@@ -58,10 +59,15 @@ use Illuminate\Support\Str;
         </div>
 
         <div class="row mb-4">
-                <div class="col-lg-4">
-                <h2 class="h3 mb-0 text-gray-800">Orders & Enquiry List @if($list_name) <span class="float-right text-info">: {{ $list_name }}</span> @endif </h2>
+                <div class="col-lg-5">
+                <h3 class="h3 mb-0 text-gray-800">Master List </h3>
+                @if($list_name)<span class="text-muted">Filter Applied With: List </span><span class="text-info">{{ $list_name }}</span>@endif
+                @if($tag_name)<span class="text-muted">Filter Applied With: Tag </span><span class="text-info"> {{ $tag_name }}</span> @endif
+                @if(!$list_name && !$tag_name)
+                <span class="text-muted">Filter Applied From: </span><span class="text-info">Orders & Enquiries &ensp;</span>
+                @endif
                 </div>
-		        <div class="col-lg-8">
+		        <div class="col-lg-7">
                     <div class="flt_liststs">
                         <div class="flttrres">
                                 <a class="btn text-light" onclick="window.history.back();"><i class="fas fa-solid fa-arrow-left"></i> Back</a>
@@ -143,13 +149,12 @@ use Illuminate\Support\Str;
                                     <option style="color: white; background-color: green;" value="3" @if($list->status == 3) selected @endif>Closed</option>
                                     <option style="color: black; background-color: gray;" value="4" @if($list->status == 4) selected @endif>Not Related</option>
                                     <option style="color: white; background-color: purple;" value="5" @if($list->status == 5) selected @endif>Accelerated</option>
-
                                 </select>
                             </td>
                             <td>
                                 <a href="#" onclick="viewMessage({{ $list->id }})" class="btn btn-info bnt_alsss"  data-toggle="modal" data-target="#view_message"><i aria-hidden="true" class="fa fa-eye"></i></a>
 								<a href="{{ route('customer.edit',[$list->customer_id]) }}" class="btn btn-primary bnt_alsss" ><i aria-hidden="true" class="fa fa-pen"></i></a>
-								<a href="{{ route('delete-enquiry',[$list->id]) }}" onclick="return confirm('Are you sure you want to delete this tags?')" class="btn btn-danger bnt_alsss"><i aria-hidden="true" class="fas fa-trash-alt"></i></a>
+								<!-- <a href="{{ route('delete-enquiry',[$list->id]) }}" onclick="return confirm('Are you sure you want to delete this tags?')" class="btn btn-danger bnt_alsss"><i aria-hidden="true" class="fas fa-trash-alt"></i></a> -->
 							</td>
 						</tr>
 						@endforeach
@@ -201,12 +206,12 @@ use Illuminate\Support\Str;
 @endsection
 @section('scripts')
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-<script type="text/javascript" src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
-<script>
-new DataTable( '#example-table-theme', {
-    paging: true,
-} );
-</script>
+<script type="text/javascript" src="https://cdn.datatables.net/2.0.3/js/dataTables.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/buttons/3.0.1/js/dataTables.buttons.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/buttons/3.0.1/js/buttons.html5.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/buttons/3.0.1/js/buttons.print.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 <script>
        function updateStatus(status, id){
             // alert(status);
@@ -286,6 +291,7 @@ new DataTable( '#example-table-theme', {
             data: {
                 _token: '{{ csrf_token() }}',
                 step: step,
+                user_type: 'enquiry',
                 id: id,
             },
             success: function (response) {
@@ -379,12 +385,14 @@ function getWhatsappLink(){
     var id = document.wf1.customer_id.value;
     var link = document.wf1.success_destination.value;
     var message = document.wf1.message.value;
+    var user_type = document.wf1.user_type.value;
     $.ajax({
         url: '{{ route('get-whatsapp-link') }}',
         type: 'POST',
         data: {
             _token: '{{ csrf_token() }}',
             message: message,
+            user_type: user_type,
             link: link,
             id: id,
         },
@@ -403,4 +411,36 @@ function getWhatsappLink(){
 }
 </script>
 
+<script>
+new DataTable('#example-table-theme', {
+    paging: true,
+
+    layout: {
+        topStart: {
+            buttons: [
+                {
+                    extend: 'copy',
+                    text: 'Copy'
+                },
+                {
+                    extend: 'csv',
+                    text: 'CSV'
+                },
+                {
+                    extend: 'excel',
+                    text: 'Excel'
+                },
+                {
+                    extend: 'pdf',
+                    text: 'PDF'
+                },
+                {
+                    extend: 'print',
+                    text: 'Print'
+                }
+            ]
+        }
+    }
+});
+</script>
 @endsection

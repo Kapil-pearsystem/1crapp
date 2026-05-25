@@ -50,7 +50,7 @@
                             <td>{{ ++$key }}</td>
 
                             <td>{{ $item->page_name }}   |&ensp;  
-                                <i class="fa fa-copy copy-icon" data-url="{{ request()->getSchemeAndHttpHost() }}/homework/{{ $item->slug }}" aria-hidden="true" style="cursor:pointer;"></i>&ensp; |&ensp; <a href="{{ request()->getSchemeAndHttpHost() }}/homework/{{ $item->slug }}"> <i aria-hidden="true" class="fas fa-external-link-alt"></i></a></td>
+                                <i class="fa fa-copy copy-icon" data-url="{{ request()->getSchemeAndHttpHost() }}/homework/{{ $item->slug }}" aria-hidden="true" style="cursor:pointer;"></i>&ensp; |&ensp; <a href="{{ request()->getSchemeAndHttpHost() }}/homework/{{ $item->slug }}" target="_blank"> <i aria-hidden="true" class="fas fa-external-link-alt"></i></a></td>
 
                             {{-- Media Preview --}}
                             <!-- <td>
@@ -70,7 +70,7 @@
                                     {{ ucwords(str_replace('_', ' ',$item->media_type)) }} 
                                     
                                 </span>
-                                <a href="{{ $item->media_path }}"> <i aria-hidden="true" class="fas fa-external-link-alt"></i></a>
+                                <a href="{{ $item->media_path }}" target="_blank"> <i aria-hidden="true" class="fas fa-external-link-alt"></i></a>
                             </td>
 
                             <!-- <td>

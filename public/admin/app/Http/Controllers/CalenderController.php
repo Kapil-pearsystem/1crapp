@@ -45,8 +45,7 @@ class CalenderController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'page_name' => 'required|string|max:255',
-            'titl'      => 'nullable|string|max:255',
+            'title'      => 'nullable|string|max:255',
         ]);
 
         // ⭐ Add / Update
@@ -57,26 +56,6 @@ class CalenderController extends Controller
             $record = new CalenderModel();
             $message = "Calender created successfully!";
         }
-
-        // ⭐ Page Name
-        $record->page_name = $request->page_name;
-
-        // ⭐ Slug generate (unique)
-        $baseSlug = Str::slug($request->page_name);
-        $slug = $baseSlug;
-        $count = 1;
-
-        while (
-            CalenderModel::where('slug', $slug)
-            ->when($request->id, function ($q) use ($request) {
-                return $q->where('id', '!=', $request->id);
-            })
-            ->exists()
-        ) {
-            $slug = $baseSlug . '-' . $count++;
-        }
-
-        $record->slug = $slug;
 
         // ⭐ Other Fields
         $record->title = $request->title;

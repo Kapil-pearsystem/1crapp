@@ -48,7 +48,7 @@
                             <td>{{ ++$key }}</td>
                             <td>{{ $item->page_name }}
                                    |&ensp;  
-                                <i class="fa fa-copy copy-icon" data-url="{{ request()->getSchemeAndHttpHost() }}/appointments/thankyou/{{ $item->slug }}" aria-hidden="true" style="cursor:pointer;"></i>&ensp; |&ensp; <a href="{{ request()->getSchemeAndHttpHost() }}/appointments/thankyou/{{ $item->slug }}"> <i aria-hidden="true" class="fas fa-external-link-alt"></i></a>
+                                <i class="fa fa-copy copy-icon" data-url="{{ request()->getSchemeAndHttpHost() }}/appointments/thankyou/{{ $item->slug }}" aria-hidden="true" style="cursor:pointer;"></i>&ensp; |&ensp; <a href="{{ request()->getSchemeAndHttpHost() }}/appointments/thankyou/{{ $item->slug }}" target="_blank"> <i aria-hidden="true" class="fas fa-external-link-alt"></i></a>
                             </td>
                             <td>
                                 @if($item->logo)

@@ -37,7 +37,7 @@ $finalUrl = $scheme . '://' . $host;
         <div class="user_proff">
             <div class="mg_ares">
                 <a href="{{url('')}}">
-                    <img src="{{url('').'/'.$logo }}" alt="" />
+                    <img src="{{ asset('profile').'/'.auth()->user()->profile_pic }}" alt="" />
                 </a>
             </div>
             <h3>{{ $first_name." ".$last_name }}</h3>
@@ -306,23 +306,21 @@ $finalUrl = $scheme . '://' . $host;
         </div>
     
 
-    @if(in_array('product-service-category-list',$access_module_array) || in_array('product-list',$access_module_array))
     <div class="man_boxx">
         <div class="accordion_head"><i class="fas fa-users"></i> Product & Services<span class="plusminus">+</span></div>
         <div class="accordion_body" style="display: none;">
             <div class="user_listst_links">
 			    <ul>
+		            <li><a href="{{ route('productservices.categorylist') }}">Category</a></li>
                     @if(in_array('product-service-category-list',$access_module_array) )
-			            <li><a href="{{ route('productservices.categorylist') }}">Category</a></li>
                     @endif
+		            <li><a href="{{ route('productservices.productsslist') }}">P&S-List</a></li>
                 	@if(in_array('product-list',$access_module_array) )
-			            <li><a href="{{ route('productservices.productsslist') }}">P&S-List</a></li>
                     @endif
 			    </ul>
             </div>
         </div>
     </div>
-    @endif
     
     <div class="man_boxx">
         <div class="accordion_head"><i class="fas fa-users"></i> My Digital Assets<span class="plusminus">+</span></div>
@@ -547,7 +545,7 @@ $finalUrl = $scheme . '://' . $host;
         </div>
     </li>
 	@endif
-		@if(in_array('ticket-list',$access_module_array)  )
+		
 	<li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#appointmentDropDown"
             aria-expanded="true" aria-controls="appointmentDropDown">
@@ -564,6 +562,7 @@ $finalUrl = $scheme . '://' . $host;
             </div>
         </div>
     </li>
+    @if(in_array('ticket-list',$access_module_array)  )
 	@endif
     @if(in_array('purchase-criteria',$access_module_array) )
 	<li class="nav-item">

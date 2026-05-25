@@ -159,7 +159,12 @@ class HomeController extends Controller
         )
         ->where('c.created_by', auth()->user()->id)->groupBy('c.id', 'c.list_id', 'c.name', 'c.status', 'c.created_by', 'c.updated_by', 'c.created_at', 'c.updated_at')->orderBy('c.id')->get();
         // dd($contacts);
-        $customers = Customer::where(['agent_id'=>auth()->user()->id,'type'=>1])->count();
+        $customers = Customer::query();
+        if(auth()->user()->role_id == 2){
+            $customers = $customers->where('agent_id', auth()->user()->id);
+            // dd(auth()->user()->role_id);
+        }
+        $customers = $customers->count();
         $passive_profit = PassiveProfitModel::where(['created_by'=>auth()->user()->id,'status'=>1])->count();
         $query = EnquiryModel::select('tbl_enquiry.id')
         ->join('users', 'users.id', '=', 'tbl_enquiry.customer_id')
@@ -385,38 +390,85 @@ class HomeController extends Controller
     public function enquiry_list(Request $request)
     {
         $list_name = '';
-        $lists = EnquiryModel::
-        select('users.name',
-        'tbl_enquiry.id',
-        'tbl_enquiry.customer_id',
-        'users.memberid',
-        'users.email',
-        'users.mobile as phone',
-        'tbl_enquiry.message',
-        'tbl_enquiry.created_at',
-        'tbl_enquiry.status',
-        'tbl_formsource.title as source',
-        'product_services.prod_name as ps_name',
-        'tbl_cdo.name as cdo_name',
+        $tag_name = '';
+        $lists = EnquiryModel::select(
+            'users.name',
+            'tbl_enquiry.id',
+            'tbl_enquiry.customer_id',
+            'users.memberid',
+            'users.email',
+            // 'users.mobile as phone',
+            'tbl_enquiry.phone as phone',
+            'tbl_enquiry.message',
+            'tbl_enquiry.created_at',
+            'tbl_enquiry.status',
+            'tbl_formsource.title as source',
+            'product_services.prod_name as ps_name',
+            'tbl_cdo.name as cdo_name'
         )
         ->join('users','users.id','=','tbl_enquiry.customer_id')
-        ->leftjoin('tbl_form','tbl_form.id','=','tbl_enquiry.form_id')
-        ->leftjoin('tbl_formsource','tbl_formsource.id','=','tbl_form.source_id')
-        ->leftjoin('product_services','product_services.id','=','tbl_enquiry.ps_id')
-        ->leftjoin('tbl_cdo','tbl_cdo.id','=','tbl_enquiry.cdo_id')
-        ->where('tbl_form.created_by',auth()->user()->id)
+        ->leftJoin('tbl_user_list','tbl_user_list.user_id','=','tbl_enquiry.customer_id')
+        ->leftJoin('tbl_user_tags','tbl_user_tags.user_id','=','tbl_enquiry.customer_id')
+        ->leftJoin('tbl_form','tbl_form.id','=','tbl_enquiry.form_id')
+        ->leftJoin('tbl_formsource','tbl_formsource.id','=','tbl_form.source_id')
+        ->leftJoin('product_services','product_services.id','=','tbl_enquiry.ps_id')
+        ->leftJoin('tbl_cdo','tbl_cdo.id','=','tbl_enquiry.cdo_id')
+        ->where('tbl_form.created_by',auth()->id())
         ->where('users.type',2);
+
         if($request->list){
-            $contact = ContactModel::select('id','name')->where(['id'=>$request->list])->first();
-            if ($contact) {
-                $list_name = $contact->name;
-            }
-            $lists = $lists->where('tbl_enquiry.list_id',$request->list);
+            $contact = ContactModel::select('id','name')->where('id',$request->list)->first();
+            $list_name = $contact->name ?? '';
+            $lists->where('tbl_user_list.list_id',$request->list);
         }
-        $lists = $lists->orderBy('tbl_enquiry.id','DESC')->get();
-        // dd($lists);
-        return view('admin.enquiry-list', compact('lists','list_name'));
+        if($request->tag){
+            $tag = TagsModel::select('id','name')->where('id',$request->tag)->first();
+            $tag_name = $tag->name ?? '';
+            $lists->where('tbl_user_tags.tag_id',$request->tag);
+        }
+
+        $lists = $lists
+            ->distinct('tbl_enquiry.id')
+            ->orderBy('tbl_enquiry.id','DESC')
+            ->get();
+
+        return view('admin.enquiry-list', compact('lists', 'list_name','tag_name'));
     }
+    // public function enquiry_list(Request $request)
+    // {
+    //     $list_name = '';
+    //     $lists = EnquiryModel::
+    //     select('users.name',
+    //     'tbl_enquiry.id',
+    //     'tbl_enquiry.customer_id',
+    //     'users.memberid',
+    //     'users.email',
+    //     'users.mobile as phone',
+    //     'tbl_enquiry.message',
+    //     'tbl_enquiry.created_at',
+    //     'tbl_enquiry.status',
+    //     'tbl_formsource.title as source',
+    //     'product_services.prod_name as ps_name',
+    //     'tbl_cdo.name as cdo_name',
+    //     )
+    //     ->join('users','users.id','=','tbl_enquiry.customer_id')
+    //     ->leftjoin('tbl_form','tbl_form.id','=','tbl_enquiry.form_id')
+    //     ->leftjoin('tbl_formsource','tbl_formsource.id','=','tbl_form.source_id')
+    //     ->leftjoin('product_services','product_services.id','=','tbl_enquiry.ps_id')
+    //     ->leftjoin('tbl_cdo','tbl_cdo.id','=','tbl_enquiry.cdo_id')
+    //     ->where('tbl_form.created_by',auth()->user()->id)
+    //     ->where('users.type',2);
+    //     if($request->list){
+    //         $contact = ContactModel::select('id','name')->where(['id'=>$request->list])->first();
+    //         if ($contact) {
+    //             $list_name = $contact->name;
+    //         }
+    //         $lists = $lists->where('tbl_enquiry.list_id',$request->list);
+    //     }
+    //     $lists = $lists->orderBy('tbl_enquiry.id','DESC')->get();
+    //     // dd($lists);
+    //     return view('admin.enquiry-list', compact('lists','list_name'));
+    // }
     public function update_enquiry_status(Request $request)
     {
         $enquiry = EnquiryModel::where(['id'=>$request->id])->first();
@@ -610,9 +662,20 @@ class HomeController extends Controller
     {
         $request->validate([
             'id' => 'required',
+            'user_type' => 'required',
             'step' => 'required'
         ]);
-        $customer = EnquiryModel::find($request->id);
+        $name = '';
+        if($request->user_type == 'customer'){
+            $customer = Customer::find($request->id);
+            $name = $customer->name;
+        }elseif($request->user_type == 'agent'){
+            $customer = User::find($request->id);
+            $name = $customer->first_name.' '.$customer->middle_name.''.$customer->last_name;
+        }else{
+            $customer = EnquiryModel::find($request->id);
+            $name = $customer->name;
+        }
         $step = $request->step;
         $mails = GiftMailModel::where(['category' => 3, 'status' => 1])->get();
         $html = '';
@@ -621,6 +684,7 @@ class HomeController extends Controller
             $html .= '<form action="' . route('send-link-via-email') . '" method="post">
                     <input type="hidden" name="_token" value="' . $csrfToken . '">
                     <input type="hidden" name="customer_id" value="' . $request->id . '">
+                    <input type="hidden" name="user_type" value="' . $request->user_type . '">
                     <div class="form-group">
                         <label for="exampleFormControlSelect1">Select Template</label>
                         <select class="form-control" id="exampleFormControlSelect1" name="mail_id" required>
@@ -638,6 +702,7 @@ class HomeController extends Controller
             $html .= '<form action="#" method="post" onsubmit="return getWhatsappLink()" name="wf1">
                     <input type="hidden" name="_token" value="' . $csrfToken . '">
                     <input type="hidden" name="customer_id" value="' . $request->id . '">
+                    <input type="hidden" name="user_type" value="' . $request->user_type . '">
                     <div class="form-group">
                         <label for="media_type">Select Type</label>
                         <select class="form-control" id="media_type" name="media_type" onchange="setDestination(this.value)" required>
@@ -652,7 +717,7 @@ class HomeController extends Controller
                     </div>
                     <div class="form-group">
                         <label for="message" >Enter Message</label>
-                       <textarea name="message" id="message" class="form-control" placeholder="Enter Message">Hey '.$customer->name.', here the Link for you too Book the Meeting. Click below and Book the Call.</textarea>
+                       <textarea name="message" id="message" class="form-control" placeholder="Enter Message">Hey '.$name.', here the Link for you too Book the Meeting. Click below and Book the Call.</textarea>
                     </div>
                     <button type="submit" class="btn btn-primary mb-2">Get Link</button>
                 </form>';
@@ -663,13 +728,25 @@ class HomeController extends Controller
     public function get_whatsapp_link(Request $request)
     {
         $link = $request->link;
-        $customer = EnquiryModel::find($request->id);
-        if (!$customer) {
-            return response()->json(['status' => false, 'msg' => 'Customer not found!'], 404);
+        $whatsAppNumber = '';
+        if($request->user_type == 'customer'){
+            $customer = Customer::find($request->id);
+            $whatsAppNumber = $customer->mobile;
+        }elseif($request->user_type == 'agents'){
+            $customer = User::find($request->id);
+            $whatsAppNumber = $customer->mobile_number;
+        }else{
+            $customer = EnquiryModel::find($request->id);
+            // return $customer;
+            $whatsAppNumber = $customer->phone;
         }
-        $whatsAppNumber = $customer->phone;
-        $message = urlencode($request->message);
-        $whatsAppLink = "https://wa.me/{$whatsAppNumber}?text={$message}";
+        // $customer = EnquiryModel::find($request->id);
+        if (!$whatsAppNumber) {
+            return response()->json(['status' => false, 'msg' => 'Customer Whatsapp No. not found!'], 404);
+        }
+        $message = $request->message . "\n\n" . $link;
+        $encodedMessage = urlencode($message);
+        $whatsAppLink = "https://wa.me/{$whatsAppNumber}?text={$encodedMessage}";
         $html = '
             <div class="text-center text-primary border border-secondary bg-light p-3 rounded" style="max-width: 600px; margin: auto;">
                 <p class="mb-3" style="font-size: 14px; font-weight: bold;">Scan to Share:</p>
@@ -686,7 +763,8 @@ class HomeController extends Controller
             </div>';
         return response()->json(['status' => true, 'msg' => 'WhatsApp link generated successfully!', 'data' => $html], 200);
     }
-    public function master_list()
+     
+    public function master_list2()
     {
         $lists = EnquiryModel::
             select(
@@ -714,5 +792,52 @@ class HomeController extends Controller
             ->orderBy('id', 'DESC')
             ->get();
         return view('admin.master-list', compact('lists'));
+    }
+    public function master_list(Request $request)
+    {
+        $list_name = '';
+        $tag_name = '';
+        $lists = Customer::select(
+            'users.id',
+            'users.name',
+            'tbl_enquiry.customer_id',
+            'users.memberid',
+            'users.email',
+            'users.mobile as phone',
+            'tbl_enquiry.message',
+            'tbl_enquiry.created_at',
+            'tbl_enquiry.status',
+            'tbl_formsource.title as source',
+            'product_services.prod_name as ps_name',
+            'tbl_cdo.name as cdo_name',
+            'users.created_at'
+        )
+        ->leftJoin('tbl_enquiry','users.id','=','tbl_enquiry.customer_id')
+        ->leftJoin('tbl_user_list','tbl_user_list.user_id','=','users.id')
+        ->leftJoin('tbl_user_tags','tbl_user_tags.user_id','=','users.id')
+        ->leftJoin('tbl_form','tbl_form.id','=','tbl_enquiry.form_id')
+        ->leftJoin('tbl_formsource','tbl_formsource.id','=','tbl_form.source_id')
+        ->leftJoin('product_services','product_services.id','=','tbl_enquiry.ps_id')
+        ->leftJoin('tbl_cdo','tbl_cdo.id','=','tbl_enquiry.cdo_id')
+        ->where('users.agent_id',auth()->id());
+
+        if($request->list){
+            $contact = ContactModel::select('id','name')->where('id',$request->list)->first();
+            $list_name = $contact->name ?? '';
+            $lists->where('tbl_user_list.list_id',$request->list);
+        }
+        if($request->tag){
+            $tag = TagsModel::select('id','name')->where('id',$request->tag)->first();
+            $tag_name = $tag->name ?? '';
+            $lists->where('tbl_user_tags.tag_id',$request->tag);
+        }
+
+        $lists = $lists
+            ->distinct('users.id')
+            ->orderBy('users.id','DESC')
+            ->get();
+        // dd($lists);
+
+        return view('admin.master-list', compact('lists', 'list_name','tag_name'));
     }
 }

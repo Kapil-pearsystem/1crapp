@@ -17,7 +17,7 @@ use Illuminate\Support\Facades\DB;
     </div> -->
     <!-- Content Row -->
     <div class="row">
-        @if(auth()->user()->role_id == 1)
+        @if(@auth()->user()->role_id == 1)
         <!-- Earnings (Monthly) Card Example -->
         <div class="col-xl-3 col-md-6 mb-4">
             <div class="card border-left-primary shadow h-100 py-2">
@@ -98,7 +98,7 @@ use Illuminate\Support\Facades\DB;
             </div>
         </div>
         @endif
-        @if(auth()->user()->role_id != 1)
+        @if(@auth()->user()->role_id != 1)
         <!-- Earnings (Monthly) Card Example -->
         <div class="col-xl-4 col-sm-12 mb-4">
             <div class="card shadow">
@@ -192,7 +192,7 @@ use Illuminate\Support\Facades\DB;
                 </div> -->
         </div>
         @endif
-        @if(auth()->user()->role_id == 1)
+        @if(@auth()->user()->role_id == 1)
         <div class="col-xl-12 col-md-12 mb-4">
             @else
             <div class="col-xl-6 col-md-12 mb-4">
@@ -212,7 +212,7 @@ use Illuminate\Support\Facades\DB;
                     </div>
                 </div>
             </div>
-            @if(auth()->user()->role_id != 1)
+            @if(@auth()->user()->role_id != 1)
             <div class="col-xl-3 col-md-6 mb-4">
                 <div class="card shadow h-50 py-2">
                     <div class="card-body">
@@ -376,7 +376,7 @@ use Illuminate\Support\Facades\DB;
                 </div>
             </div>
             @endif
-            @if(auth()->user()->role_id == 1)
+            @if(@auth()->user()->role_id == 1)
             <div class="col-xl-6 col-md-6 mb-4">
                 <div class="card shadow h-100 py-2">
                     <div class="card-body">
@@ -401,7 +401,7 @@ use Illuminate\Support\Facades\DB;
                     <div class="card-body">
                         <h6>Quick Actions</h6>
                         <div class="d-flex align-items-center mb-4">
-                            @if(auth()->user()->role_id == 1)
+                            @if(@auth()->user()->role_id == 1)
                             <a href="{{ route('agent.create') }}" class="btn btn-primary ml-2"><i class="fas fa-plus"></i> Add Agent <i class="fas fa-external-link-alt"></i></a>
                             @endif
                             <a href="javascript:void(0)" class="btn btn-primary ml-2">View Reports <i class="fas fa-external-link-alt"></i></a>

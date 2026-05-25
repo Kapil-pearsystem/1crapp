@@ -13,6 +13,9 @@ class EnquiryModel extends Model
         'ps_id',
         'phone',
         'message',
+        'tag_id',
+        'list_id',
+        'agent_id',
         'status',
         'created_at',
         'updated_at'

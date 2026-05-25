@@ -33,42 +33,42 @@
                             </tr>
                         </thead>
                         <tbody>
-                        <tr>
-							<td>1.</td>
-							<td>Customers</td>
-							<td><a href="{{ url('customer') }}" >{{ $customers }} <i class="fas fa-external-link-alt" aria-hidden="true"></i>
-                            </a></td>
-							<td>NA</td>
-							<td>{{ date('d-m-Y') }}</td>
-							<td>
-                            <label class="switch">
-                                <input type="checkbox" class="status-toggle" checked data-id="">
-                                <small></small>
-                            </label>
-							</td>
-							<td>
-								<a href="#" class="btn btn-primary bnt_alsss"><i aria-hidden="true" class="fa fa-pen"></i></a>
-								<a href="#" class="btn btn-danger bnt_alsss"><i aria-hidden="true" class="fas fa-trash-alt"></i></a>
-							</td>
-						</tr>
-                        <tr>
-							<td>2.</td>
-							<td>Orders & Enquiries</td>
-							<td><a href="{{ url('enquiry-list') }}" >{{ $leads }} <i class="fas fa-external-link-alt" aria-hidden="true"></i>
-                            </a></td>
-							<td>NA</td>
-							<td>{{ date('d-m-Y') }}</td>
-							<td>
-                            <label class="switch">
-                                <input type="checkbox" class="status-toggle" checked data-id="">
-                                <small></small>
-                            </label>
-							</td>
-							<td>
-								<a href="#" class="btn btn-primary bnt_alsss"><i aria-hidden="true" class="fa fa-pen"></i></a>
-								<a href="#" class="btn btn-danger bnt_alsss"><i aria-hidden="true" class="fas fa-trash-alt"></i></a>
-							</td>
-						</tr>
+      <!--                  <tr>-->
+						<!--	<td>1.</td>-->
+						<!--	<td>Customers</td>-->
+						<!--	<td><a href="{{ url('customer') }}" >{{ $customers }} <i class="fas fa-external-link-alt" aria-hidden="true"></i>-->
+      <!--                      </a></td>-->
+						<!--	<td>NA</td>-->
+						<!--	<td>{{ date('d-m-Y') }}</td>-->
+						<!--	<td>-->
+      <!--                      <label class="switch">-->
+      <!--                          <input type="checkbox" class="status-toggle" checked data-id="">-->
+      <!--                          <small></small>-->
+      <!--                      </label>-->
+						<!--	</td>-->
+						<!--	<td>-->
+								<!--<a href="#" class="btn btn-primary bnt_alsss"><i aria-hidden="true" class="fa fa-pen"></i></a>-->
+								<!--<a href="#" class="btn btn-danger bnt_alsss"><i aria-hidden="true" class="fas fa-trash-alt"></i></a>-->
+						<!--	</td>-->
+						<!--</tr>-->
+      <!--                  <tr>-->
+						<!--	<td>2.</td>-->
+						<!--	<td>Orders & Enquiries</td>-->
+						<!--	<td><a href="{{ url('enquiry-list') }}" >{{ $leads }} <i class="fas fa-external-link-alt" aria-hidden="true"></i>-->
+      <!--                      </a></td>-->
+						<!--	<td>NA</td>-->
+						<!--	<td>{{ date('d-m-Y') }}</td>-->
+						<!--	<td>-->
+      <!--                      <label class="switch">-->
+      <!--                          <input type="checkbox" class="status-toggle" checked data-id="">-->
+      <!--                          <small></small>-->
+      <!--                      </label>-->
+						<!--	</td>-->
+						<!--	<td>-->
+								<!--<a href="#" class="btn btn-primary bnt_alsss"><i aria-hidden="true" class="fa fa-pen"></i></a>-->
+								<!--<a href="#" class="btn btn-danger bnt_alsss"><i aria-hidden="true" class="fas fa-trash-alt"></i></a>-->
+						<!--	</td>-->
+						<!--</tr>-->
       <!--                  <tr>-->
 						<!--	<td>3.</td>-->
 						<!--	<td>Passive Profit</td>-->
@@ -89,12 +89,13 @@
 						<!--</tr>-->
 
                             @foreach($contacts as $key=>$list)
+                             <?php $userCount =  DB::table('tbl_user_list')->join('users', 'users.id', '=', 'tbl_user_list.user_id')->where('users.agent_id',auth()->id())->where('tbl_user_list.list_id', $list->id)->distinct('tbl_user_list.user_id')->count('tbl_user_list.user_id'); ?>
 						<tr>
 							<td>{{ ++$key+2 }}</td>
 							<td>{{ $list->name }}</td>
 
-							<td><a href="{{ url('enquiry-list').'?list='.$list->id }}">
-                                {{ DB::table('tbl_user_list')->join('tbl_enquiry', 'tbl_enquiry.customer_id', '=', 'tbl_user_list.user_id')->where('tbl_enquiry.agent_id',auth()->id())->where('tbl_user_list.list_id', $list->id)->distinct('tbl_user_list.user_id')->count('tbl_user_list.user_id')}}
+							<td><a href="{{ url('master-list').'?list='.$list->id }}">
+                               {{ $userCount }}
 						        <!-- {{ DB::table('tbl_user_list')->join('tbl_enquiry', 'tbl_enquiry.customer_id', '=', 'tbl_user_list.user_id')->where('tbl_enquiry.agent_id', auth()->user()->id)->count(); }}  -->
                             <i class="fas fa-external-link-alt" aria-hidden="true"></i>
                             </a></td>
@@ -114,7 +115,9 @@
 							</td>
 							<td>
 								<a href="{{ route('lists.edit',[$list->id]) }}" class="btn btn-primary bnt_alsss"><i aria-hidden="true" class="fa fa-pen"></i></a>
-								<a href="{{ route('lists.delete',[$list->id]) }}" onclick="return confirm('Are you sure you want to delete this contact?')" class="btn btn-danger bnt_alsss"><i aria-hidden="true" class="fas fa-trash-alt"></i></a>
+								@if($userCount <= 0)
+								    <a href="{{ route('lists.delete',[$list->id]) }}" onclick="return confirm('Are you sure you want to delete this contact?')" class="btn btn-danger bnt_alsss"><i aria-hidden="true" class="fas fa-trash-alt"></i></a>
+								@endif
 							</td>
 						</tr>
 						@endforeach

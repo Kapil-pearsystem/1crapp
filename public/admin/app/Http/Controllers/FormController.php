@@ -70,29 +70,37 @@ class FormController extends Controller
     }
     function store_form(Request $request){
         // dd($request->all());
-        $request->validate([
-            'form_name'=>'required|string',
-            'tag_id'=>'required',
-            'list_id'=>'required',
-            'sequence_id'=>'required',
-            'sts_visible' => 'nullable|in:1,0',
-            'source_id' => 'required',
-            'title' => 'required',
-            'title_visible' => 'nullable|in:1,0',
-            'welcome_email' => 'required',
-            'we_visible' => 'nullable|in:1,0',
-            'ps_visible' => 'nullable|in:1,0',
-            'cod_visible' => 'nullable|in:1,0',
-            'phone_visible' => 'nullable|in:1,0',
-            'msgbox_visible' => 'nullable|in:1,0',
-            'drivefile_id' => 'required',
-            'df_visible' => 'nullable|in:1,0',
-            'forword_email' => 'required',
-            'fe_visible' => 'nullable|in:1,0',
-            'cta_title' => 'required',
+        $validator = Validator::make($request->all(), [
+            'form_name'           => 'required|string',
+            'tag_id'              => 'required',
+            'list_id'             => 'required',
+            'sequence_id'         => 'nullable',
+            'sts_visible'         => 'nullable|in:1,0',
+            'source_id'           => 'required',
+            'title'               => 'required',
+            'title_visible'       => 'nullable|in:1,0',
+            'welcome_email'       => 'nullable',
+            'we_visible'          => 'nullable|in:1,0',
+            'ps_visible'          => 'nullable|in:1,0',
+            'cod_visible'         => 'nullable|in:1,0',
+            'phone_visible'       => 'nullable|in:1,0',
+            'msgbox_visible'      => 'nullable|in:1,0',
+            'drivefile_id'        => 'nullable',
+            'df_visible'          => 'nullable|in:1,0',
+            'forword_email'       => 'required',
+            'fe_visible'          => 'nullable|in:1,0',
+            'cta_title'           => 'required',
             'success_destination' => 'required',
-            'status' => 'nullable|in:1,0'
+            'status'              => 'nullable|in:1,0',
         ]);
+        
+        // dd([
+        //     'fails'    => $validator->fails(),        // true/false
+        //     'errors'   => $validator->errors()->all(), // flat array of messages
+        //     'messages' => $validator->errors()->toArray(), // grouped by field
+        //     'input'    => $request->all(),            // what was submitted
+        // ]);
+       
         if($request->id){
             $form = FormModel::find($request->id);
             $msg = 'Form Updated Successfully!';
@@ -121,6 +129,7 @@ class FormController extends Controller
         $form->cta_title = $request->cta_title;
         $form->success_destination = $request->success_destination;
         $form->status = $request->status??0;
+        $form->enable_signup = $request->enable_signup??0;
         $form->created_by = auth()->user()->id;
         $form->save();
         return redirect()->route('form.index')->with('success',$msg);
@@ -141,6 +150,15 @@ class FormController extends Controller
             return redirect()->back()->with('error','No Form Found!');
         }
         return view('form.create',compact('lists','tags','sources','filedrives','sequences','mails','admins','details'));
+    }
+    public function updateSignupStatus($id, $status){
+         if($status == 1){
+            FormModel::where('created_by', auth()->user()->id)->update(['enable_signup'=> 0]);
+        }
+        $form = FormModel::find($id);
+        $form->enable_signup = $status;
+        $form->save();
+        return redirect()->back()->with('success','Form Signup Status Updated Successfully!');
     }
     public function delete_form($id){
         $form = FormModel::find($id);

@@ -2,8 +2,9 @@
 <?php
 use Illuminate\Support\Str;
 ?>
-@section('title', 'General List')
-<link href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css" rel="stylesheet">
+@section('title', 'Master List')
+<link href="https://cdn.datatables.net/2.0.3/css/dataTables.dataTables.min.css" rel="stylesheet">
+<link href="https://cdn.datatables.net/buttons/3.0.1/css/buttons.dataTables.min.css" rel="stylesheet">
 
 <style>
  .flt_liststs {
@@ -51,19 +52,22 @@ use Illuminate\Support\Str;
 	.flt_liststs .ftl_selctsss:last-child select {width: 100%;}
 }
 </style>
-
-
 @section('content')
     <div class="container-fluid">
         <!-- Page Heading -->
-		    <div class="row mb-4">
-                <div class="col-lg-4">
-                    <h1 class="h3 mb-0 text-gray-800">Master List </h1>
+        <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        </div>
+
+        <div class="row mb-4">
+                <div class="col-lg-5">
+                <h3 class="h3 mb-0 text-gray-800">Master List </h3>
+                @if($list_name)<span class="text-muted">Filter Applied With List: </span><span class="text-info">{{ $list_name }}</span>@endif
+                @if($tag_name)<span class="text-muted">Filter Applied With Tag: </span><span class="text-info"> {{ $tag_name }}</span> @endif
                 </div>
-		        <div class="col-lg-8">
+		        <div class="col-lg-7">
                     <div class="flt_liststs">
                         <div class="flttrres">
-                            <a class="btn text-light" onclick="window.history.back();"><i class="fas fa-solid fa-arrow-left"></i> Back</a>
+                                <a class="btn text-light" onclick="window.history.back();"><i class="fas fa-solid fa-arrow-left"></i> Back</a>
                         </div>
                         <div class="flttrres">
                                 <a href="javascript:void(0);">Filters</a>
@@ -90,8 +94,6 @@ use Illuminate\Support\Str;
 			    </div>
 			<span class="text-center text-success" id="msg_id"></span>
 		   </div>
-
-
     @include('common.alert')
         <!-- DataTales Example -->
         <div class="card shadow mb-4">
@@ -107,10 +109,13 @@ use Illuminate\Support\Str;
                                 <th>Email</th>
                                 <th>Phone</th>
                                 <th>Company</th>
-                                <th>Address</th>
-                                <!-- <th>Next Step</th> -->
+                                <th>Source</th>
+                                <th>Request For</th>
+                                <th>Services Taken</th>
+                                <th>Next Step</th>
+                                <th>Support Ticket</th>
+                                <th>Date</th>
                                 <th>&ensp;&ensp;&ensp;&ensp;&ensp; Status &ensp;&ensp;&ensp;</th>
-                                <!-- <th>Date</th> -->
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -120,20 +125,23 @@ use Illuminate\Support\Str;
 							<td>{{ ++$key }}</td>
 							<td><input type="checkbox" id="" name="" value=""></td>
 							<td>{{ $list->memberid }}</td>
-							<!-- <td>{{ $list->source }}</td> -->
-							<td>{{ $list->name }}</td>
+							<td title="{{ $list->name }}">{{ Str::words($list->name, 5) }}</td>
 							<td>{{ $list->email }}</td>
 							<td>{{ $list->phone }}</td>
 							<td>{{ $list->cdo_name }}</td>
-							<td>{{ $list->address }}</td>
-							<!-- <td>
+							<td>{{ $list->source }}</td>
+							<td>{{ $list->ps_name }}</td>
+							<td>Check Now <a href="#"><i class="fas fa-external-link-alt" aria-hidden="true"></i></a></td>
+							<td>
                                 <select class="form-control" onchange="nextStep(this,{{ $list->id }})">
                                     <option value="" selected disabled>Take Action</option>
                                     <option value="1">Send Link via Email</option>
                                     <option value="2">Send Link On Whatsapp</option>
                                     <option value="3">Book Manually</option>
                                 </select>
-                            </td> -->
+                            </td>
+                            <td>Check Now <a href="#"><i class="fas fa-external-link-alt" aria-hidden="true"></i></a></td>
+							<td>{{ date('M d,Y',strtotime($list->created_at)) }}</td>
 							<td>
                                 <select class="custom-select custom-select-sm" onchange="updateStatus(this.value,{{ $list->id }})">
                                     <option style="color: white; background-color: red;" value="0" @if($list->status == 0) selected @endif>Rejected</option>
@@ -142,14 +150,16 @@ use Illuminate\Support\Str;
                                     <option style="color: white; background-color: green;" value="3" @if($list->status == 3) selected @endif>Closed</option>
                                     <option style="color: black; background-color: gray;" value="4" @if($list->status == 4) selected @endif>Not Related</option>
                                     <option style="color: white; background-color: purple;" value="5" @if($list->status == 5) selected @endif>Accelerated</option>
-
                                 </select>
                             </td>
-							<!-- <td>{{ date('M d,Y',strtotime($list->created_at)) }}</td> -->
                             <td>
-                                <!-- <a href="#" onclick="viewMessage({{ $list->id }})" class="btn btn-info bnt_alsss"  data-toggle="modal" data-target="#view_message"><i aria-hidden="true" class="fa fa-eye"></i></a> -->
-								<a href="{{ route('customer.edit',[$list->customer_id]) }}" class="btn btn-primary bnt_alsss" ><i aria-hidden="true" class="fa fa-pen"></i></a>
-								<a href="{{ route('delete-enquiry',[$list->id]) }}" onclick="return confirm('Are you sure you want to delete this tags?')" class="btn btn-danger bnt_alsss"><i aria-hidden="true" class="fas fa-trash-alt"></i></a>
+                                <?php  
+                                    $editRoute = route('customer.edit', ['user' => $list->id]);
+                                    $deleteRoute = route('customer.destroy', ['user' => $list->id]);
+                                ?>
+                                <a href="#" onclick="viewMessage({{ $list->id }})" class="btn btn-info bnt_alsss"  data-toggle="modal" data-target="#view_message"><i aria-hidden="true" class="fa fa-eye"></i></a>
+								<a href="{{ $editRoute }}" class="btn btn-primary bnt_alsss"><i class="fa fa-pen"></i></a>
+								<a href="{{ $deleteRoute }}" class="btn btn-danger bnt_alsss delete-btn"><i class="fa fa-trash"></i></a>
 							</td>
 						</tr>
 						@endforeach
@@ -171,7 +181,7 @@ use Illuminate\Support\Str;
         </button>
 
         <!-- Tab Content -->
-         <h4 class="text-center text-info">General Message</h4><hr>
+         <h4 class="text-center text-info">Enquiry Message</h4><hr>
         <div class="tab-content p-3 enquiry_message" style="min-height:200px;">
         </div>
       </div>
@@ -190,7 +200,7 @@ use Illuminate\Support\Str;
         </button>
 
         <!-- Tab Content -->
-         <h5 class="text-center text-info next_step_heading">Take Action</h5><hr>
+         <h4 class="text-center text-info next_step_heading text-bold">Take Action</h4><hr>
         <div class="tab-content p-3 next_step_data" style="min-height:200px;">
 
         </div>
@@ -201,12 +211,12 @@ use Illuminate\Support\Str;
 @endsection
 @section('scripts')
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-<script type="text/javascript" src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
-<script>
-new DataTable( '#example-table-theme', {
-    paging: true,
-} );
-</script>
+<script type="text/javascript" src="https://cdn.datatables.net/2.0.3/js/dataTables.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/buttons/3.0.1/js/dataTables.buttons.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/buttons/3.0.1/js/buttons.html5.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/buttons/3.0.1/js/buttons.print.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 <script>
        function updateStatus(status, id){
             // alert(status);
@@ -232,26 +242,26 @@ new DataTable( '#example-table-theme', {
 
 <script>
     // Function to get the background color based on the selected value
-    // function getStatusColor(status) {
-    //     const colors = {
-    //         0: 'red',         // Rejected
-    //         1: 'yellow',      // Pending
-    //         2: 'blue',        // In Progress
-    //         3: 'green',       // Closed
-    //         4: 'gray',        // Not Related
-    //         5: 'purple'       // Accelerated
-    //     };
-    //     return colors[status] || 'white';
-    // }
-    // function updateBackgroundColor(selectElement) {
-    //     const selectedValue = selectElement.value;
-    //     selectElement.style.backgroundColor = getStatusColor(selectedValue);
-    // }
+    function getStatusColor(status) {
+        const colors = {
+            0: 'red',         // Rejected
+            1: 'yellow',      // Pending
+            2: 'blue',        // In Progress
+            3: 'green',       // Closed
+            4: 'gray',        // Not Related
+            5: 'purple'       // Accelerated
+        };
+        return colors[status] || 'white';
+    }
+    function updateBackgroundColor(selectElement) {
+        const selectedValue = selectElement.value;
+        selectElement.style.backgroundColor = getStatusColor(selectedValue);
+    }
 
-    // document.querySelectorAll('select.custom-select').forEach(select => {
-    //     const selectedValue = select.value;
-    //     select.style.backgroundColor = getStatusColor(selectedValue);
-    // });
+    document.querySelectorAll('select.custom-select').forEach(select => {
+        const selectedValue = select.value;
+        select.style.backgroundColor = getStatusColor(selectedValue);
+    });
 </script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
@@ -286,6 +296,7 @@ new DataTable( '#example-table-theme', {
             data: {
                 _token: '{{ csrf_token() }}',
                 step: step,
+                user_type: 'customer',
                 id: id,
             },
             success: function (response) {
@@ -351,5 +362,90 @@ new DataTable( '#example-table-theme', {
     </div>`;
 }
 
+</script>
+<script>
+    function setDestination(type){
+    $.ajax({
+        url: '{{ route('form.get-destination') }}',
+        type: 'POST',
+        data: {
+            _token: '{{ csrf_token() }}',
+            type: type,
+        },
+        success: function (response) {
+            if(response.status == true){
+                $('#destination_id').html(response.data);
+            } else {
+                let notfound = '<div class="col-lg-12"><div class="it_emms"><h3>No More Gift Items Found!</h3></div></div>';
+            }
+        },
+        error: function (xhr) {
+            alert('Something went wrong!');
+        }
+    });
+}
+
+function getWhatsappLink(){
+    // $('.next_step_data').html(spin_data());
+    var id = document.wf1.customer_id.value;
+    var link = document.wf1.success_destination.value;
+    var message = document.wf1.message.value;
+    var user_type = document.wf1.user_type.value;
+    $.ajax({
+        url: '{{ route('get-whatsapp-link') }}',
+        type: 'POST',
+        data: {
+            _token: '{{ csrf_token() }}',
+            message: message,
+            user_type: user_type,
+            link: link,
+            id: id,
+        },
+        success: function (response) {
+            if(response.status == true){
+                $('.next_step_data').html(response.data);
+            }else{
+                $('.next_step_data').html(response.msg);
+            }
+        },
+        error: function (xhr) {
+            alert('Something went wrong!');
+        }
+    });
+    return false;
+}
+</script>
+
+<script>
+new DataTable('#example-table-theme', {
+    paging: true,
+
+    layout: {
+        topStart: {
+            buttons: [
+                {
+                    extend: 'copy',
+                    text: 'Copy'
+                },
+                {
+                    extend: 'csv',
+                    text: 'CSV'
+                },
+                {
+                    extend: 'excel',
+                    text: 'Excel'
+                },
+                {
+                    extend: 'pdf',
+                    text: 'PDF'
+                },
+                {
+                    extend: 'print',
+                    text: 'Print'
+                }
+            ]
+        }
+    }
+});
 </script>
 @endsection

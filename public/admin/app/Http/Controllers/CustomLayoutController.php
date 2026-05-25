@@ -47,17 +47,12 @@ class CustomLayoutController extends Controller
             $logo = asset('uploads/'.$imageName);
             $setting->logo = $logo;
         }
-        if($request->hasFile('brandlogo')) {
-            $imageName = time() . '_' . $request->brandlogo->getClientOriginalName();
-            $request->brandlogo->move(public_path('uploads'), $imageName);
-            $brandlogo = asset('uploads/'.$imageName);
-            $setting->brandlogo = $brandlogo;
-        }
         $setting->btn_text = $request->btn_text;
         $setting->btn_bg_color = $request->btn_bg_color;
         $setting->btn_text_color = $request->btn_text_color;
         $setting->btn_link = $request->btn_link;
         $setting->open_new_tab = $request->has('open_new_tab') ? 1 : 0;
+        $setting->copyright_text = $request->copyright_text;
         $setting->status = 1;
         $setting->created_by = auth()->id();
         $setting->save();

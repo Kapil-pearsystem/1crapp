@@ -219,22 +219,22 @@
                         Personal Website
                         <input type="text" id="personal_website" placeholder="Personal Website" name="personal_website" value="{{ @$customer->personal_website}}" class="form-control form-control-user" />
                     </div>
-                    <div class="col-sm-4 mb-3 mt-3 mb-sm-0">Tags</label>
-                        <select class="form-control form-control-user" name="tag_id" id="tag_id">
-                            <option value="">Select</option>
-                            @foreach($tags as $tag)
-                                <option value="{{ $tag->id }}" <?php if($customer->tag_id == $tag->id){ echo 'selected'; } ?>>{{ $tag->name }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                    <div class="col-sm-4 mb-3 mt-3 mb-sm-0">List</label>
-                        <select class="form-control form-control-user" name="contact_id" id="contact_id">
-                            <option value="">Select</option>
-                            @foreach($contacts as $contact)
-                                <option value="{{ $contact->id }}" <?php if($customer->contact_id == $contact->id){ echo 'selected'; } ?>>{{ $contact->name }}</option>
-                            @endforeach
-                        </select>
-                    </div>
+                    <!--<div class="col-sm-4 mb-3 mt-3 mb-sm-0">Tags</label>-->
+                    <!--    <select class="form-control form-control-user" name="tag_id" id="tag_id">-->
+                    <!--        <option value="">Select</option>-->
+                    <!--        @foreach($tags as $tag)-->
+                    <!--            <option value="{{ $tag->id }}" <?php if($customer->tag_id == $tag->id){ echo 'selected'; } ?>>{{ $tag->name }}</option>-->
+                    <!--        @endforeach-->
+                    <!--    </select>-->
+                    <!--</div>-->
+                    <!--<div class="col-sm-4 mb-3 mt-3 mb-sm-0">List</label>-->
+                    <!--    <select class="form-control form-control-user" name="contact_id" id="contact_id">-->
+                    <!--        <option value="">Select</option>-->
+                    <!--        @foreach($contacts as $contact)-->
+                    <!--            <option value="{{ $contact->id }}" <?php if($customer->contact_id == $contact->id){ echo 'selected'; } ?>>{{ $contact->name }}</option>-->
+                    <!--        @endforeach-->
+                    <!--    </select>-->
+                    <!--</div>-->
                     <div class="col-sm-4 mb-3 mt-3 mb-sm-0">Status</label>
                         <select class="form-control form-control-user" name="status" id="status">
                             <option value="">Select</option>
@@ -350,18 +350,10 @@
 					  <div id="slt_ad_btnss">
 					    <label>Tags</label>
 						<i class="fa fa-angle-down"></i>
-						<select class="progControlSelect2" multiple="true">
-							<option value="aa">Demo</option>
-							<option value="ab">Demo1</option>
-							<option value="ac">Demo2</option>
-							<option value="ad">Demo3</option>
-							<option value="ae">Demo4</option>
-							<option value="af">Demo5</option>
-							<option value="ag">Demo6</option>
-							<option value="ah">Demo7</option>
-							<option value="ai">Demo8</option>
-							<option value="aj">Demo9</option>
-							<option value="ak">Demo10</option>
+						<select class="progControlSelect2" name="tag_ids[]" multiple="true">
+						    @foreach($tags as $tag)
+                                <option value="{{ $tag->id }}" <?php if(in_array($tag->id, $customer_tags)){ echo 'selected'; } ?>>{{ $tag->name }}</option>
+                            @endforeach
 						</select>
 
 					 </div>
@@ -371,18 +363,10 @@
 					  <div id="slt_ad_btnss">
 					    <label>Lists</label>
 						<i class="fa fa-angle-down"></i>
-						<select class="progControlSelect2" multiple="true">
-							<option value="aa">Demo</option>
-							<option value="ab">Demo1</option>
-							<option value="ac">Demo2</option>
-							<option value="ad">Demo3</option>
-							<option value="ae">Demo4</option>
-							<option value="af">Demo5</option>
-							<option value="ag">Demo6</option>
-							<option value="ah">Demo7</option>
-							<option value="ai">Demo8</option>
-							<option value="aj">Demo9</option>
-							<option value="ak">Demo10</option>
+						<select class="progControlSelect2" name="list_ids[]" multiple="true">
+							@foreach($contacts as $list)
+                                <option value="{{ $list->id }}" <?php if(in_array($list->id, $customer_lists)){ echo 'selected'; } ?>>{{ $list->name }}</option>
+                            @endforeach
 						</select>
 
 					 </div>

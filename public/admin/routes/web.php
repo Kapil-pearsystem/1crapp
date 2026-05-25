@@ -88,9 +88,11 @@ Route::get('/home', [HomeController::class, 'index'])->name('home');
 Route::get('/dashboard-user-graph', [HomeController::class, 'userGraph'])->name('dashboard.user.graph');
 Route::get('/enquiry-list', [HomeController::class, 'enquiry_list'])->name('enquiry-list');
 Route::get('/master-list', [HomeController::class, 'master_list'])->name('master-list');
+
 Route::post('/next-step-data', [HomeController::class, 'next_step_data'])->name('next-step-data');
 Route::post('/send-link-via-email', [FormLeadsController::class, 'send_link_via_email'])->name('send-link-via-email');
 Route::post('/get-whatsapp-link', [HomeController::class, 'get_whatsapp_link'])->name('get-whatsapp-link');
+
 Route::post('/update-enquiry-status', [HomeController::class, 'update_enquiry_status'])->name('update-enquiry-status');
 Route::get('/delete-enquiry/{id}', [HomeController::class, 'delete_enquiry'])->name('delete-enquiry');
 Route::post('/view-enquiry-message', [HomeController::class, 'view_enquiry_message'])->name('view-enquiry-message');
@@ -608,6 +610,7 @@ Route::middleware(['auth','plan_permission'])->prefix('form')->name('form.')->gr
     Route::get('/delete/{id}', [FormController::class, 'delete_form'])->name('delete');
     Route::post('/get-destination', [FormController::class, 'get_destination'])->name('get-destination');
     Route::post('/get-embeded-code', [FormController::class, 'get_embeded_code'])->name('get-embeded-code');
+    Route::get('/signup-status/{id}/{status}', [FormController::class, 'updateSignupStatus'])->name('signup-status');
     // Route::post('/store', [FormController::class, 'store_form'])->name('store');
 });
 

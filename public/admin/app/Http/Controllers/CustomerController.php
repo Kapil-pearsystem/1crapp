@@ -49,7 +49,7 @@ class CustomerController extends Controller
                     ->leftJoin('tbl_contact', 'tbl_contact.id', '=', 'users.contact_id')
                     ->leftJoin('tbl_tags', 'tbl_tags.id', '=', 'users.tag_id')
                     ->select('users.*', 'agents.first_name', 'agents.last_name', 'agents.company_id', 'tbl_contact.name as list_name','tbl_tags.name as tag_name')
-                    ->where('users.type', 1)
+                    // ->where('users.type', 1)
                     ->orderBy('users.id', 'DESC')
                     ->get();
             } else {
@@ -168,6 +168,9 @@ class CustomerController extends Controller
         $tags = TagsModel::where(['created_by'=>auth()->user()->id,'status'=>1])->get();
         $contacts = ContactModel::where(['created_by'=>auth()->user()->id,'status'=>1])->get();
         $cdos = CDOModel::select('name','id')->where(['created_by'=>auth()->user()->id,'status'=>1])->get();
+        $customer_lists = DB::table('tbl_user_list')->where('user_id', $user->id)->pluck('list_id')->toArray();
+        $customer_tags = DB::table('tbl_user_tags')->where('user_id', $user->id)->pluck('tag_id')->toArray();
+        // dd($customer_lists, $customer_tags);
         // Get customer details along with their associated details
         $customer = Customer::select('users.id as customer_id',
         'users.status as customer_status',
@@ -191,7 +194,7 @@ class CustomerController extends Controller
         $customer->last_name = $names['last_name'];
         // dd($customer);
         // Return the customer data to the view
-        return view('customermanagement.edit-customer-profile', compact('customer','tags','contacts','cdos'));
+        return view('customermanagement.edit-customer-profile', compact('customer','tags','contacts','cdos', 'customer_lists', 'customer_tags'));
     }
     public function check_username(Request $request){
         $request->validate([
@@ -267,6 +270,43 @@ class CustomerController extends Controller
                 'status' => $request->status,
             ]
         );
+        // Lists Update
+        DB::table('tbl_user_list')->where('user_id', $user->id)->delete();
+        if(!empty($request->list_ids)){
+            foreach($request->list_ids as $listId){
+                DB::table('tbl_user_list')
+                    ->updateOrInsert(
+                        [
+                            'user_id' => $user->id,
+                            'list_id' => $listId
+                        ],
+                        [
+                            'updated_at' => now(),
+                            'created_at' => now()
+                        ]
+                    );
+            }
+        }
+        
+        
+        // Tags Update
+        DB::table('tbl_user_tags')->where('user_id', $user->id)->delete();
+        if(!empty($request->tag_ids)){
+            foreach($request->tag_ids as $tagId){
+                DB::table('tbl_user_tags')
+                    ->updateOrInsert(
+                        [
+                            'user_id' => $user->id,
+                            'tag_id' => $tagId
+                        ],
+                        [
+                            'updated_at' => now(),
+                            'created_at' => now()
+                        ]
+                    );
+            }
+        }
+        // dd($request->tag_ids, $request->list_ids);
         return redirect()->back()->with('success','Customer details updated successfully!');
     }
     public function update_customer_company(Request $request){

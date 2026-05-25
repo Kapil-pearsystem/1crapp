@@ -73,44 +73,44 @@ use Illuminate\Support\Str;
             <div class="card shadow mb-4">
                 <form method="POST" action="{{ route('custom-layout.save')}}" enctype="multipart/form-data">
                     @csrf
-                    <input type="hidden" name="id" value="{{ $layout->id ?? '' }}">
+                    <input type="hidden" name="id" value="{{ isset($layout)?$layout->id : '' }}">
 
                     <div class="card-body">
                         <div class="form-group row">
                             <div class="col-sm-6 mb-3">
                                 <label>Logo<span style="color: red;">*</span></label>
-                                <input type="file" name="logo" placeholder="Upload Logo" value="{{ old('logo', $layout->logo ?? '') }}" @if(!$layout->logo) required @endif class="form-control" />
+                                <input type="file" name="logo" placeholder="Upload Logo" value="{{ old('logo', isset($layout)?$layout->logo : '') }}" @if(isset($layout) && !$layout->logo) required @endif class="form-control" />
                                 @error('logo')
                                     <span class="text-danger">{{ $message }}</span>
                                 @enderror
-                                @if($layout->logo)
+                                @if(isset($layout) && $layout->logo)
                                     <img src="{{ $layout->logo }}" alt="logo" height="100px">
                                 @endif
                             </div>
                             <div class="col-sm-6 mb-3">
                                 <label>Button Text<span style="color: red;">*</span></label>
-                                <input type="text" name="btn_text" placeholder="Button Text" value="{{ old('btn_text', $layout->btn_text ?? '') }}" required class="form-control" />
+                                <input type="text" name="btn_text" placeholder="Button Text" value="{{ old('btn_text', isset($layout)?$layout->btn_text : '') }}" required class="form-control" />
                                 @error('btn_text')
                                     <span class="text-danger">{{ $message }}</span>
                                 @enderror
                             </div>
                             <div class="col-sm-6 mb-3">
                                 <label>Button Background Color<span style="color: red;">*</span></label>
-                                <input type="color" name="btn_bg_color" placeholder="" value="{{ old('btn_bg_color', $layout->btn_bg_color ?? '') }}" required class="form-control" />
+                                <input type="color" name="btn_bg_color" placeholder="" value="{{ old('btn_bg_color', isset($layout)?$layout->btn_bg_color : '') }}" required class="form-control" />
                                 @error('btn_bg_color')
                                     <span class="text-danger">{{ $message }}</span>
                                 @enderror
                             </div>
                             <div class="col-sm-6 mb-3">
                                 <label>Button Text Color<span style="color: red;">*</span></label>
-                                <input type="color" name="btn_text_color" placeholder="" value="{{ old('btn_text_color', $layout->btn_text_color ?? '') }}" required class="form-control" />
+                                <input type="color" name="btn_text_color" placeholder="" value="{{ old('btn_text_color', isset($layout)?$layout->btn_text_color:'') }}" required class="form-control" />
                                 @error('btn_text_color')
                                     <span class="text-danger">{{ $message }}</span>
                                 @enderror
                             </div>
                             <div class="col-sm-6 mb-3">
                                 <label>Button Link<span style="color: red;">*</span></label>
-                                <input type="url" name="btn_link" placeholder="" value="{{ old('btn_link', $layout->btn_link ?? '') }}" required class="form-control" />
+                                <input type="url" name="btn_link" placeholder="" value="{{ old('btn_link', isset($layout)?$layout->btn_link : '') }}" required class="form-control" />
                                 @error('btn_link')
                                     <span class="text-danger">{{ $message }}</span>
                                 @enderror
@@ -119,7 +119,7 @@ use Illuminate\Support\Str;
                             <div class="col-sm-2 mb-2 mt-3 mb-sm-0 swich_bntts">
                                 Open New Tab
                                 <div class="block_araea mt-1">
-                                    <label class="switch"><input value="1" {{ (old('open_new_tab') ?? ($layout->open_new_tab ?? '')) == 1 ? 'checked' : '' }} type="checkbox" name="open_new_tab" /> <small></small></label>
+                                    <label class="switch"><input value="1" {{ (old('open_new_tab') ?? (isset($layout)?$layout->open_new_tab : '')) == 1 ? 'checked' : '' }} type="checkbox" name="open_new_tab" /> <small></small></label>
                                 </div>
                             </div>
                             <div class="col-sm-12 mb-3">

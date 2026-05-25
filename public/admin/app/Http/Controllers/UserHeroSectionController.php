@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\AppUsesMpdel;
+use App\Models\AppUsesModel;
 use Illuminate\Support\Facades\File;
 
 
@@ -11,7 +11,7 @@ class UserHeroSectionController extends Controller
 {
     public function index()
     {
-        $lists = AppUsesMpdel::where('created_by', auth()->user()->id)->orderBy('id', 'desc')->get();
+        $lists = AppUsesModel::where('created_by', auth()->user()->id)->orderBy('id', 'desc')->get();
         return view('app-uses.index', compact('lists'));
     }
     public function create()
@@ -51,7 +51,7 @@ class UserHeroSectionController extends Controller
             $realtorImagePath = asset('uploads/' . $imageName);
 
             if ($request->id) {
-                $old = AppUsesMpdel::find($request->id);
+                $old = AppUsesModel::find($request->id);
                 if ($old && File::exists(public_path($old->image))) {
                     File::delete(public_path($old->image));
                 }
@@ -65,7 +65,7 @@ class UserHeroSectionController extends Controller
             $investorImagePath = asset('uploads/' . $imageName);
 
             if ($request->id) {
-                $old = AppUsesMpdel::find($request->id);
+                $old = AppUsesModel::find($request->id);
                 if ($old && File::exists(public_path($old->image))) {
                     File::delete(public_path($old->image));
                 }
@@ -75,10 +75,10 @@ class UserHeroSectionController extends Controller
         }
 
         if ($request->id) {
-            $data = AppUsesMpdel::find($request->id);
+            $data = AppUsesModel::find($request->id);
             $message = '1CRApp Uses updated successfully';
         } else {
-            $data = new AppUsesMpdel();
+            $data = new AppUsesModel();
             $message = '1CRApp Uses created successfully';
         }
         $data->realtor_title = $request->realtor_title;
@@ -108,12 +108,12 @@ class UserHeroSectionController extends Controller
     }
     public function edit($id)
     {
-        $details = AppUsesMpdel::findOrFail($id);
+        $details = AppUsesModel::findOrFail($id);
         return view('app-uses.create', compact('details'));
     }
     public function destroy($id)
     {
-        $needHelp = AppUsesMpdel::find($id);
+        $needHelp = AppUsesModel::find($id);
 
         if (!$needHelp) {
             return redirect()->back()->with('error', 'Record not found.');

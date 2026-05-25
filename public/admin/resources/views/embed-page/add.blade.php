@@ -49,6 +49,26 @@
                             <label class="form-check-label" for="inlineRadio3">None</label>
                         </div>
                     </div>
+                    <!-- <div class="col-sm-2 mb-3 swich_bntts">
+                         <label>Custom Header</label>
+                        <div class="block_araea mt-1">
+                            <label class="switch">
+                              <input type="checkbox" name="custom_header_visible" value="1"
+                            {{ (old('custom_header_visible', $details->custom_header_visible ?? 0) == 1) ? 'checked' : '' }}>
+                                <small></small>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-sm-2 mb-3 swich_bntts">
+                         <label>Custom Footer</label>
+                        <div class="block_araea mt-1">
+                            <label class="switch">
+                              <input type="checkbox" name="custom_footer_visible" value="1"
+                            {{ (old('custom_footer_visible', $details->custom_footer_visible ?? 0) == 1) ? 'checked' : '' }}>
+                                <small></small>
+                            </label>
+                        </div>
+                    </div> -->
                     
                     <!-- Embed Link -->
                     <div class="col-sm-12 mb-3 mt-3 mb-sm-0">

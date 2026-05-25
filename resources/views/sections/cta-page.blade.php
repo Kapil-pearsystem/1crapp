@@ -1,5 +1,5 @@
 @if($cta_data->type == 1)
-<section class="get_nd_blogss mt-0">
+<section class="get_nd_blogss mt_50">
     <div class="container">
         <div class="get_strs">
             <h4>
@@ -13,16 +13,26 @@
     </div>
 </section>
 @elseif($cta_data->type == 2)
-<section class="get_nd_blogss mt-0">
-    <div class="container">
-        <div class="get_strs">
-            <h4>
-                <a href="{{ $cta_data->left_link_url ?? 'javascript:void(0)' }}" target="{{ $cta_data->left_link_new_tab ? '_blank' : '_self' }}">
+<section class="get_nd_blogss mt_50">
+    <div class="btm_contect red_to_drvvs">
+        <h4>{{ $cta_data->title }}</h4>
+        <p>{{ $cta_data->description }}</p>
+
+        <div class="bunnt_araeae_bnt">
+            <div class="bunnt_araeae_bnt">
+                <a href="{{ $cta_data->left_link_url ?? 'javascript:void(0);' }}"
+                    class="read_bg"
+                    target="{{ $cta_data->left_link_new_tab }}">
                     {{ $cta_data->left_link_title }}
+                    <i class="fa fa-arrow-circle-right"></i>
                 </a>
-            </h4>
-            <p>{{ $cta_data->title }}</p>
-            <p>{{ $cta_data->description }}</p>
+
+                <a href="{{ $cta_data->right_link_url ?? 'javascript:void(0);' }}"
+                    target="{{ $cta_data->right_link_new_tab }}">
+                    {{ $cta_data->right_link_title }}
+                    <i class="fa fa-arrow-circle-right"></i>
+                </a>
+            </div>
         </div>
     </div>
 </section>

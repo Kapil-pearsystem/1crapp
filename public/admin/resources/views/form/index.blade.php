@@ -42,6 +42,7 @@
                                 <th>Tag</th>
                                 <th>Date</th>
                                 <th>Status</th>
+                                <th>Use For Signup</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -60,6 +61,12 @@
                                 <small></small>
                               </label>
                               </td>
+                              <td>
+    							     <label class="switch">
+    								  <input id="market_status" onchange="setForSignup(this,{{ $list->id}})" type="checkbox"  @if($list->enable_signup==1) checked @endif>
+    								  <small></small>
+    								</label>
+							    </td>
                               <td>
                                 <a href="#" class="btn btn-info bnt_alsss"  onclick="getEmbededCode({{ $list->id }})" data-toggle="modal" data-target="#view_form"><i aria-hidden="true" class="fa fa-eye"></i></a>
                                 <a href="{{ route('form.edit',[$list->id]) }}" class="btn btn-primary bnt_alsss"><i aria-hidden="true" class="fa fa-pen"></i></a>
@@ -189,5 +196,22 @@ function copyToClipboard() {
   copyText.select();
   document.execCommand("copy");
   alert("Code copied to clipboard!");
+}
+ function setForSignup(thiss,id) {
+    var status = thiss.checked ? 1 : 0;
+    const path = "{{url('form/signup-status')}}/"+id+'/'+status;
+    $.ajax({
+		type: "GET",
+		cache: false,
+		url: "{{url('form/signup-status')}}/"+id+'/'+status,
+		success: function (response) {
+		    if(status == 1){
+			    alert('Signup status enabled successfully!'); 
+		    }else{
+			    alert('Signup status disabled successfully!') 
+		    }
+		    window.location.reload();
+		}
+	});
 }
 </script>
