@@ -793,6 +793,55 @@ class HomeController extends Controller
             ->get();
         return view('admin.master-list', compact('lists'));
     }
+    // public function master_list(Request $request)
+    // {
+    //     $list_name = '';
+    //     $tag_name = '';
+    //     $lists = Customer::select(
+    //         'users.id',
+    //         'users.name',
+    //         'tbl_enquiry.customer_id',
+    //         'users.memberid',
+    //         'users.email',
+    //         'users.mobile as phone',
+    //         'tbl_enquiry.message',
+    //         'tbl_enquiry.created_at',
+    //         'tbl_enquiry.status',
+    //         'tbl_formsource.title as source',
+    //         'product_services.prod_name as ps_name',
+    //         'tbl_cdo.name as cdo_name',
+    //         'users.created_at'
+    //     )
+    //     ->leftJoin('tbl_enquiry','users.id','=','tbl_enquiry.customer_id')
+    //     ->leftJoin('tbl_user_list','tbl_user_list.user_id','=','users.id')
+    //     ->leftJoin('tbl_user_tags','tbl_user_tags.user_id','=','users.id')
+    //     ->leftJoin('tbl_form','tbl_form.id','=','tbl_enquiry.form_id')
+    //     ->leftJoin('tbl_formsource','tbl_formsource.id','=','tbl_form.source_id')
+    //     ->leftJoin('product_services','product_services.id','=','tbl_enquiry.ps_id')
+    //     ->leftJoin('tbl_cdo','tbl_cdo.id','=','tbl_enquiry.cdo_id')
+    //     ->where('users.agent_id',auth()->id());
+
+    //     if($request->list){
+    //         $contact = ContactModel::select('id','name')->where('id',$request->list)->first();
+    //         $list_name = $contact->name ?? '';
+    //         $lists->where('tbl_user_list.list_id',$request->list);
+    //     }
+    //     if($request->tag){
+    //         $tag = TagsModel::select('id','name')->where('id',$request->tag)->first();
+    //         $tag_name = $tag->name ?? '';
+    //         $lists->where('tbl_user_tags.tag_id',$request->tag);
+    //     }
+
+    //     $lists = $lists
+    //         ->distinct('users.id')
+    //         ->orderBy('users.id','DESC')
+    //         ->get();
+    //     // dd($lists);
+    //     $tags = TagsModel::select('id','name')->where('created_by',auth()->user()->id)->get();
+    //     $contacts = ContactModel::select('id','name')->where('created_by',auth()->user()->id)->get();
+    //     // dd($lists, $tags);
+    //     return view('admin.master-list', compact('lists', 'list_name','tag_name', 'tags', 'contacts'));
+    // }
     public function master_list(Request $request)
     {
         $list_name = '';
@@ -835,9 +884,188 @@ class HomeController extends Controller
         $lists = $lists
             ->distinct('users.id')
             ->orderBy('users.id','DESC')
-            ->get();
-        // dd($lists);
+            // ->get();
+            ->paginate(20);
 
-        return view('admin.master-list', compact('lists', 'list_name','tag_name'));
+        $tags = TagsModel::where(
+                'created_by',
+                auth()->id()
+            )
+            ->get();
+
+        $contacts = ContactModel::where(
+                'created_by',
+                auth()->id()
+            )
+            ->get();
+
+        return view(
+            'admin.master-list',
+            compact(
+                'lists',
+                'list_name',
+                'tag_name',
+                'tags',
+                'contacts'
+            )
+        );
+    }
+    public function master_list_filter(Request $request)
+    {
+        $filters = json_decode($request->filters, true);
+        $query = Customer::select('users.*')
+            ->leftJoin('tbl_user_list', 'tbl_user_list.user_id', '=', 'users.id')
+            ->leftJoin('tbl_user_tags', 'tbl_user_tags.user_id', '=', 'users.id')
+            ->where('users.agent_id', auth()->id());
+
+        /*
+        Included filters
+        */
+        if (!empty($filters['included'])) {
+
+            $query->where(function ($q) use ($filters) {
+                foreach ($filters['included'] as $index => $item) {
+                    $method = 'where';
+                    if ($index > 0) {
+                        $method = strtolower($item['logic']) == 'or' ? 'orWhere' : 'where';
+                    }
+
+                    $q->$method(function ($sub) use ($item) {
+                        if ($item['type'] == 'list') {
+                            $sub->where('tbl_user_list.list_id', $item['val']);
+                        }
+                        if ($item['type'] == 'tag') {
+                            $sub->where('tbl_user_tags.tag_id', $item['val']);
+                        }
+                    });
+                }
+            });
+        }
+        /*
+        Excluded filters
+        */
+        if (!empty($filters['excluded'])) {
+            foreach ($filters['excluded'] as $item) {
+                if ($item['type'] == 'list') {
+                    $query->whereNotIn(
+                        'users.id',
+                        function ($q) use ($item) {
+                            $q->select('user_id')
+                                ->from('tbl_user_list')
+                                ->where('list_id', $item['val']);
+                        }
+                    );
+                }
+                if ($item['type'] == 'tag') {
+                    $query->whereNotIn(
+                        'users.id',
+                        function ($q) use ($item) {
+                            $q->select('user_id')
+                                ->from('tbl_user_tags')
+                                ->where('tag_id',  $item['val']);
+                        }
+                    );
+                }
+            }
+        }
+        $lists = $query->distinct('users.id')->orderBy('users.id', 'DESC')->paginate(20);
+        return view('admin.master-list-table', compact('lists'))->render();
+    }
+
+    public function delete_master_list(Request $request)
+    {
+        $ids = $request->list_ids;
+        $ids = explode(',', $ids);
+        $customers = Customer::whereIn('id', $ids)->get();
+        if ($customers) {
+            $i = 0;
+            foreach ($customers as $key => $customer) {
+                $customer->delete();
+                $i++;
+            }
+            return redirect()->back()->with('success', "$i customers deleted successfully!");
+        }
+        return redirect()->back()->with('error', 'Customers not found!');
+    }
+    public function assign_list_to_customers(Request $request)
+    {
+        $customerIds = explode(',', $request->list_ids);
+        $contactListIds = $request->contact_id ?? [];
+        if ($request->filled('newList')) {
+            foreach ($request->newList as $newList) {
+                if (!empty(trim($newList))) {
+                    $contact = new ContactModel();
+                    $contact->name = $newList;
+                    $contact->list_id = $this->getListId();
+                    $contact->created_by = auth()->id();
+                    $contact->status = 1;
+                    $contact->save();
+                    // add new list id for assignment
+                    $contactListIds[] = $contact->id;
+                }
+            }
+        }
+
+        $customers = Customer::whereIn('id', $customerIds)->get();
+        if ($customers->isEmpty()) {
+            return redirect()->back()->with('error', 'Customers not found!');
+        }
+        foreach ($customers as $customer) {
+            foreach ($contactListIds as $listId) {
+                $exists = DB::table('tbl_user_list')->where('user_id', $customer->id)->where('list_id', $listId)->exists();
+                if (!$exists) {
+                    DB::table('tbl_user_list')->insert([
+                        'user_id' => $customer->id,
+                        'list_id' => $listId,
+                        'created_at' => now(),
+                        'updated_at' => now()
+                    ]);
+                }
+            }
+        }
+        return redirect()
+            ->back()
+            ->with(
+                'success',
+                'Lists assigned successfully!'
+            );
+    }
+    public function assign_tag_to_customers(Request $request)
+    {
+        $customerIds = explode(',', $request->list_ids);
+        $tagIds = $request->tag_id ?? [];
+        if ($request->filled('newTag')) {
+            foreach ($request->newTag as $newTag) {
+                if (!empty(trim($newTag))) {
+                    $tags = new TagsModel();
+                    $tags->created_by = auth()->id();
+                    $tags->name = $newTag;
+                    $tags->status = 1;
+                    $tags->save();
+                    // add created tag id
+                    $tagIds[] = $tags->id;
+                }
+            }
+        }
+
+        $customers = Customer::whereIn('id', $customerIds)->get();
+        if ($customers->isEmpty()) {
+            return redirect()->back()->with('error', 'Customers not found!');
+        }
+        foreach ($customers as $customer) {
+            foreach ($tagIds as $tagId) {
+                $exists = DB::table('tbl_user_tags')->where('user_id', $customer->id)->where('tag_id', $tagId)->exists();
+                if (!$exists) {
+                    DB::table('tbl_user_tags')
+                        ->insert([
+                            'user_id' => $customer->id,
+                            'tag_id' => $tagId,
+                            'created_at' => now(),
+                            'updated_at' => now()
+                        ]);
+                }
+            }
+        }
+        return redirect()->back()->with('success', 'Tags assigned successfully!');
     }
 }

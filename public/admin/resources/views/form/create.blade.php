@@ -16,12 +16,12 @@
                     <div class="card-body mt-5" style="background: rgb(190, 218, 253);">
                     <div id="brd_box" class="form-group row">
                 <div class="col-sm-4 mb-2 mt-1 mb-sm-0"><span style="color: red;">*</span>Form Name
-                <input type="text" id="" placeholder="Enter Form Name" name="form_name" value="{{ old('form_name') ?? ($details->form_name ?? '') }}" class="form-control form-control-user" /></div>
+                <input type="text" id="" placeholder="Enter Form Name" name="form_name" value="{{ old('form_name') ?? ($details->form_name ?? '') }}" class="form-control form-control-user" required/></div>
 
 
                 <div class="col-sm-4 mb-3 mt-1 mb-sm-0">
                     <span style="color: red;">*</span>Tag
-                    <select name="tag_id" id="tag_id"class="form-control">
+                    <select name="tag_id" id="tag_id"class="form-control" required>
                         <option value="">Select Tag</option>
                         @foreach($tags as $tag)
                             <option value="{{ $tag->id }}" {{ (old('tag_id') ?? ($details->tag_id ?? '')) == $tag->id ? 'selected' : '' }}>{{ $tag->name }}</option>
@@ -30,7 +30,7 @@
                 </div>
                 <div class="col-sm-4 mb-3 mt-1 mb-sm-0">
                     <span style="color: red;">*</span>List
-                    <select name="list_id" id="list_id"class="form-control">
+                    <select name="list_id" id="list_id" class="form-control" required>
                         <option value="">Select List</option>
                         @foreach($lists as $list)
                             <option value="{{ $list->id }}" {{ (old('list_id') ?? ($details->list_id ?? '')) == $list->id ? 'selected' : '' }}>{{ $list->name }}</option>
@@ -61,7 +61,7 @@
                     <div class="row">
                         <div class="col-sm-12 mb-2 mt-1 mb-sm-0">
                         <span style="color: red;">*</span>Source
-                        <select name="source_id" id="source_id"class="form-control">
+                        <select name="source_id" id="source_id"class="form-control" required>
                             <option value="">Select Source</option>
                             @foreach($sources as $source)
                                 <option value="{{ $source->id }}" {{ (old('source_id') ?? ($details->source_id ?? '')) == $source->id ? 'selected' : '' }}>{{ $source->title }}</option>

@@ -87,7 +87,13 @@ Auth::routes(['register' => false]);
 Route::get('/home', [HomeController::class, 'index'])->name('home');
 Route::get('/dashboard-user-graph', [HomeController::class, 'userGraph'])->name('dashboard.user.graph');
 Route::get('/enquiry-list', [HomeController::class, 'enquiry_list'])->name('enquiry-list');
-Route::get('/master-list', [HomeController::class, 'master_list'])->name('master-list');
+// Route::get('/master-list', [HomeController::class, 'master_list'])->name('master-list');
+Route::get('/master-list',[HomeController::class,'master_list'])->name('master-list');
+
+Route::post('/master-list/filter',[HomeController::class,'master_list_filter'])->name('master.list.filter');
+Route::post('/master/list/list',[HomeController::class,'delete_master_list'])->name('master.list.delete');
+Route::post('/master/list/assign',[HomeController::class,'assign_list_to_customers'])->name('master.list.assign-list');
+Route::post('/master/list/tag',[HomeController::class,'assign_tag_to_customers'])->name('master.list.assign-tag');
 
 Route::post('/next-step-data', [HomeController::class, 'next_step_data'])->name('next-step-data');
 Route::post('/send-link-via-email', [FormLeadsController::class, 'send_link_via_email'])->name('send-link-via-email');

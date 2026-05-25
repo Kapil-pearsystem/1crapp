@@ -53,7 +53,7 @@ class FormLeadsController extends Controller
             $p_services = ProductService::select('id','prod_name')->where(['id' => $request->ps_id, 'status' => 1])->first();
             // return $agent;
             $plan_id = DB::table('cdb_plans')->where('agent_id', $agent->id)->where('monthly_price', 0)->value('id');
-            $mail = GiftMailModel::findOrFail($form->welcome_email);
+            $mail = GiftMailModel::find($form->welcome_email);
             // dd($p_services);
 
             // set for customer
