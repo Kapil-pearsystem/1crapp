@@ -8,10 +8,10 @@ use Illuminate\Support\Str;
 <div class="container-fluid">
     <!-- Page Heading -->
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-        <h1 class="h3 mb-0 text-gray-800">Collection List</h1>
+        <h1 class="h3 mb-0 text-gray-800">Sequences List</h1>
         <div class="row">
             <div class="col-md-12">
-                <a href="{{ route('collection.create') }}" class="btn btn-sm btn-primary"><i aria-hidden="true" class="fas fa-plus"></i> Add Collection</a>
+                <a href="{{ route('collection.create') }}" class="btn btn-sm btn-primary"><i aria-hidden="true" class="fas fa-plus"></i> Add Sequence</a>
             </div>
         </div>
     </div>
@@ -25,8 +25,12 @@ use Illuminate\Support\Str;
                     <thead>
                         <tr>
                             <th>Sr. No.</th>
-                            <th>Title</th>
-                            <th>Date</th>
+                            <th>Sequence Name</th>
+                            <th>Seq ID</th>
+                            <th>Date/Time</th>
+                            <th>No. of Emails</th>
+                            <th>No. of Gifts</th>
+                            <th>Cost</th>
                             <th>Status</th>
                             <th>Action</th>
                         </tr>
@@ -36,7 +40,11 @@ use Illuminate\Support\Str;
                         <tr>
                             <td>{{ ++$key }}</td>
                             <td>{{ $list->title }}</td>
-                            <td>{{ date('M d, Y', strtotime($list->created_at)) }}</td>
+                            <td>{{ $list->seqID }}</td>
+                            <td>{{ date('M d, Y H:i:s', strtotime($list->created_at)) }}</td>
+                            <td>{{ $list->emails_count }}</td>
+                            <td>{{ $list->gifts_count }}</td>
+                            <td>{{ $list->gross_amount }}</td>
                             <td>
                                 @if($list->status == 1)
                                 <span class="badge badge-success">Active</span>

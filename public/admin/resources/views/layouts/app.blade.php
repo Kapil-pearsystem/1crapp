@@ -2074,7 +2074,20 @@ DOMstrings.stepsForm.addEventListener('click', e => {
     activePanelNum--;
 
   } else {
-
+    if (activePanelNum === 0) {
+      if (typeof validateFirstStep === 'function') {
+        if (!validateFirstStep()) {
+          return;
+        }
+      }
+    }
+    if (activePanelNum === 1) {
+      if (typeof validateSecondStep === 'function') {
+        if (!validateSecondStep()) {
+          return;
+        }
+      }
+    }
     activePanelNum++;
 
   }

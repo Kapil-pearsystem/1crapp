@@ -50,13 +50,14 @@
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <div class="form-group">
-                                                        <label>Name of the Sequence <span class="red">*</span></label>
-                                                        <input type="text" name="title" class="form-control" placeholder="Enter here" required="" value="{{ old('title', isset($collection) ? $collection->title : '') }}" />
+                                                        <label>Name of the Sequence <span class="text-danger">*</span></label>
+                                                        <input type="text" id="title" name="title" class="form-control" placeholder="Enter here" required="" value="{{ old('title', isset($collection) ? $collection->title : '') }}" />
                                                     </div>
+                                                    <span class="text-danger titleError">{{ $errors->first('title') }}</span>
                                                 </div>
                                                 <div class="col-lg-12">
                                                     <div class="button-row d-flex mt-4">
-                                                        <button class="btn btn-primary ml-auto js-btn-next" type="button" title="Next">Next</button>
+                                                        <button class="btn btn-primary ml-auto js-btn-next" type="button" title="Next" onclick="return validateFirstStep(event)">Next</button>
                                                     </div>
                                                 </div>
                                             </div>
@@ -67,7 +68,7 @@
                                 <!-- SECEND STEP -->
                                 <div class="multisteps-form__panel shadow p-4 rounded bg-white" data-animation="scaleIn">
                                     @if(isset($collection) && $collectionItems->isNotEmpty())
-                                        @foreach($collectionItems as $item)
+                                        @foreach($collectionItems as $ikey => $item)
                                             <div class="CollectionCloneItems" data-set-index="{{ $item->set_index }}">
                                                 <div class="postalsss">
                                                     <h3>Postal</h3>
@@ -133,8 +134,9 @@
                                                                                     @endfor
                                                                                 </select>
                                                                             </li>
+                                                                            
                                                                             <li>
-                                                                                <select class="al_slt_partss schedule-day get-filter-data" name="schedule_day[{{ $item->set_index }}]">
+                                                                                <select class="al_slt_partss schedule-day get-filter-data @if($ikey == 0) d-none @endif" name="schedule_day[{{ $item->set_index }}]">
                                                                                     <option value="">Select day(s) after previous message at</option>
                                                                                     @for($i = 1; $i <= 30; $i++)
                                                                                     <option value="{{ $i }}" @if($item->schedule_day == $i) selected @endif>
@@ -203,7 +205,6 @@
                                                 <tbody id="summary_table_body">
                                                     @if(isset($collection) && $collectionItems->isNotEmpty())
                                                         @foreach($collectionItems as $key => $item)
-                                                            
                                                             <tr>
                                                                 <td>{{ $key + 1 }}</td>
                                                                 <td>{{ $item->postal_type == '1' ? 'Email' : 'Gift' }}</td>
@@ -214,7 +215,6 @@
                                                                         {{ \App\Models\GiftModel::where('id', $item->item_id)->value('title') }}
                                                                     @endif
                                                                 </td>
-                                                                
                                                                 <td>
                                                                     @if($item->postal_type == '1')
                                                                         Rs.{{ \App\Models\GiftConfigModel::where('key', 'mailcost')->value('price') }}
@@ -247,8 +247,6 @@
                                                         <th colspan="3" class="text-right">Total</th><th id="total-smr">{{ old('total', isset($collection) ? $collection->total : '0.00') }}</th>
                                                         <input type="hidden" name="total" id="total-smr-input" value="{{ old('total', isset($collection) ? $collection->total : '0') }}" />
                                                     </tr>
-                                                        
-                                                    
                                                     <tr>
                                                         <td colspan="3" align="right">Discount</td>
                                                         <td id="discount-smr">{{ old('discount', isset($collection) ? $collection->discount : '0.00') }}</td>
@@ -280,7 +278,6 @@
                                                         <input type="hidden" name="gross_amount" id="gross-amount-smr-input" value="{{ old('gross_amount', isset($collection) ? $collection->gross_amount : '0') }}" />
                                                     </tr>
                                                 </tbody>
-
                                             </table>
                                         </div>
                                     </div>
@@ -289,7 +286,6 @@
                                         <button class="btn btn-primary ml-auto" type="submit" title="">{{ isset($collection)?'Update':'Save' }} Collection</button>
                                     </div>
                                 </div>
-                                
                                 <!-- End Three STEP -->
                             </form>
                         </div>
@@ -302,7 +298,6 @@
 @endsection
 @section('scripts')
 <!-- <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script> -->
-
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
     $(document).ready(function() {
@@ -356,24 +351,6 @@
     }
 </script>
 <script>
-// const baseClone = @json(view('collection.partials.clone-item')->render());
-// $(document).ready(function() {
-//     const isEditMode = {{ isset($collection) ? 'true' : 'false' }};
-//     if(!isEditMode){
-//         $baseClone.find('.schedule-day').hide();
-//         let firstSet = baseClone.replaceAll('__SET_INDEX__', 0);
-//         $('.CollectionCloneItems').first().replaceWith(firstSet);
-//     }
-//     let setCounter = 1;
-//     if(isEditMode){
-//         setCounter = parseInt($('.CollectionCloneItems').last().data('set-index')) + 1;
-//     }
-//     $('#addmore').on('click', function() {
-//         let newHtml = baseClone.replaceAll('__SET_INDEX__', setCounter);
-//         $('.CollectionContainer').append(newHtml);
-//         setCounter++;
-//     });
-// });
 const baseClone = @json(view('collection.partials.clone-item')->render());
 $(document).ready(function() {
     const isEditMode = {{ isset($collection) ? 'true' : 'false' }};
@@ -394,7 +371,6 @@ $(document).ready(function() {
     //         $newClone.find('.schedule-day').hide();
     //     }
     //     let newHtml = $('<div>').append($newClone.clone()).html();
-        
     //     if($('.CollectionCloneItems').length > 0){
     //         newHtml.find('.schedule-day').removeClass('d-none');
     //     }
@@ -464,7 +440,6 @@ $(document).on(
 );
 });
 function loadFilteredData(parent){
-    
     let postal_type   = parent.find('.type-selector').val();
     let mail_category = parent.find('.mail-category-select').val();
     let gift_category = parent.find('.gift-category-select').val();
@@ -509,7 +484,6 @@ function loadFilteredData(parent){
                 alert('Something went wrong!');
             }
         });
-        
         loadSummaryForCheckedItems();
     }
 }
@@ -538,7 +512,6 @@ function appendSummary(element) {
 $(document).on('change', '.ck_bx_box', function () {
     appendSummary(this);
 });
-
 function loadSummaryForCheckedItems() {
     setTimeout(function () {
         $('.ck_bx_box:checked').each(function () {
@@ -574,7 +547,6 @@ function loadThankYouItems() {
         }
         var tyc_id = parent1.find('.tyc-edit-id').val();
         parent1.find('.tyc-id[value="' + tyc_id + '"]').prop('checked', true);
-        
     }
 </script>
 <script>
@@ -615,7 +587,6 @@ function loadThankYouItems() {
     $('#discount-smr-input').val(totalDiscount.toFixed(2));
     $('#final-total-smr').text((totalPrice - totalDiscount).toFixed(2));
     $('#final-total-smr-input').val((totalPrice - totalDiscount).toFixed(2));
-
     $('#gst-smr').text(gstAmount.toFixed(2));
     $('#gst-smr-input').val(gstAmount.toFixed(2));
     var courierText = `Courier Charges (Rs. {{ $config['courier'] ?? 0 }} / Item X ${totalItems} Item)`;
@@ -636,6 +607,58 @@ function loadThankYouItems() {
     // console.log('Handling Cost:', handlingCost);
     // console.log('Gross Amount:', grossAmount);
 });
-  
+</script>
+<script>
+function validateFirstStep(e) {
+    if (!$('#title').val().trim()) {
+        $('.titleError').text('Please enter sequence name.');
+        // alert('Please enter sequence name.');
+        e.stopPropagation();
+        return false;
+    }
+    return true;
+}
+function validateSecondStep() {
+    let isValid = true;
+    $('.CollectionCloneItems').each(function (index) {
+        let type = $(this).find('.type-selector').val();
+        if (!type) {
+            alert('Please select type for all items.');
+            isValid = false;
+            return false;
+        }
+        if (type == '1') {
+            let mailCategory = $(this).find('.mail-category-select').val();
+            if (!mailCategory) {
+                alert('Please select mail category for all email items.');
+                isValid = false;
+                return false;
+            }
+        } else if (type == '2') {
+            let giftCategory = $(this).find('.gift-category-select').val();
+            if (!giftCategory) {
+                alert('Please select gift category for all gift items.');
+                isValid = false;
+                return false;
+            }
+        }
+        // Skip days validation for first item
+        if (index > 0) {
+            let days = $(this).find('.schedule-day').val();
+            if (!days) {
+                alert('Please select schedule day for all items.');
+                isValid = false;
+                return false;
+            }
+        }
+        // Validate item selection for current block
+        if ($(this).find('.ck_bx_box:checked').length === 0) {
+            alert('Please select at least one item.');
+            isValid = false;
+            return false;
+        }
+    });
+    return isValid;
+}
 </script>
 @endsection

@@ -11,6 +11,7 @@ class CollectionModel extends Model
     protected $primaryKey = 'id';
 
     protected $fillable = [
+        'seqID',
         'title',
         'total',
         'discount',
@@ -29,4 +30,13 @@ class CollectionModel extends Model
     // Optional: custom timestamp columns
     const CREATED_AT = 'created_at';
     const UPDATED_AT = 'updated_at';
+    
+    public function emails()
+    {
+        return $this->hasMany(CollectionItemModel::class, 'collection_id', 'id')->where('postal_type', 1);
+    }
+    public function gifts()
+    {
+        return $this->hasMany(CollectionItemModel::class, 'collection_id', 'id')->where('postal_type', 2);
+    }
 }

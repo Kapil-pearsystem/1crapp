@@ -469,7 +469,7 @@ $finalUrl = $scheme . '://' . $host;
             </a>
             <div id="orddDropDownCust2" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
-                    <a class="collapse-item" href="{{ route('collection.create') }}">Collections</a>
+                    <a class="collapse-item" href="{{ route('collection.index') }}">Collections</a>
                     <a class="collapse-item" href="{{ route('gift.index') }}">Gift List</a>
                     <a class="collapse-item" href="{{ route('gift.category-list') }}">Gift Category</a>
                     <a class="collapse-item" href="{{ route('gift.thank-you-card-list') }}">Thank You Card</a>

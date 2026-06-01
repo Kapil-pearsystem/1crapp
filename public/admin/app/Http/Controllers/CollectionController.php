@@ -23,7 +23,7 @@ use Carbon\Carbon;
 class CollectionController extends Controller
 {
     public function index(){
-        $lists = CollectionModel::orderBy('id','DESC')->where('created_by', Auth::id())->get();
+        $lists = CollectionModel::withCount('emails', 'gifts')->orderBy('id','DESC')->where('created_by', Auth::id())->get();
         return view('collection.index',compact('lists'));
     }
     public function create(){
@@ -47,10 +47,12 @@ class CollectionController extends Controller
         }
         if($request->collection_id){
             $collection = CollectionModel::find($request->collection_id);
+            $collection->seqID = $this->generateSeqID();
             $msg = 'Collection updated successfully.';
         }else{
             $collection = new CollectionModel();
             $msg = 'Collection created successfully.';
+            $collection->seqID = $this->generateSeqID();
         }
         $collection->title = $request->title;
         $collection->total = $request->total;
@@ -95,6 +97,16 @@ class CollectionController extends Controller
         }
 
         return redirect()->route('collection.index')->with('success', $msg);
+    }
+    private function generateSeqID(){
+        
+        $seqID = 'SEQ-' . strtoupper(Str::random(8)); // Generate a random sequence ID
+        $collection = CollectionModel::where('seqID', $seqID)->exists();
+        if($collection){
+            return $this->generateSeqID(); // Regenerate if it already exists
+        }
+        return $seqID;
+
     }
 
     public function filter(Request $request)
