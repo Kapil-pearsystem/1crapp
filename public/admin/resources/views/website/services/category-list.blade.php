@@ -15,6 +15,9 @@
                     <!--<a href="{{ route('customer.export') }}" class="btn btn-sm btn-success">
                         <i class="fas fa-check"></i> Export To Excel
                     </a>-->
+                    <a href="{{ route('web.services.index') }}" class="btn btn-sm btn-success">
+                        <i class="fas fa-list"></i> Services
+                    </a>
                 </div>
 
             </div>

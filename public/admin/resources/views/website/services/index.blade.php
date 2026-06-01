@@ -12,9 +12,12 @@
             <div class="row">
                 <div class="col-md-12">
 				    <a href="{{ route('web.service.create') }}" class="btn btn-sm btn-primary"><i aria-hidden="true" class="fas fa-plus"></i> Add Service</a>
-                    <!--<a href="{{ route('customer.export') }}" class="btn btn-sm btn-success">
+                    <a href="{{ route('web.service-category.index') }}" class="btn btn-sm btn-success">
+                        <i class="fas fa-list"></i> Categories
+                    </a>
+                    <!-- <a href="{{ route('customer.export') }}" class="btn btn-sm btn-success">
                         <i class="fas fa-check"></i> Export To Excel
-                    </a>-->
+                    </a> -->
                 </div>
 
             </div>
