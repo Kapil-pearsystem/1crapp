@@ -11,6 +11,7 @@ use App\Models\ThankYouCardModel;
 use App\Models\AgentDetail;
 use App\Models\SubscriptionPlan;
 use App\Models\GiftConfigModel;
+use App\Models\CollectionItemModel;
 use App\Models\MailCategoryModel;
 use App\Exports\UsersExport;
 use App\Imports\UsersImport;
@@ -167,6 +168,9 @@ class GiftController extends Controller
         return view('gift.add-gift',compact('gift_category','gift'));
     }
     public function delete($id){
+        if(CollectionItemModel::where(['item_id' => $id, 'postal_type' => '2'])->exists()) {
+            return redirect()->back()->withInput()->with('error', 'This gift has already been added to a collection and cannot be delete.');
+        }
         $gift = GiftModel::find($id);
         $gift->delete();
         return redirect()->back()->with('success','Gift Deleted Successfully!');
