@@ -443,12 +443,12 @@ $finalUrl = $scheme . '://' . $host;
     </li>
     @endif
         <li class="nav-item">
-            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#orddDropDownCust2"
+            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#orddDropDownMail"
                 aria-expanded="true" aria-controls="orddDropDownCust">
                 <i class="fas fa-envelope"></i>
                 <span>Mail Management</span>
             </a>
-            <div id="orddDropDownCust2" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+            <div id="orddDropDownMail" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
                     <?php if(!Auth()->user()->hasrole('Agent')){ ?>
                         <a class="collapse-item" href="{{ route('mail-category.index') }}">Mail Category</a>
@@ -469,6 +469,7 @@ $finalUrl = $scheme . '://' . $host;
             </a>
             <div id="orddDropDownCust2" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
+                    <a class="collapse-item" href="{{ route('collection.create') }}">Collections</a>
                     <a class="collapse-item" href="{{ route('gift.index') }}">Gift List</a>
                     <a class="collapse-item" href="{{ route('gift.category-list') }}">Gift Category</a>
                     <a class="collapse-item" href="{{ route('gift.thank-you-card-list') }}">Thank You Card</a>

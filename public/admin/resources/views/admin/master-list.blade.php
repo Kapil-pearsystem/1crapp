@@ -177,15 +177,18 @@ href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css">
                                 <th>#</th>
                                 <th>&nbsp;<input type="checkbox" id="select-all"></th>
                                 <th>UNIQUE ID</th>
-                                <th>Name port Ticket</th>
-                                <!-- <th>Email</th> -->
-                                <!-- <th>Phone</th>
-                                <th>Company</th>
+                                <th>Name</th>
+                                <!-- @if(!request('userid') && Auth()->user()->hasrole('Master Admin'))
+                                <th>Agent Name (Member ID)</th>
+                                @endif -->
+                                <th>Email</th>
+                                <th>Phone</th>
+                                <!-- <th>Company</th>
                                 <th>Source</th>
-                                <th>Request For</th>
+                                <th>Request For</th> -->
                                 <th>Services Taken</th>
                                 <th>Next Step</th>
-                                <th>Support Ticket</th> -->
+                                <th>Support Ticket</th>
                                 <th>Date</th>
                                 <th>&ensp;&ensp;&ensp;&ensp;&ensp; Status &ensp;&ensp;&ensp;</th>
                                 <th>Action</th>
@@ -200,7 +203,7 @@ href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css">
         </div>
     </div>
     <!-- Modal -->
-<div class="modal fade" id="filterModal">
+<div class="modal fade" id="filterModal123">
     <div class="modal-dialog modal-lg modal-dialog-centered">
         <div class="modal-content">
         <div class="modal-header">
@@ -216,15 +219,13 @@ href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css">
             <div class="form-row">
                 <div class="col-md-5">
                 <select id="inc-type" class="form-control" onchange="onTypeChange('inc')">
-                    <option value="">
-                    Select Type
-                    </option>
-                    <option value="list">
-                    Contact List
-                    </option>
-                    <option value="tag">
-                    Tags
-                    </option>
+                    <option value="">Select Type</option>
+                    <option value="list">Subscribed to list</option>
+                    <option value="tag">Has tag</option>
+                    <option value="">Has filled form</option>
+                    <option value="">Subscribed to sequence/Collection</option>
+                    <option value="">Date Range</option>
+                    <option value="">Status</option>
                 </select>
                 </div>
                 <div class="col-md-5">
@@ -251,15 +252,13 @@ href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css">
             <div class="form-row">
                 <div class="col-md-5">
                 <select id="exc-type" class="form-control" onchange="onTypeChange('exc')">
-                    <option value="">
-                    Select Type
-                    </option>
-                    <option value="list">
-                    Contact List
-                    </option>
-                    <option value="tag">
-                    Tags
-                    </option>
+                    <option value="">Select Type</option>
+                    <option value="list">Subscribed to list</option>
+                    <option value="tag">Has tag</option>
+                    <option value="">Has filled form</option>
+                    <option value="">Subscribed to sequence/Collection</option>
+                    <option value="">Date Range</option>
+                    <option value="">Status</option>
                 </select>
                 </div>
                 <div class="col-md-5">
@@ -283,6 +282,89 @@ href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css">
             <button class="btn btn-outline-secondary" onclick="resetAll()">Reset</button>
             <button class="btn open-btn" onclick="applyFilters()">Apply </button>
         </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="filterModal">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h5 class="modal-title">Advanced Filters</h5>
+                <button class="close" data-dismiss="modal"><span>&times;</span></button>
+            </div>
+
+            <div class="modal-body">
+
+                {{-- Included --}}
+                <div class="filter-card">
+                    <div class="sec-label">Included Conditions</div>
+                    <div class="form-row align-items-center">
+                        <div class="col-md-4">
+                            <select id="inc-type" class="form-control" onchange="onTypeChange('inc')">
+                                <option value="">Select Type</option>
+                                <option value="list">Subscribed to list</option>
+                                <option value="tag">Has tag</option>
+                                <option value="form">Has filled form</option>
+                                <option value="status">Status</option>
+                                <option value="date-range">Date Range</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6" id="inc-val-wrap">
+                            {{-- single value select (list/tag/form/status) --}}
+                            <select id="inc-val" class="form-control d-none">
+                                <option value="">Select Value</option>
+                            </select>
+                            {{-- date range inputs --}}
+                            <div id="inc-date-wrap" class="d-none d-flex gap-2">
+                                <input type="text" id="inc-start-date" class="form-control" placeholder="Start Date">
+                                <input type="text" id="inc-end-date"   class="form-control" placeholder="End Date">
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <button class="plus-btn" onclick="addCond('inc')">+</button>
+                        </div>
+                    </div>
+                    <div id="inc-conds" class="mt-2"></div>
+                </div>
+
+                {{-- Excluded --}}
+                <div class="filter-card mt-3">
+                    <div class="sec-label">Excluded Conditions</div>
+                    <div class="form-row align-items-center">
+                        <div class="col-md-4">
+                            <select id="exc-type" class="form-control" onchange="onTypeChange('exc')">
+                                <option value="">Select Type</option>
+                                <option value="list">Subscribed to list</option>
+                                <option value="tag">Has tag</option>
+                                <option value="form">Has filled form</option>
+                                <option value="status">Status</option>
+                                <option value="date-range">Date Range</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6" id="exc-val-wrap">
+                            <select id="exc-val" class="form-control d-none">
+                                <option value="">Select Value</option>
+                            </select>
+                            <div id="exc-date-wrap" class="d-none d-flex gap-2">
+                                <input type="text" id="exc-start-date" class="form-control" placeholder="Start Date">
+                                <input type="text" id="exc-end-date"   class="form-control" placeholder="End Date">
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <button class="plus-btn" onclick="addCond('exc')">+</button>
+                        </div>
+                    </div>
+                    <div id="exc-conds" class="mt-2"></div>
+                </div>
+
+            </div>
+
+            <div class="modal-footer">
+                <button class="btn btn-outline-secondary" onclick="resetAll()">Reset</button>
+                <button class="btn open-btn" onclick="applyFilters()">Apply</button>
+            </div>
+
         </div>
     </div>
 </div>
@@ -747,9 +829,14 @@ new DataTable('#example-table-theme', {
       ]
     };
     const labels = {
-      list: 'Contact List',
-      tag: 'Tags'
+      list: 'Subscribed to list',
+      tag: 'Has tag',
+      0: 'Has filled form',
+      1: 'Subscribed to sequence/Collection',
+       2: 'Date Range',
+       3: 'Status'
     };
+    
     let state = {
       inc: [],
       exc: []

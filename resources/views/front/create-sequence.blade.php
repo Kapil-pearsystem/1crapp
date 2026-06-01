@@ -1696,193 +1696,193 @@ table.table.mb-0.bor_none {
 								
 		
 								<div id="tsts_mlts" class="gift_bokkxx">
-                            <div class="owl-carousel owl-theme it_emms create_seq" id="testimonials">
-                                <div class="item">
-                                    <div class="it_emms giftts" id="bx1" style="background: url(https://1crapp.allproject.online/home/img/vdo_mg.png) no-repeat; background-position: center; background-size: cover;">
-                                        <!---- Tages ---->
-                                        <div class="ribbon-wrap">
-                                            <div class="ribbon">Available</div>
-                                        </div>
-                                        <!---- End Tages ---->
-                                        <div class="boths_gfts">
-                                            <div class="giftss"><img src="{{ url('home/img/gift_crd.png')}}" alt="" /></div>
-                                            <div id="tsts_mlts" class="gf_listst">
-											 <div class="radio"><input id="radio-1" name="radio" type="radio"></div>
-											</div>
-                                            <div class="qerrst"><img src="{{ url('home/img/b_qr_pay_1cr.png')}}" alt="" /></div>
-                                        </div>
-                                        <div class="thk_arara">
-                                            <h2>Thanks You</h2>
-                                            <p class="grenss_tx">XXXXXX (Name)</p>
-                                        </div>
-                                        <p class="add-read-more show-less-content">
-                                            Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of
-                                            type and scrambled it to make a type specimen book.
-                                        </p>
+                                    <div class="owl-carousel owl-theme it_emms create_seq" id="testimonials">
+                                        <div class="item">
+                                            <div class="it_emms giftts" id="bx1" style="background: url(https://1crapp.allproject.online/home/img/vdo_mg.png) no-repeat; background-position: center; background-size: cover;">
+                                                <!---- Tages ---->
+                                                <div class="ribbon-wrap">
+                                                    <div class="ribbon">Available</div>
+                                                </div>
+                                                <!---- End Tages ---->
+                                                <div class="boths_gfts">
+                                                    <div class="giftss"><img src="{{ url('home/img/gift_crd.png')}}" alt="" /></div>
+                                                    <div id="tsts_mlts" class="gf_listst">
+                                                    <div class="radio"><input id="radio-1" name="radio" type="radio"></div>
+                                                    </div>
+                                                    <div class="qerrst"><img src="{{ url('home/img/b_qr_pay_1cr.png')}}" alt="" /></div>
+                                                </div>
+                                                <div class="thk_arara">
+                                                    <h2>Thanks You</h2>
+                                                    <p class="grenss_tx">XXXXXX (Name)</p>
+                                                </div>
+                                                <p class="add-read-more show-less-content">
+                                                    Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of
+                                                    type and scrambled it to make a type specimen book.
+                                                </p>
 
-                                        <div class="usr_mgss"><img src="https://1crapp.allproject.online/home/img/user_testi.jpg" alt="" /></div>
-                                        <h5>Thanks You</h5>
-                                        <h3>Mr. Amit Kumar Yadav</h3>
-                                        <p class="blues_tx mb-0"><strong>www.ramjeemena.com</strong></p>
-                                        <p class="red_tx mb-3"><strong>Ramjee Enterprises</strong></p>
+                                                <div class="usr_mgss"><img src="https://1crapp.allproject.online/home/img/user_testi.jpg" alt="" /></div>
+                                                <h5>Thanks You</h5>
+                                                <h3>Mr. Amit Kumar Yadav</h3>
+                                                <p class="blues_tx mb-0"><strong>www.ramjeemena.com</strong></p>
+                                                <p class="red_tx mb-3"><strong>Ramjee Enterprises</strong></p>
 
-                                        <div class="w_numbber">
-                                            <a target="_blank" href="https://api.whatsapp.com/send/?phone=%2B911234567890&amp;text=Hi&amp;app_absent=0"> <i class="fa fa-whatsapp"></i> +91 1234 5678 90</a>
+                                                <div class="w_numbber">
+                                                    <a target="_blank" href="https://api.whatsapp.com/send/?phone=%2B911234567890&amp;text=Hi&amp;app_absent=0"> <i class="fa fa-whatsapp"></i> +91 1234 5678 90</a>
+                                                </div>
+
+                                                <div class="pric_txtx">Rs.10/Peice</div>
+                                            </div>
                                         </div>
 
-                                        <div class="pric_txtx">Rs.10/Peice</div>
+                                        <div class="item">
+                                            <div class="it_emms giftts" id="bx2">
+                                                <!---- Tages ---->
+                                                <div class="ribbon-wrap">
+                                                    <div class="ribbon bg_red">Sold Out</div>
+                                                </div>
+                                                <!---- End Tages ---->
+                                                <div class="boths_gfts">
+                                                    <div class="giftss"><img src="{{ url('home/img/gift_crd.png')}}" alt="" /></div>
+                                                    <div id="tsts_mlts" class="gf_listst">
+                                                    <div class="radio"><input id="radio-2" name="radio" type="radio"></div>
+                                                    </div>
+                                                    <div class="qerrst"><img src="{{ url('home/img/b_qr_pay_1cr.png')}}" alt="" /></div>
+                                                </div>
+                                                <div class="thk_arara">
+                                                    <h2>Thanks You</h2>
+                                                    <p class="grenss_tx">XXXXXX (Name)</p>
+                                                </div>
+                                                <p class="add-read-more show-less-content">
+                                                    Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of
+                                                    type and scrambled it to make a type specimen book.
+                                                </p>
+
+                                                <div class="usr_mgss"><img src="https://1crapp.allproject.online/home/img/user_testi.jpg" alt="" /></div>
+                                                <h5>Thanks You</h5>
+                                                <h3>Mr. Amit Kumar Yadav</h3>
+                                                <p class="blues_tx mb-0"><strong>www.ramjeemena.com</strong></p>
+                                                <p class="red_tx mb-3"><strong>Ramjee Enterprises</strong></p>
+
+                                                <div class="w_numbber">
+                                                    <a target="_blank" href="https://api.whatsapp.com/send/?phone=%2B911234567890&amp;text=Hi&amp;app_absent=0"> <i class="fa fa-whatsapp"></i> +91 1234 5678 90</a>
+                                                </div>
+
+                                                <div class="pric_txtx">Rs.10/Peice</div>
+                                            </div>
+                                        </div>
+
+                                        <div class="item">
+                                            <div class="it_emms giftts" id="bx3">
+                                                <!---- Tages ---->
+                                                <div class="ribbon-wrap">
+                                                    <div class="ribbon">Available</div>
+                                                </div>
+                                                <!---- End Tages ---->
+                                                <div class="boths_gfts">
+                                                    <div class="giftss"><img src="{{ url('home/img/gift_crd.png')}}" alt="" /></div>
+                                                    <div id="tsts_mlts" class="gf_listst">
+                                                    <div class="radio"><input id="radio-3" name="radio" type="radio"></div>
+                                                    </div>
+                                                    <div class="qerrst"><img src="{{ url('home/img/b_qr_pay_1cr.png')}}" alt="" /></div>
+                                                </div>
+                                                <div class="thk_arara">
+                                                    <h2>Thanks You</h2>
+                                                    <p class="grenss_tx">XXXXXX (Name)</p>
+                                                </div>
+                                                <p class="add-read-more show-less-content">
+                                                    Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of
+                                                    type and scrambled it to make a type specimen book.
+                                                </p>
+
+                                                <div class="usr_mgss"><img src="https://1crapp.allproject.online/home/img/user_testi.jpg" alt="" /></div>
+                                                <h5>Thanks You</h5>
+                                                <h3>Mr. Amit Kumar Yadav</h3>
+                                                <p class="blues_tx mb-0"><strong>www.ramjeemena.com</strong></p>
+                                                <p class="red_tx mb-3"><strong>Ramjee Enterprises</strong></p>
+
+                                                <div class="w_numbber">
+                                                    <a target="_blank" href="https://api.whatsapp.com/send/?phone=%2B911234567890&amp;text=Hi&amp;app_absent=0"> <i class="fa fa-whatsapp"></i> +91 1234 5678 90</a>
+                                                </div>
+
+                                                <div class="pric_txtx">Rs.10/Peice</div>
+                                            </div>
+                                        </div>
+
+                                        <div class="item">
+                                            <div class="it_emms giftts" id="bx4">
+                                                <!---- Tages ---->
+                                                <div class="ribbon-wrap">
+                                                    <div class="ribbon">Available</div>
+                                                </div>
+                                                <!---- End Tages ---->
+                                                <div class="boths_gfts">
+                                                    <div class="giftss"><img src="{{ url('home/img/gift_crd.png')}}" alt="" /></div>
+                                                    <div id="tsts_mlts" class="gf_listst">
+                                                    <div class="radio"><input id="radio-4" name="radio" type="radio"></div>
+                                                    </div>
+                                                    <div class="qerrst"><img src="{{ url('home/img/b_qr_pay_1cr.png')}}" alt="" /></div>
+                                                </div>
+                                                <div class="thk_arara">
+                                                    <h2>Thanks You</h2>
+                                                    <p class="grenss_tx">XXXXXX (Name)</p>
+                                                </div>
+                                                <p class="add-read-more show-less-content">
+                                                    Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of
+                                                    type and scrambled it to make a type specimen book.
+                                                </p>
+
+                                                <div class="usr_mgss"><img src="https://1crapp.allproject.online/home/img/user_testi.jpg" alt="" /></div>
+                                                <h5>Thanks You</h5>
+                                                <h3>Mr. Amit Kumar Yadav</h3>
+                                                <p class="blues_tx mb-0"><strong>www.ramjeemena.com</strong></p>
+                                                <p class="red_tx mb-3"><strong>Ramjee Enterprises</strong></p>
+
+                                                <div class="w_numbber">
+                                                    <a target="_blank" href="https://api.whatsapp.com/send/?phone=%2B911234567890&amp;text=Hi&amp;app_absent=0"> <i class="fa fa-whatsapp"></i> +91 1234 5678 90</a>
+                                                </div>
+
+                                                <div class="pric_txtx">Rs.10/Peice</div>
+                                            </div>
+                                        </div>
+
+                                        <div class="item">
+                                            <div class="it_emms giftts" id="bx5">
+                                                <!---- Tages ---->
+                                                <div class="ribbon-wrap">
+                                                    <div class="ribbon">Available</div>
+                                                </div>
+                                                <!---- End Tages ---->
+                                                <div class="boths_gfts">
+                                                    <div class="giftss"><img src="{{ url('home/img/gift_crd.png')}}" alt="" /></div>
+                                                    <div id="tsts_mlts" class="gf_listst">
+                                                    <div class="radio"><input id="radio-5" name="radio" type="radio"></div>
+                                                    </div>
+                                                    <div class="qerrst"><img src="{{ url('home/img/b_qr_pay_1cr.png')}}" alt="" /></div>
+                                                </div>
+                                                <div class="thk_arara">
+                                                    <h2>Thanks You</h2>
+                                                    <p class="grenss_tx">XXXXXX (Name)</p>
+                                                </div>
+                                                <p class="add-read-more show-less-content">
+                                                    Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of
+                                                    type and scrambled it to make a type specimen book.
+                                                </p>
+
+                                                <div class="usr_mgss"><img src="https://1crapp.allproject.online/home/img/user_testi.jpg" alt="" /></div>
+                                                <h5>Thanks You</h5>
+                                                <h3>Mr. Amit Kumar Yadav</h3>
+                                                <p class="blues_tx mb-0"><strong>www.ramjeemena.com</strong></p>
+                                                <p class="red_tx mb-3"><strong>Ramjee Enterprises</strong></p>
+
+                                                <div class="w_numbber">
+                                                    <a target="_blank" href="https://api.whatsapp.com/send/?phone=%2B911234567890&amp;text=Hi&amp;app_absent=0"> <i class="fa fa-whatsapp"></i> +91 1234 5678 90</a>
+                                                </div>
+
+                                                <div class="pric_txtx">Rs.10/Peice</div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-
-                                <div class="item">
-                                    <div class="it_emms giftts" id="bx2">
-                                        <!---- Tages ---->
-                                        <div class="ribbon-wrap">
-                                            <div class="ribbon bg_red">Sold Out</div>
-                                        </div>
-                                        <!---- End Tages ---->
-                                        <div class="boths_gfts">
-                                            <div class="giftss"><img src="{{ url('home/img/gift_crd.png')}}" alt="" /></div>
-                                            <div id="tsts_mlts" class="gf_listst">
-											 <div class="radio"><input id="radio-2" name="radio" type="radio"></div>
-											</div>
-                                            <div class="qerrst"><img src="{{ url('home/img/b_qr_pay_1cr.png')}}" alt="" /></div>
-                                        </div>
-                                        <div class="thk_arara">
-                                            <h2>Thanks You</h2>
-                                            <p class="grenss_tx">XXXXXX (Name)</p>
-                                        </div>
-                                        <p class="add-read-more show-less-content">
-                                            Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of
-                                            type and scrambled it to make a type specimen book.
-                                        </p>
-
-                                        <div class="usr_mgss"><img src="https://1crapp.allproject.online/home/img/user_testi.jpg" alt="" /></div>
-                                        <h5>Thanks You</h5>
-                                        <h3>Mr. Amit Kumar Yadav</h3>
-                                        <p class="blues_tx mb-0"><strong>www.ramjeemena.com</strong></p>
-                                        <p class="red_tx mb-3"><strong>Ramjee Enterprises</strong></p>
-
-                                        <div class="w_numbber">
-                                            <a target="_blank" href="https://api.whatsapp.com/send/?phone=%2B911234567890&amp;text=Hi&amp;app_absent=0"> <i class="fa fa-whatsapp"></i> +91 1234 5678 90</a>
-                                        </div>
-
-                                        <div class="pric_txtx">Rs.10/Peice</div>
-                                    </div>
-                                </div>
-
-                                <div class="item">
-                                    <div class="it_emms giftts" id="bx3">
-                                        <!---- Tages ---->
-                                        <div class="ribbon-wrap">
-                                            <div class="ribbon">Available</div>
-                                        </div>
-                                        <!---- End Tages ---->
-                                        <div class="boths_gfts">
-                                            <div class="giftss"><img src="{{ url('home/img/gift_crd.png')}}" alt="" /></div>
-                                            <div id="tsts_mlts" class="gf_listst">
-											 <div class="radio"><input id="radio-3" name="radio" type="radio"></div>
-											</div>
-                                            <div class="qerrst"><img src="{{ url('home/img/b_qr_pay_1cr.png')}}" alt="" /></div>
-                                        </div>
-                                        <div class="thk_arara">
-                                            <h2>Thanks You</h2>
-                                            <p class="grenss_tx">XXXXXX (Name)</p>
-                                        </div>
-                                        <p class="add-read-more show-less-content">
-                                            Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of
-                                            type and scrambled it to make a type specimen book.
-                                        </p>
-
-                                        <div class="usr_mgss"><img src="https://1crapp.allproject.online/home/img/user_testi.jpg" alt="" /></div>
-                                        <h5>Thanks You</h5>
-                                        <h3>Mr. Amit Kumar Yadav</h3>
-                                        <p class="blues_tx mb-0"><strong>www.ramjeemena.com</strong></p>
-                                        <p class="red_tx mb-3"><strong>Ramjee Enterprises</strong></p>
-
-                                        <div class="w_numbber">
-                                            <a target="_blank" href="https://api.whatsapp.com/send/?phone=%2B911234567890&amp;text=Hi&amp;app_absent=0"> <i class="fa fa-whatsapp"></i> +91 1234 5678 90</a>
-                                        </div>
-
-                                        <div class="pric_txtx">Rs.10/Peice</div>
-                                    </div>
-                                </div>
-
-                                <div class="item">
-                                    <div class="it_emms giftts" id="bx4">
-                                        <!---- Tages ---->
-                                        <div class="ribbon-wrap">
-                                            <div class="ribbon">Available</div>
-                                        </div>
-                                        <!---- End Tages ---->
-                                        <div class="boths_gfts">
-                                            <div class="giftss"><img src="{{ url('home/img/gift_crd.png')}}" alt="" /></div>
-                                            <div id="tsts_mlts" class="gf_listst">
-											 <div class="radio"><input id="radio-4" name="radio" type="radio"></div>
-											</div>
-                                            <div class="qerrst"><img src="{{ url('home/img/b_qr_pay_1cr.png')}}" alt="" /></div>
-                                        </div>
-                                        <div class="thk_arara">
-                                            <h2>Thanks You</h2>
-                                            <p class="grenss_tx">XXXXXX (Name)</p>
-                                        </div>
-                                        <p class="add-read-more show-less-content">
-                                            Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of
-                                            type and scrambled it to make a type specimen book.
-                                        </p>
-
-                                        <div class="usr_mgss"><img src="https://1crapp.allproject.online/home/img/user_testi.jpg" alt="" /></div>
-                                        <h5>Thanks You</h5>
-                                        <h3>Mr. Amit Kumar Yadav</h3>
-                                        <p class="blues_tx mb-0"><strong>www.ramjeemena.com</strong></p>
-                                        <p class="red_tx mb-3"><strong>Ramjee Enterprises</strong></p>
-
-                                        <div class="w_numbber">
-                                            <a target="_blank" href="https://api.whatsapp.com/send/?phone=%2B911234567890&amp;text=Hi&amp;app_absent=0"> <i class="fa fa-whatsapp"></i> +91 1234 5678 90</a>
-                                        </div>
-
-                                        <div class="pric_txtx">Rs.10/Peice</div>
-                                    </div>
-                                </div>
-
-                                <div class="item">
-                                    <div class="it_emms giftts" id="bx5">
-                                        <!---- Tages ---->
-                                        <div class="ribbon-wrap">
-                                            <div class="ribbon">Available</div>
-                                        </div>
-                                        <!---- End Tages ---->
-                                        <div class="boths_gfts">
-                                            <div class="giftss"><img src="{{ url('home/img/gift_crd.png')}}" alt="" /></div>
-                                            <div id="tsts_mlts" class="gf_listst">
-											 <div class="radio"><input id="radio-5" name="radio" type="radio"></div>
-											</div>
-                                            <div class="qerrst"><img src="{{ url('home/img/b_qr_pay_1cr.png')}}" alt="" /></div>
-                                        </div>
-                                        <div class="thk_arara">
-                                            <h2>Thanks You</h2>
-                                            <p class="grenss_tx">XXXXXX (Name)</p>
-                                        </div>
-                                        <p class="add-read-more show-less-content">
-                                            Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of
-                                            type and scrambled it to make a type specimen book.
-                                        </p>
-
-                                        <div class="usr_mgss"><img src="https://1crapp.allproject.online/home/img/user_testi.jpg" alt="" /></div>
-                                        <h5>Thanks You</h5>
-                                        <h3>Mr. Amit Kumar Yadav</h3>
-                                        <p class="blues_tx mb-0"><strong>www.ramjeemena.com</strong></p>
-                                        <p class="red_tx mb-3"><strong>Ramjee Enterprises</strong></p>
-
-                                        <div class="w_numbber">
-                                            <a target="_blank" href="https://api.whatsapp.com/send/?phone=%2B911234567890&amp;text=Hi&amp;app_absent=0"> <i class="fa fa-whatsapp"></i> +91 1234 5678 90</a>
-                                        </div>
-
-                                        <div class="pric_txtx">Rs.10/Peice</div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
 
 								
 								<div class="ad_more_araea">

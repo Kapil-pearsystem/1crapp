@@ -68,17 +68,19 @@ class MailController extends Controller
             if(is_null($agent)){
                 return redirect()->back()->with('error','Please Update Your Profile!');
             }
-            $plan = SubscriptionPlan::where('id',$agent->package)->first();
-            if(is_null($plan)){
-                return redirect()->back()->with('error','Plan Not Found!');
-            }
-            if($plan->mail_temp_status != 1){
-                return redirect()->back()->with('error','No Gift Mail For Your Plan. Please contact the 1cr team!');
-            }
-            $count = GiftMailModel::where(['created_by'=>auth()->user()->id,'deleted_at'=> NULL])->count();
-            // dd($plan->total_mail_temp);
-            if($count >= $plan->total_mail_temp){
-                return redirect()->back()->with('error','You`ve reached your maximum Gift Mail limit. For assistance or to upgrade your plan, please reach out to the 1cr team.');
+            if(auth()->user()->role_id != 1){
+                $plan = SubscriptionPlan::where('id',$agent->package)->first();
+                if(is_null($plan)){
+                    return redirect()->back()->with('error','Plan Not Found!');
+                }
+                if($plan->mail_temp_status != 1){
+                    return redirect()->back()->with('error','No Gift Mail For Your Plan. Please contact the 1cr team!');
+                }
+                $count = GiftMailModel::where(['created_by'=>auth()->user()->id,'deleted_at'=> NULL])->count();
+                // dd($plan->total_mail_temp);
+                if($count >= $plan->total_mail_temp){
+                    return redirect()->back()->with('error','You`ve reached your maximum Gift Mail limit. For assistance or to upgrade your plan, please reach out to the 1cr team.');
+                }
             }
             $gift_mail = new GiftMailModel();
             $msg = 'Mail Created Successfully!';
@@ -168,8 +170,8 @@ class MailController extends Controller
 
     // mail category
      public function mail_category(){
-        //  $lists = MailCategoryModel::orderBy('id','DESC')->where('created_by',auth()->user()->id)->get();
-         $lists = MailCategoryModel::orderBy('id','DESC')->get();
+         $lists = MailCategoryModel::orderBy('id','DESC')->where('created_by',auth()->user()->id)->get();
+        //  $lists = MailCategoryModel::orderBy('id','DESC')->get();
          return view('mail.mail-category.index',compact('lists'));
      }
      public function create_mail_category(){

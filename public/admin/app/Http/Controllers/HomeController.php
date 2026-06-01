@@ -913,7 +913,8 @@ class HomeController extends Controller
     public function master_list_filter(Request $request)
     {
         $filters = json_decode($request->filters, true);
-        $query = Customer::select('users.*')
+        $query = Customer::select('users.*', 'users.mobile as phone', 'agents.first_name as agent_first_name', 'agents.last_name as agent_last_name', 'agents.company_id')
+            ->leftJoin('agents', 'agents.id', 'users.agent_id')
             ->leftJoin('tbl_user_list', 'tbl_user_list.user_id', '=', 'users.id')
             ->leftJoin('tbl_user_tags', 'tbl_user_tags.user_id', '=', 'users.id')
             ->where('users.agent_id', auth()->id());

@@ -5,21 +5,26 @@
         <input type="checkbox" value="{{ $list->id }}" class="list-checkbox">
     </td>
     <td>{{ $list->memberid }}</td>
-    <td title="{{ $list->name }}">{{ Str::words($list->name, 5) }}
-        <a href="#"><i class="fas fa-external-link-alt" aria-hidden="true"></i></a>
-    </td>
+    <td title="{{ $list->name }}">{{ Str::words($list->name, 5) }}</td>
+ 
+    <td>{{ $list->email }}</td>
+    <td>{{ $list->phone }}</td>
+    <td> Check Now <a href="#"><i class="fas fa-external-link-alt" aria-hidden="true"></i></a></td>
     <td>
-        {{ date('M d, Y', strtotime($list->created_at)) }}
+        <select class="form-control" onchange="nextStep(this,{{ $list->id }})">
+            <option value="" selected disabled>Take Action</option>
+            <option value="1">Send Link via Email</option>
+            <option value="2">Send Link On Whatsapp</option>
+            <option value="3">Book Manually</option>
+        </select>
     </td>
+    <td>Check Now <a href="#"><i class="fas fa-external-link-alt" aria-hidden="true"></i></a></td>                        
+    <td>{{ date('M d, Y', strtotime($list->created_at)) }}</td>
     <td>
         @if($list->status == 1)
-            <span class="badge badge-success">
-                Active
-            </span>
+            <span class="badge badge-success">Active</span>
         @else
-            <span class="badge badge-danger">
-                Inactive
-            </span>
+            <span class="badge badge-danger">Inactive</span>
         @endif
     </td>
     <td>

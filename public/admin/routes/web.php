@@ -67,6 +67,7 @@ use App\Http\Controllers\UserOnboardController;
 use App\Http\Controllers\CustomLayoutController;
 use App\Http\Controllers\CorePageController;
 use App\Http\Controllers\FooterController;
+use App\Http\Controllers\CollectionController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -480,6 +481,15 @@ Route::middleware(['auth', 'plan_permission'])->prefix('gift')->name('gift.')->g
     Route::get('/edit-thank-you-card/{id}', [GiftController::class, 'edit_thank_you_card'])->name('edit-thank-you-card');
     Route::get('/delete-thank-you-card/{id}', [GiftController::class, 'delete_thank_you_card'])->name('delete-thank-you-card');
     Route::post('/store-thank-you-card', [GiftController::class, 'store_thank_you_card'])->name('store-thank-you-card');
+
+});
+Route::middleware(['auth'])->prefix('collection')->name('collection.')->group(function(){
+    Route::get('/', [CollectionController::class, 'index'])->name('index');
+    Route::get('/create', [CollectionController::class, 'create'])->name('create');
+    Route::post('/save', [CollectionController::class, 'save'])->name('save');
+    Route::post('/filter', [CollectionController::class, 'filter'])->name('filter');
+    Route::get('/edit/{id}', [CollectionController::class, 'edit'])->name('edit');
+    Route::get('/delete/{id}', [CollectionController::class, 'delete'])->name('delete');
 
 });
 Route::middleware(['auth', 'plan_permission'])->prefix('gift/config')->name('gift.config.')->group(function(){
