@@ -23,6 +23,7 @@ class CollectionItemModel extends Model
         'thankYouStatus',
         'tyc_id',
         'schedule_day',
+        'schedule_time',
         'created_by',
     ];
 

@@ -5,6 +5,7 @@ use Illuminate\Support\Str;
 @section('title', 'Campaign List')
 <link href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css" rel="stylesheet">
 @section('content')
+
 <div class="container-fluid">
     <!-- Page Heading -->
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
@@ -53,12 +54,14 @@ use Illuminate\Support\Str;
                             <td>{{ $list->collection->title }}</td>
                             <td>{{ $list->campaign_id }}</td>
                             <td>Check Reports <a href="#" target="_blank"><i class="fas fa-external-link-alt" aria-hidden="true"></i></a></td>
-                            <td>{{ date('M d, Y H:i:s', strtotime($list->created_at)) }}</td>
-                            <td>
+                            <td>{{ $list->start_date ? date('M d, Y', strtotime($list->start_date)) : 'Not scheduled' }}{{ $list->time_of_day ? ' at ' . date('h:i A', strtotime($list->time_of_day)) : '' }}</td>
+                            <td class="text-center">
                                 @if($list->status == 1)
-                                <span class="badge badge-success">Active</span>
+                                <span class="badge badge-success" style="cursor:pointer; padding: 5px;" onclick="changeStatus({{ $list->id }}, 2)" data-toggle="modal" data-target="#campaignStatusModal">Running</span>
+                                @elseif($list->status == 2)
+                                <span class="badge badge-warning" style="cursor:pointer; padding: 5px;" onclick="changeStatus({{ $list->id }}, 0)" data-toggle="modal" data-target="#campaignStatusModal">Paused</span>
                                 @else
-                                <span class="badge badge-danger">Inactive</span>
+                                <span class="badge badge-danger" style="cursor:pointer; padding: 5px;" onclick="changeStatus({{ $list->id }}, 1)" data-toggle="modal" data-target="#campaignStatusModal">Inactive</span>
                                 @endif
                             </td>
                             <td>
@@ -137,9 +140,18 @@ use Illuminate\Support\Str;
                         <input type="text" class="form-control" id="totalCost" name="total_cost" readonly>
                         </div>
                     </div>
+                    <div class="form-group form-check">
+                        <input type="checkbox" class="form-check-input" id="scheduleLater" name="schedule_later">
+                        <label class="form-check-label" for="scheduleLater">Schedule for later</label>
+                    </div>
+                    <div class="form-group schedule-fields" style="display: none;">
+                        <label for="startDate">Start Date</label>
+                        <input type="date" class="form-control" id="startDate" name="start_date" >
+                    </div>
+
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                    <button type="submit" class="btn btn-primary">SCHEDULE</button>
-                    <button type="submit" class="btn btn-primary">START NOW</button>
+                    <!-- <button type="submit" class="btn btn-primary">SCHEDULE</button> -->
+                    <button type="submit" class="btn btn-primary" id="saveCampaignBtn">START NOW</button>
                     <!-- Add more form fields as needed -->
                 </form>
             </div>
@@ -147,8 +159,77 @@ use Illuminate\Support\Str;
         </div>
     </div>
 </div>
+<div class="modal fade" id="campaignStatusModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title campaign-title">Campaign Status</h5>
+                <button type="button" class="close" data-dismiss="modal">
+                    <span>&times;</span>
+                </button>
+            </div>
+
+            <div class="modal-body">
+                <form id="updateStatusForm" method="POST" action="{{ route('collection.campaigns.update-status', $collection->id) }}">
+                    @csrf
+                    <input type="hidden" name="id" id="campaignStatusId">
+                    <input type="hidden" name="status" id="campaignStatus">
+                    <p id="campaignStatusMessage"></p>
+
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    <!-- <button type="submit" class="btn btn-primary">SCHEDULE</button> -->
+                    <button type="submit" class="btn btn-primary" id="saveStatusBtn">START NOW</button>
+                    <button type="button" class="btn btn-info d-none" id="resumeStatusBtn" onclick="resumeCampaign(this)">Resume Campaign</button>
+                    <!-- Add more form fields as needed -->
+                </form>
+                
+            </div>
+
+        </div>
+    </div>
+</div>
 @endsection
-@section('scripts')
+@section('scripts')<!-- jQuery 3.7.1 -->
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script>
+$(document).ready(function() {
+    $('#scheduleLater').change(function () {
+        $('.schedule-fields').toggle(this.checked);
+        $('#saveCampaignBtn').text(this.checked ? 'SCHEDULE' : 'START NOW');
+        $('#startDate').prop('required', this.checked);
+
+        if (!this.checked) {
+            $('#startDate').val('');
+        }
+    });
+
+    
+});
+function changeStatus(campaignId, newStatus) {
+    // alert(campaignId);
+    $('#resumeStatusBtn').addClass('d-none');
+    $('#campaignStatusId').val(campaignId);
+    $('#campaignStatus').val(newStatus);
+    var statusText = 'Change';
+    if(newStatus == 1) {
+        $('#saveStatusBtn').text('Start Campaign');
+        statusText = 'Start';
+    } else if(newStatus == 2){
+        $('#saveStatusBtn').text('Pause Campaign');
+        statusText = 'Pause';
+    } else {
+        $('#resumeStatusBtn').removeClass('d-none');
+        $('#saveStatusBtn').text('Deactivate Campaign');
+        statusText = 'Deactivate';
+    }
+    $('#campaignStatusMessage').text('Are you sure you want to ' + statusText + ' this campaign?');
+}
+function resumeCampaign(button) {
+    $('#campaignStatus').val(1);
+    button.form.submit();
+}
+</script>
 <script>
 function getContactCount(listId) {
     var costPerContact = parseFloat($('#costPerContact').val());
@@ -179,12 +260,24 @@ function editCampaign(campaign) {
     $('#campaignId').val(campaign.id);
     $('#campaignName').val(campaign.title);
     $('#assignedList').val(campaign.list_id).change();
-    $('#addCampaignModal').modal('show');
+    if(campaign.start_date) {
+        $('#scheduleLater').prop('checked', true).change();
+        $('#startDate').val(formatDate(campaign.start_date));
+    } else {
+        $('#scheduleLater').prop('checked', false).change();
+    }
+}
+function formatDate(dateStr) {
+    var date = new Date(dateStr);
+    var year = date.getFullYear();
+    var month = ('0' + (date.getMonth() + 1)).slice(-2);
+    var day = ('0' + date.getDate()).slice(-2);
+    return year + '-' + month + '-' + day;
 }
 </script>
 <script>
     @if(request()->has('action') && request()->get('action') == 'create')
-        $('#addCampaignBtn').trigger('click');
+        document.getElementById('addCampaignBtn').click();
     @endif
 </script>
 

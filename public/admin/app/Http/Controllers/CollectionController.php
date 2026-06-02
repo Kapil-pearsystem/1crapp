@@ -85,6 +85,7 @@ class CollectionController extends Controller
                     'thankYouStatus'=> $request->thankYouStatus[$setIndex] ?? 0,
                     'tyc_id'        => $request->tyc_id[$setIndex] ?? 0,
                     'schedule_day'  => $request->schedule_day[$setIndex] ?? 0,
+                    'schedule_time'  => $request->schedule_time[$setIndex] ?? null,
                     'item_id'       => $itemId,
                     'created_by'    => Auth::id(),
                 ];

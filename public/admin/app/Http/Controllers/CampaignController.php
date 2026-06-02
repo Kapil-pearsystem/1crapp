@@ -15,7 +15,7 @@ class CampaignController extends Controller
     public function index($id)
     {
         $collection = CollectionModel::findOrFail($id);
-        $lists = CampaignModel::with(['list', 'collection'])->where('coll_id', $id)->get();
+        $lists = CampaignModel::with(['list', 'collection'])->where('coll_id', $id)->orderBy('id', 'desc')->get();
         $contacts = ContactModel::where('created_by', Auth::id())->get();
         return view('collection.campaign.index', compact('lists', 'collection', 'contacts'));
     }
@@ -31,6 +31,7 @@ class CampaignController extends Controller
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput();
         }
+        $collection = CollectionModel::findOrFail($id);
         $contact_count = $request->total_contacts;
         $total_cost = $contact_count * $request->cost_per_contact;
         if ($request->id) {
@@ -45,8 +46,11 @@ class CampaignController extends Controller
         $campaign->total_contacts = $contact_count;
         $campaign->cost_per_contact = $request->cost_per_contact;
         $campaign->total_cost = $total_cost;
-        $campaign->start_date = date('Y-m-d', strtotime($request->start_date));
-        $campaign->time_of_day = date('H:i:s', strtotime($request->time_of_day));
+        if($request->schedule_later) {
+            $campaign->start_date = $request->start_date ? date('Y-m-d', strtotime($request->start_date)) : date('Y-m-d');
+        } else {
+            $campaign->start_date = null;
+        }
         $campaign->status = '0'; // Active by default
         $campaign->created_by = Auth::id();
         $campaign->save();
@@ -60,6 +64,13 @@ class CampaignController extends Controller
             $this->generateCampaignId();
         }
         return $campID;
+    }
+    public function update_status($coll_id, Request $request)
+    {
+        $campaign = CampaignModel::findOrFail($request->id);
+        $campaign->status = $request->status;
+        $campaign->save();
+        return redirect()->back()->with('success', 'Campaign status updated successfully');
     }
     public function get_contact_count(Request $request)
     {

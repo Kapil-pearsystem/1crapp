@@ -17,8 +17,7 @@
             </ul>
         </div>
         @endif
-        <a href="{{ route('collection.index') }}" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
-                class="fas fa-arrow-left fa-sm text-white-50"></i> Back</a>
+        <a href="{{ route('collection.index') }}" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-arrow-left fa-sm text-white-50"></i> Back</a>
     </div>
     {{-- Alert Messages --}}
     @include('common.alert')
@@ -137,12 +136,23 @@
                                                                             
                                                                             <li>
                                                                                 <select class="al_slt_partss schedule-day get-filter-data @if($ikey == 0) d-none @endif" name="schedule_day[{{ $item->set_index }}]">
-                                                                                    <option value="">Select day(s) after previous message at</option>
+                                                                                    <option value="">Select day(s)</option>
                                                                                     @for($i = 1; $i <= 30; $i++)
                                                                                     <option value="{{ $i }}" @if($item->schedule_day == $i) selected @endif>
                                                                                         {{ $i }}
                                                                                     </option>
                                                                                     @endfor
+                                                                                </select>
+                                                                            </li>
+                                                                            <li>
+                                                                                <select class="al_slt_partss schedule-time get-filter-data" name="schedule_time[{{ $item->set_index }}]">
+                                                                                    <option value="">Select time</option>
+                                                                                    <option value="00:00:00"  @if($item->schedule_time == '00:00:00') selected @endif>12:00 AM</option>
+                                                                                    <option value="04:00:00"  @if($item->schedule_time == '04:00:00') selected @endif>04:00 AM</option>
+                                                                                    <option value="08:00:00"  @if($item->schedule_time == '08:00:00') selected @endif>08:00 AM</option>
+                                                                                    <option value="12:00:00"  @if($item->schedule_time == '12:00:00') selected @endif>12:00 PM</option>
+                                                                                    <option value="16:00:00"  @if($item->schedule_time == '16:00:00') selected @endif>04:00 PM</option>
+                                                                                    <option value="20:00:00"  @if($item->schedule_time == '20:00:00') selected @endif>08:00 PM</option>
                                                                                 </select>
                                                                             </li>
                                                                         </ul>
@@ -618,66 +628,6 @@ function loadThankYouItems() {
             calculateSummary();
         }, 2000);
     });
-//   $(document).on('change', '.summary-item', function () {
-//     var totalPrice = 0;
-//     var totalDiscount = 0;
-//     var rows = '';
-//     var srNo = 1;
-//     var gst = parseFloat("{{ $config['gst'] ?? 0 }}");
-//     var courierCost = parseFloat("{{ $config['courier'] ?? 0 }}");
-//     var handlingCost = parseFloat("{{ $config['handing'] ?? 0 }}");
-//     var mailcost = parseFloat("{{ $config['mailcost'] ?? 0 }}");
-//     var gstAmount = 0;
-//     var totalItems = 0;
-//     $('.summary-item:checked').each(function () {
-//         let price = parseFloat($(this).data('price')) || 0;
-//         let title = $(this).data('title');
-//         let type  = $(this).data('type');
-//         if(type == 'Gift'){
-//             totalItems++;
-//         }
-//         let discount = parseFloat($(this).data('discount')) || 0;
-//         let discountAmount = (price * discount) / 100;
-//         gstAmount += (price * gst) / 100;
-//         totalPrice += price;
-//         totalDiscount += discountAmount;
-//         rows += `
-//             <tr>
-//                 <td>${srNo++}</td>
-//                 <td>${type}</td>
-//                 <td>${title}</td>
-//                 <td>${price}</td>
-//             </tr>
-//         `;
-//     });
-//     $('#summary_table_body').html(rows);
-//     $('#total-smr').text(totalPrice.toFixed(2));
-//     $('#total-smr-input').val(totalPrice.toFixed(2));
-//     $('#discount-smr').text(totalDiscount.toFixed(2));
-//     $('#discount-smr-input').val(totalDiscount.toFixed(2));
-//     $('#final-total-smr').text((totalPrice - totalDiscount).toFixed(2));
-//     $('#final-total-smr-input').val((totalPrice - totalDiscount).toFixed(2));
-//     $('#gst-smr').text(gstAmount.toFixed(2));
-//     $('#gst-smr-input').val(gstAmount.toFixed(2));
-//     var courierText = `Courier Charges (Rs. {{ $config['courier'] ?? 0 }} / Item X ${totalItems} Item)`;
-//     courierCostTotal = courierCost * totalItems;
-//     $('#courier-text-smr').text(courierText);
-//     $('#courier-smr').text(courierCostTotal.toFixed(2));
-//     $('#courier-smr-input').val(courierCostTotal.toFixed(2));
-//     $('#handling-smr').text(handlingCost.toFixed(2));
-//     $('#handling-smr-input').val(handlingCost.toFixed(2));
-//     let grossAmount = (totalPrice - totalDiscount) + gstAmount + courierCostTotal + handlingCost;
-//     $('#gross-amount-smr').text(grossAmount.toFixed(2));
-//     $('#gross-amount-smr-input').val(grossAmount.toFixed(2));
-//     // console.log('Total gift items:', totalItems);
-//     // console.log('Total Price:', totalPrice);
-//     // console.log('Total Discount:', totalDiscount);
-//     // console.log('GST:', gst);
-//     // console.log('GST Amount:', gstAmount);
-//     // console.log('Courier Cost:', courierCost);
-//     // console.log('Handling Cost:', handlingCost);
-//     // console.log('Gross Amount:', grossAmount);
-// });
 </script>
 <script>
 function validateFirstStep(e) {
@@ -725,6 +675,12 @@ function validateSecondStep() {
         // Validate item selection for current block
         if ($(this).find('.ck_bx_box:checked').length === 0) {
             alert('Please select at least one item.');
+            isValid = false;
+            return false;
+        }
+        let ScheduleTime = $(this).find('.schedule-time').val();
+        if (!ScheduleTime) {
+            alert('Please select schedule time for all items.');
             isValid = false;
             return false;
         }

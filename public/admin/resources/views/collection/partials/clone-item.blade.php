@@ -68,12 +68,23 @@ $giftCategories = \App\Models\GiftCategoryModel::select('id', 'name')->orderBy('
                                 </li>
                                 <li>
                                     <select class="al_slt_partss schedule-day get-filter-data d-none" name="schedule_day[__SET_INDEX__]" value="0">
-                                        <option value="">Select day(s) after previous message at</option>
+                                        <option value="">Select day(s)</option>
                                         @for($i = 1; $i <= 30; $i++)
                                         <option value="{{ $i }}">
                                             {{ $i }}
                                         </option>
                                         @endfor
+                                    </select>
+                                </li>
+                                <li>
+                                    <select class="al_slt_partss schedule-time get-filter-data" name="schedule_time[__SET_INDEX__]">
+                                        <option value="">Select time</option>
+                                        <option value="00:00:00">12:00 AM</option>
+                                        <option value="04:00:00">04:00 AM</option>
+                                        <option value="08:00:00">08:00 AM</option>
+                                        <option value="12:00:00">12:00 PM</option>
+                                        <option value="16:00:00">04:00 PM</option>
+                                        <option value="20:00:00">08:00 PM</option>
                                     </select>
                                 </li>
                             </ul>
