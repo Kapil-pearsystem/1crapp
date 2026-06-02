@@ -68,6 +68,7 @@ use App\Http\Controllers\CustomLayoutController;
 use App\Http\Controllers\CorePageController;
 use App\Http\Controllers\FooterController;
 use App\Http\Controllers\CollectionController;
+use App\Http\Controllers\CampaignController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -490,6 +491,13 @@ Route::middleware(['auth'])->prefix('collection')->name('collection.')->group(fu
     Route::post('/filter', [CollectionController::class, 'filter'])->name('filter');
     Route::get('/edit/{id}', [CollectionController::class, 'edit'])->name('edit');
     Route::get('/delete/{id}', [CollectionController::class, 'delete'])->name('delete');
+
+});
+Route::middleware(['auth'])->prefix('collection/{id}/campaigns')->name('collection.campaigns.')->group(function(){
+    Route::get('/', [CampaignController::class, 'index'])->name('index');
+    Route::post('/save', [CampaignController::class, 'save'])->name('save');
+    Route::post('/get-contact-count', [CampaignController::class, 'get_contact_count'])->name('get-contact-count');
+    Route::get('/delete/{camp_id}', [CampaignController::class, 'delete'])->name('delete');
 
 });
 Route::middleware(['auth', 'plan_permission'])->prefix('gift/config')->name('gift.config.')->group(function(){

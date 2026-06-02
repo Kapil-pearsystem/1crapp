@@ -9,6 +9,15 @@
         <!-- Page Heading -->
         <div class="d-sm-flex align-items-center justify-content-between mb-4">
             <h1 class="h3 mb-0 text-gray-800">Thank You Cards</h1>
+            <div class="row float-left">
+                <div class="col-md-12">
+                    <a href="{{ route('collection.index') }}" class="btn btn-sm btn-primary"> Collection</a>
+                    <a href="{{ route('gift.index') }}" class="btn btn-sm btn-primary">Gift List</a>
+                    <a href="{{ route('gift.category-list') }}" class="btn btn-sm btn-primary">Gift Category</a>
+                    <a href="{{ route('gift.thank-you-card-list') }}" class="btn btn-sm btn-primary">Thank You Cards</a>
+                    <a href="{{ route('gift.config.index') }}" class="btn btn-sm btn-primary">Gift Configuration</a>
+                </div>
+            </div>
             <div class="row">
                 <div class="col-md-12">
                     <a href="{{ route('gift.create-thank-you-card') }}" class="btn btn-sm btn-primary"><i aria-hidden="true" class="fas fa-plus"></i> Add Thank You Card</a>

@@ -9,6 +9,15 @@ use Illuminate\Support\Str;
     <!-- Page Heading -->
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
         <h1 class="h3 mb-0 text-gray-800">Sequences List</h1>
+        <div class="row float-left">
+            <div class="col-md-12">
+                <a href="{{ route('collection.index') }}" class="btn btn-sm btn-primary"> Collection</a>
+                <a href="{{ route('gift.index') }}" class="btn btn-sm btn-primary">Gift List</a>
+                <a href="{{ route('gift.category-list') }}" class="btn btn-sm btn-primary">Gift Category</a>
+                <a href="{{ route('gift.thank-you-card-list') }}" class="btn btn-sm btn-primary">Thank You Cards</a>
+                <a href="{{ route('gift.config.index') }}" class="btn btn-sm btn-primary">Gift Configuration</a>
+            </div>
+        </div>
         <div class="row">
             <div class="col-md-12">
                 <a href="{{ route('collection.create') }}" class="btn btn-sm btn-primary"><i aria-hidden="true" class="fas fa-plus"></i> Add Sequence</a>
@@ -32,6 +41,7 @@ use Illuminate\Support\Str;
                             <th>No. of Gifts</th>
                             <th>Cost</th>
                             <th>Status</th>
+                            <th>Run</th>
                             <th>Action</th>
                         </tr>
                     </thead>
@@ -45,6 +55,7 @@ use Illuminate\Support\Str;
                             <td>{{ $list->emails_count }}</td>
                             <td>{{ $list->gifts_count }}</td>
                             <td>{{ $list->gross_amount }}</td>
+                            <td>Start now <a href="{{ route('collection.campaigns.index', $list->id) }}?action=create" target="_blank"><i class="fas fa-external-link-alt" aria-hidden="true"></i></a></td>
                             <td>
                                 @if($list->status == 1)
                                 <span class="badge badge-success">Active</span>
@@ -52,11 +63,30 @@ use Illuminate\Support\Str;
                                 <span class="badge badge-danger">Inactive</span>
                                 @endif
                             </td>
-                            <td>
+                            <!-- <td>
                                 <a href="{{ route('collection.edit', $list->id) }}" class="btn btn-primary bnt_alsss">
                                     <i class="fa fa-pen"></i>
                                 </a>
                                 <a href="#" class="btn btn-danger bnt_alsss" onclick="if(confirm('Are you sure you want to delete this?')){ window.location.href='{{ route('collection.delete', [$list->id]) }}'; }"><i aria-hidden="true" class="fa fa-trash"></i></a>
+                            </td> -->
+                            <td>
+                               
+                                <div class="dropdown">
+                                    <button class="btn btn-primary btn-sm dropdown-toggle"
+                                        data-toggle="dropdown">
+                                        <i class="fa fa-ellipsis-v"></i>
+                                    </button>
+                                    <div class="dropdown-menu dropdown-menu-right">
+                                        <a href="{{ route('collection.edit', $list->id) }}"class="dropdown-item"><i class="fa fa-pen mr-2"></i> Edit</a>
+                                        <div class="dropdown-divider"></div>
+                                        <a href="#"
+                                            class="dropdown-item text-danger deleteBtn"
+                                             onclick="if(confirm('Are you sure you want to delete this?')){ window.location.href='{{ route('collection.delete', [$list->id]) }}'; }">
+                                            <i class="fas fa-trash mr-2"></i>
+                                            Delete
+                                        </a>
+                                    </div>
+                                </div>
                             </td>
                         </tr>
                         @endforeach
