@@ -7,6 +7,13 @@ use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
 class Kernel extends ConsoleKernel
 {
+    protected $commands = [
+        \App\Console\Commands\SendGiftMailCommand::class,
+    ];
+    // protected function schedule(Schedule $schedule)
+    // {
+    //     $schedule->command('gift:send-mail')->everyMinute();
+    // }
     /**
      * Define the application's command schedule.
      *
@@ -15,7 +22,7 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // $schedule->command('inspire')->hourly();
+        $schedule->command('gift:send-mail')->cron('0 */4 * * *');
     }
 
     /**

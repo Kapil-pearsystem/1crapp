@@ -53,7 +53,7 @@ use Illuminate\Support\Str;
                             <td>{{ $list->list->name }}</td>
                             <td>{{ $list->collection->title }}</td>
                             <td>{{ $list->campaign_id }}</td>
-                            <td>Check Reports <a href="#" target="_blank"><i class="fas fa-external-link-alt" aria-hidden="true"></i></a></td>
+                            <td>Check Reports <a href="{{ route('collection.campaigns.report', ['id' => $collection->id, 'camp_id' => $list->id]) }}" target="_blank"><i class="fas fa-external-link-alt" aria-hidden="true"></i></a></td>
                             <td>{{ $list->start_date ? date('M d, Y', strtotime($list->start_date)) : 'Not scheduled' }}{{ $list->time_of_day ? ' at ' . date('h:i A', strtotime($list->time_of_day)) : '' }}</td>
                             <td class="text-center">
                                 @if($list->status == 1)

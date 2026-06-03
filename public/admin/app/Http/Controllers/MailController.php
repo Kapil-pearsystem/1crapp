@@ -7,6 +7,7 @@ use App\Models\AgentDetail;
 use App\Models\SubscriptionPlan;
 use App\Models\MailCategoryModel;
 use App\Models\FormModel;
+use App\Models\CollectionItemModel;
 use App\Exports\UsersExport;
 use App\Imports\UsersImport;
 use Illuminate\Http\Request;
@@ -139,9 +140,13 @@ class MailController extends Controller
         return view('mail.create-mail',compact('categories','details'));
     }
     public function delete_mail($id){
+        $existinMail = CollectionItemModel::where(['postal_type'=>1, 'item_id'=>$id])->exists();
+        if($existinMail){
+            return redirect()->back()->with('error','This email cannot be deleted as it is already used in a collection!');
+        }
         $existinform = FormModel::where('welcome_email',$id)->exists();
         if($existinform){
-            return redirect()->back()->with('error','This email cannot be deleted as it is already in use!');
+            return redirect()->back()->with('error', 'This email cannot be deleted as it is already used in a form!');
         }
         $gift_mail = GiftMailModel::find($id);
 
@@ -206,10 +211,10 @@ class MailController extends Controller
         if($existing){
             return redirect()->back()->with('error','This category cannot be deleted as it is already in use!');
         }
-        //  $mail_cat = MailCategoryModel::find($id);
-        //  $mail_cat->delete();
-        //  return redirect()->route('mail-category.index')->with('success','Mail Category Deleted Successfully!');
-         return redirect()->route('mail-category.index')->with('error','Unable to delete the mail category as it is currently in use.');
+         $mail_cat = MailCategoryModel::find($id);
+         $mail_cat->delete();
+         return redirect()->route('mail-category.index')->with('success','Mail Category Deleted Successfully!');
+        //  return redirect()->route('mail-category.index')->with('error','Unable to delete the mail category as it is currently in use.');
      }
     public function testmail(){
         $to = '24k@yopmail.com';

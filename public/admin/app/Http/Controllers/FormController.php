@@ -6,7 +6,7 @@ use App\Models\FormSourceModel;
 use App\Models\FileDriveModel;
 use App\Models\FormModel;
 use App\Models\GiftMailModel;
-use App\Models\GiftCollectionModel;
+use App\Models\CollectionModel;
 use App\Models\AssetsModel;
 use App\Models\PageModel;
 use App\Models\User;
@@ -62,7 +62,7 @@ class FormController extends Controller
         $tags = TagsModel::where(['status'=>1,'created_by'=>auth()->user()->id])->get();
         $sources = FormSourceModel::where(['status'=>1,'created_by'=>auth()->user()->id])->get();
         $filedrives = FileDriveModel::where(['status'=>1,'created_by'=>auth()->user()->id])->get();
-        $sequences = GiftCollectionModel::select('id','title')->where(['created_by'=>auth()->user()->id])->get();
+        $sequences = CollectionModel::select('id','title')->where(['created_by'=>auth()->user()->id])->get();
         $mails = GiftMailModel::where(['category'=>2, 'created_by'=>auth()->user()->id,'status'=>1])->get();
         $admins = User::select('first_name','middle_name','last_name','email')->where(['added_by'=>auth()->user()->id,'status'=>1])->get();
         // dd($admins);
@@ -141,7 +141,7 @@ class FormController extends Controller
         $tags = TagsModel::where(['status'=>1,'created_by'=>auth()->user()->id])->get();
         $sources = FormSourceModel::where(['status'=>1,'created_by'=>auth()->user()->id])->get();
         $filedrives = FileDriveModel::where(['status'=>1,'created_by'=>auth()->user()->id])->get();
-        $sequences = GiftCollectionModel::select('id','title')->where(['created_by'=>auth()->user()->id])->get();
+        $sequences = CollectionModel::select('id','title')->where(['created_by'=>auth()->user()->id])->get();
         $mails = GiftMailModel::where(['category'=>2, 'created_by'=>auth()->user()->id,'status'=>1])->get();
         $admins = User::select('first_name','middle_name','last_name','email')->where(['added_by'=>auth()->user()->id,'status'=>1])->get();
 

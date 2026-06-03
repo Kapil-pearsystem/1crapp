@@ -499,6 +499,7 @@ Route::middleware(['auth'])->prefix('collection/{id}/campaigns')->name('collecti
     Route::post('/get-contact-count', [CampaignController::class, 'get_contact_count'])->name('get-contact-count');
     Route::get('/delete/{camp_id}', [CampaignController::class, 'delete'])->name('delete');
     Route::post('/update-status', [CampaignController::class, 'update_status'])->name('update-status');
+    Route::get('/{camp_id}/report', [CampaignController::class, 'report'])->name('report');
 
 });
 Route::middleware(['auth', 'plan_permission'])->prefix('gift/config')->name('gift.config.')->group(function(){
