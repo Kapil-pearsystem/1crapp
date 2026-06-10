@@ -55,7 +55,7 @@ use Illuminate\Support\Str;
                             <td>{{ $list->emails_count }}</td>
                             <td>{{ $list->gifts_count }}</td>
                             <td>{{ $list->gross_amount }}</td>
-                            <td>Start now <a href="{{ route('collection.campaigns.index', $list->id) }}?action=create" target="_blank"><i class="fas fa-external-link-alt" aria-hidden="true"></i></a></td>
+                            <td>Start now <a href="{{ route('collection.campaigns.index', $list->id) }}" target="_blank"><i class="fas fa-external-link-alt" aria-hidden="true"></i></a></td>
                             <td>
                                 @if($list->status == 1)
                                 <span class="badge badge-success">Active</span>

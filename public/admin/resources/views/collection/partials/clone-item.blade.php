@@ -3,8 +3,9 @@ $mailCategories = \App\Models\MailCategoryModel::select('id', 'title as name')->
 $giftCategories = \App\Models\GiftCategoryModel::select('id', 'name')->orderBy('id','DESC')->where('status', 1)->where('created_by', Auth::id())->get();
 @endphp
 <div class="CollectionCloneItems" data-set-index="__SET_INDEX__">
+
     <div class="postalsss">
-        <h3>Postal</h3>
+        <h3>Postal</h3><span class="float-right close-button bg-danger"><i class="fa fa-times"></i></span>
         <div class="slt_partsss">
             <!-- Type -->
             <input type="hidden" class="filter-page" id="page" value="1" />
@@ -45,8 +46,8 @@ $giftCategories = \App\Models\GiftCategoryModel::select('id', 'name')->orderBy('
             <div class="stp_contetnt" id="tsts_mlts">
                 <!--- Mobile View Filtter ---->
                 <div class="row">
-                    <div class="col-lg-9 col-4">
-                        <div class="it_emms sort_lisrtst mb_view_none">
+                    <div class="col-lg-9 col-sm-12">
+                        <div class="it_emms sort_lisrtst">
                             <ul>
                                 <li>
                                     <span class="titalss">Short By</span>
@@ -67,7 +68,7 @@ $giftCategories = \App\Models\GiftCategoryModel::select('id', 'name')->orderBy('
                                     </select>
                                 </li>
                                 <li>
-                                    <select class="al_slt_partss schedule-day get-filter-data d-none" name="schedule_day[__SET_INDEX__]" value="0">
+                                    <select class="al_slt_partss schedule-day d-none" name="schedule_day[__SET_INDEX__]" value="0">
                                         <option value="">Select day(s)</option>
                                         @for($i = 1; $i <= 30; $i++)
                                         <option value="{{ $i }}">
@@ -77,7 +78,7 @@ $giftCategories = \App\Models\GiftCategoryModel::select('id', 'name')->orderBy('
                                     </select>
                                 </li>
                                 <li>
-                                    <select class="al_slt_partss schedule-time get-filter-data" name="schedule_time[__SET_INDEX__]">
+                                    <select class="al_slt_partss schedule-time" name="schedule_time[__SET_INDEX__]">
                                         <option value="">Select time</option>
                                         <option value="00:00:00">12:00 AM</option>
                                         <option value="04:00:00">04:00 AM</option>
@@ -90,10 +91,10 @@ $giftCategories = \App\Models\GiftCategoryModel::select('id', 'name')->orderBy('
                             </ul>
                         </div>
                     </div>
-                    <div class="col-lg-3 col-8">
+                    <div class="col-lg-3 col-sm-12">
                         <div class="hd_listst">
-                            <span class="srcc_barsss">Search: <input type="text" class="sr_tabds filter-text" placeholder="" /></span>
-                            <span class="cartss"><i class="fa fa-shopping-cart"></i> <span class="countss">1</span></span>
+                            <span class="srcc_barsss"><input type="text" class="sr_tabds filter-text" placeholder="Search.." /></span>
+                            <!-- <span class="cartss"><i class="fa fa-shopping-cart"></i> <span class="countss">1</span></span> -->
                         </div>
                     </div>
                 </div>

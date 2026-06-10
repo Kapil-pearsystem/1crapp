@@ -259,7 +259,7 @@
     line-height: 31px;
 }
 .plp_slt_readlt .stp_contetnt#tsts_mlts ul li select.al_slt_partss {
-    width: 168px;
+    width: 110px;
     border: #ccc solid 1px;
     font-size: 14px;
     padding: 5px 5px;
@@ -1409,4 +1409,14 @@ table.table.mb-0.bor_none {
 }
 .pric_txtx {
   text-align: center;
+}
+.close-button{
+  padding: 4px;
+  border-radius: 7px;
+  height: 30px;
+  width: 30px;
+  color: #fff;
+  cursor: pointer;
+  text-align: center;
+  margin-top: -40px;
 }

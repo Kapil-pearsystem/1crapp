@@ -151,7 +151,7 @@ use Illuminate\Support\Str;
 
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
                     <!-- <button type="submit" class="btn btn-primary">SCHEDULE</button> -->
-                    <button type="submit" class="btn btn-primary" id="saveCampaignBtn">START NOW</button>
+                    <button type="submit" class="btn btn-primary" id="saveCampaignBtn">SAVE NOW</button>
                     <!-- Add more form fields as needed -->
                 </form>
             </div>
@@ -196,7 +196,7 @@ use Illuminate\Support\Str;
 $(document).ready(function() {
     $('#scheduleLater').change(function () {
         $('.schedule-fields').toggle(this.checked);
-        $('#saveCampaignBtn').text(this.checked ? 'SCHEDULE' : 'START NOW');
+        $('#saveCampaignBtn').text(this.checked ? 'SAVE NOW' : 'SAVE NOW');
         $('#startDate').prop('required', this.checked);
 
         if (!this.checked) {

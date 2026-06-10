@@ -1691,8 +1691,10 @@ font-weight: 600;
 		evt.params.originalEvent.stopPropagation();
 	});
 });
-$(document).ready(function() {
-  $('.select2').select2();
+$(document).ready(function () {
+    if (!window.location.pathname.includes('/customer/edit/')) {
+        $('.select2').select2();
+    }
 });
 </script>
 <!-- <script>

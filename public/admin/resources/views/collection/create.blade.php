@@ -70,7 +70,7 @@
                                         @foreach($collectionItems as $ikey => $item)
                                             <div class="CollectionCloneItems" data-set-index="{{ $item->set_index }}">
                                                 <div class="postalsss">
-                                                    <h3>Postal</h3>
+                                                    <h3>Postal</h3><span class="float-right close-button bg-danger @if($ikey ==0) d-none @endif"><i class="fa fa-times"></i></span>
                                                     <div class="slt_partsss">
                                                         <!-- Type -->
                                                         <input type="hidden" id="tyc_status_{{ $item->set_index }}" class="tyc-status" name="tycs[{{ $item->set_index }}]" value="{{ $item->thankYouStatus }}" />
@@ -112,8 +112,8 @@
                                                         <div class="stp_contetnt" id="tsts_mlts">
                                                             <!--- Mobile View Filtter ---->
                                                             <div class="row">
-                                                                <div class="col-lg-9 col-4">
-                                                                    <div class="it_emms sort_lisrtst mb_view_none">
+                                                                <div class="col-lg-9 col-4 col-sm-12">
+                                                                    <div class="it_emms sort_lisrtst ">
                                                                         <ul>
                                                                             <li>
                                                                                 <span class="titalss">Short By</span>
@@ -145,7 +145,7 @@
                                                                                 </select>
                                                                             </li>
                                                                             <li>
-                                                                                <select class="al_slt_partss schedule-time get-filter-data" name="schedule_time[{{ $item->set_index }}]">
+                                                                                <select class="al_slt_partss schedule-time" name="schedule_time[{{ $item->set_index }}]">
                                                                                     <option value="">Select time</option>
                                                                                     <option value="00:00:00"  @if($item->schedule_time == '00:00:00') selected @endif>12:00 AM</option>
                                                                                     <option value="04:00:00"  @if($item->schedule_time == '04:00:00') selected @endif>04:00 AM</option>
@@ -158,10 +158,10 @@
                                                                         </ul>
                                                                     </div>
                                                                 </div>
-                                                                <div class="col-lg-3 col-8">
+                                                                <div class="col-lg-3 col-8  col-sm-12">
                                                                     <div class="hd_listst">
-                                                                        <span class="srcc_barsss">Search: <input type="text" class="sr_tabds filter-text" placeholder="" /></span>
-                                                                        <span class="cartss"><i class="fa fa-shopping-cart"></i> <span class="countss">1</span></span>
+                                                                        <span class="srcc_barsss"><input type="text" class="sr_tabds filter-text" placeholder="Search.." /></span>
+                                                                        <!-- <span class="cartss"><i class="fa fa-shopping-cart"></i> <span class="countss">1</span></span> -->
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -260,19 +260,19 @@
                                                     <tr>
                                                         <td colspan="3" align="right">Discount</td>
                                                         <td id="discount-smr">{{ old('discount', isset($collection) ? $collection->discount : '0.00') }}</td>
-                                                        <input type="hidden" name="discount" id="discount-smr-input" value="{{ old('discount', isset($collection) ? $collection->discount : '0') }}" />
+                                                        <input type="hidden" name="total_discount" id="discount-smr-input" value="{{ old('total_discount', isset($collection) ? $collection->discount : '0') }}" />
                                                     </tr>
                                                     <tr>
                                                         <td colspan="3" align="right">Total After Discount</td>
                                                         <td id="final-total-smr">{{ old('final_total', isset($collection) ? $collection->final_total : '0.00') }}</td>
                                                         <input type="hidden" name="final_total" id="final-total-smr-input" value="{{ old('final_total', isset($collection) ? $collection->final_total : '0') }}" />
                                                     </tr>
-                                                    <tr>
+                                                    <tr id="GiftCourier">
                                                         <td colspan="3" align="right" id="courier-text-smr">Courier Charges (Rs. 30 / Item X 4 Gift Item)</td>
                                                         <td id="courier-smr">{{ old('courier', isset($collection) ? $collection->courier : '0.00') }}</td>
                                                         <input type="hidden" name="courier" id="courier-smr-input" value="{{ old('courier', isset($collection) ? $collection->courier : '0') }}" />
                                                     </tr>
-                                                    <tr>
+                                                    <tr id="handlingPackaging">
                                                         <td colspan="3" align="right">Handling & Packaging Charges</td>
                                                         <td id="handling-smr">{{ old('handling', isset($collection) ? $collection->handling : '0.00') }}</td>
                                                         <input type="hidden" name="handling" id="handling-smr-input" value="{{ old('handling', isset($collection) ? $collection->handling : '0') }}" />
@@ -446,6 +446,8 @@ $(document).on(
     function () {
         let parent = $(this).closest('.CollectionCloneItems');
         loadFilteredData(parent);
+        parent.find('.add_itemsss').html('');
+        parent.find('.thankyoucard-container').html('');
     }
 );
 });
@@ -494,6 +496,7 @@ function loadFilteredData(parent){
                 alert('Something went wrong!');
             }
         });
+        
         loadSummaryForCheckedItems();
     }
 }
@@ -502,21 +505,28 @@ function loadFilteredData(parent){
 <script>
 const summaryTemplate = @json(view('collection.partials.item-summary')->render());
 function appendSummary(element) {
-    let currentPrice = $(element).data('price');
-    let itemPriceElement = `
-        <span class="t_red">Rs.${currentPrice}</span>
-        <span class="t_grean">Rs.${currentPrice * 0.8}</span>
-    `;
-    let parent1 = $(element).closest('.CollectionCloneItems');
-    let setCounter = parent1.data('set-index');
-    let updatedTemplate = summaryTemplate.replaceAll('__SET_INDEX__', setCounter);
-    let summaryClone = $(updatedTemplate);
-    summaryClone.find('.item-price').html(itemPriceElement);
-    parent1.find('.add_itemsss').html(summaryClone);
-    if(parent1.find('.tyc-status').val() == 1){
-        parent1.find('.thankyoucard-status').attr('checked', true);
+    let type = $(element).data('type');
+    if (type === 'Gift') {
+        let currentPrice = $(element).data('price');
+        let currentDiscount = $(element).data('discount') || 0;
+        let itemPriceElement = `
+            <span class="t_red">Rs.${currentPrice}</span>
+            <span class="t_grean">Rs.${currentPrice * (1 - currentDiscount / 100)}</span>
+        `;
+        let parent1 = $(element).closest('.CollectionCloneItems');
+        let setCounter = parent1.data('set-index');
+        let updatedTemplate = summaryTemplate.replaceAll('__SET_INDEX__', setCounter);
+        let summaryClone = $(updatedTemplate);
+        summaryClone.find('.item-price').html(itemPriceElement);
+        parent1.find('.add_itemsss').html(summaryClone);
+        if(parent1.find('.tyc-status').val() == 1){
+            parent1.find('.thankyoucard-status').attr('checked', true);
+        }
+        loadThankYouItems();
+    }else{
+        let parent1 = $(element).closest('.CollectionCloneItems');
+        parent1.find('.add_itemsss').html('');
     }
-    loadThankYouItems();
 }
 // Change event
 $(document).on('change', '.ck_bx_box', function () {
@@ -562,61 +572,108 @@ function loadThankYouItems() {
 <script>
     function calculateSummary() {
 
-        var totalPrice = 0;
-        var totalDiscount = 0;
-        var rows = '';
-        var srNo = 1;
-
-        var gst = parseFloat("{{ $config['gst'] ?? 0 }}");
-        var courierCost = parseFloat("{{ $config['courier'] ?? 0 }}");
-        var handlingCost = parseFloat("{{ $config['handing'] ?? 0 }}");
-        var mailcost = parseFloat("{{ $config['mailcost'] ?? 0 }}");
-
-        var gstAmount = 0;
-        var totalItems = 0;
-
+        let totalPrice = 0;
+        let totalDiscount = 0;
+        let rows = '';
+        let srNo = 1;
+        let totalItems = 0;
+    
+        const gst = parseFloat("{{ $config['gst'] ?? 0 }}") || 0;
+        const courierCost = parseFloat("{{ $config['courier'] ?? 0 }}") || 0;
+        const handlingCost = parseFloat("{{ $config['handing'] ?? 0 }}") || 0;
+    
+        let itemGst = 0;
+    
         $('.summary-item:checked').each(function () {
-
+    
             let price = parseFloat($(this).data('price')) || 0;
             let title = $(this).data('title');
-            let type  = $(this).data('type');
-            if (type == 'Gift') {
+            let type = $(this).data('type');
+            let discount = parseFloat($(this).data('discount')) || 0;
+    
+            if (type === 'Gift') {
                 totalItems++;
             }
-            let discount = parseFloat($(this).data('discount')) || 0;
+    
             let discountAmount = (price * discount) / 100;
-
-            gstAmount += (price * gst) / 100;
+            let netPrice = price - discountAmount;
+    
+            // GST on discounted price
+            itemGst += (netPrice * gst) / 100;
+    
             totalPrice += price;
             totalDiscount += discountAmount;
-
+    
             rows += `
                 <tr>
                     <td>${srNo++}</td>
                     <td>${type}</td>
                     <td>${title}</td>
-                    <td>${price}</td>
+                    <td>${price.toFixed(2)}</td>
                 </tr>
             `;
         });
-        console.log('Total gift items:', totalItems);
+    
+        // Net amount after discount
+        let finalAmount = totalPrice - totalDiscount;
+    
+        // Courier & Handling
+        let courierCostTotal = 0;
+        let handlingCostTotal = 0;
+        let gstCourier = 0;
+        let gstHandling = 0;
+    
+        if (totalItems > 0) {
+            courierCostTotal = courierCost * totalItems;
+            handlingCostTotal = handlingCost;
+    
+            gstCourier = (courierCostTotal * gst) / 100;
+            gstHandling = (handlingCostTotal * gst) / 100;
+    
+            let courierText =
+                `Courier Charges (Rs. ${courierCost} / Item × ${totalItems} Item${totalItems > 1 ? 's' : ''})`;
+    
+            $('#courier-text-smr').text(courierText);
+            $('#handling-text-smr').text('Handling Charges');
+    
+            $('#GiftCourier').removeClass('d-none');
+            $('#handlingPackaging').removeClass('d-none');
+        } else {
+            $('#GiftCourier').addClass('d-none');
+            $('#handlingPackaging').addClass('d-none');
+        }
+        var totalWithAllCharges = finalAmount+courierCostTotal+handlingCostTotal;
+        // Total GST
+        let totalGst = (totalWithAllCharges * gst) / 100;
+    
+        // Gross Amount
+        let grossAmount =
+            finalAmount +
+            courierCostTotal +
+            handlingCostTotal +
+            totalGst;
+    
+        // Update UI
         $('#summary_table_body').html(rows);
+    
         $('#total-smr').text(totalPrice.toFixed(2));
         $('#total-smr-input').val(totalPrice.toFixed(2));
+    
         $('#discount-smr').text(totalDiscount.toFixed(2));
         $('#discount-smr-input').val(totalDiscount.toFixed(2));
-        $('#final-total-smr').text((totalPrice - totalDiscount).toFixed(2));
-        $('#final-total-smr-input').val((totalPrice - totalDiscount).toFixed(2));
-        $('#gst-smr').text(gstAmount.toFixed(2));
-        $('#gst-smr-input').val(gstAmount.toFixed(2));
-        var courierText = `Courier Charges (Rs. {{ $config['courier'] ?? 0 }} / Item X ${totalItems} Item)`;
-        let courierCostTotal = courierCost * totalItems;
-        $('#courier-text-smr').text(courierText);
+    
+        $('#final-total-smr').text(finalAmount.toFixed(2));
+        $('#final-total-smr-input').val(finalAmount.toFixed(2));
+    
+        $('#gst-smr').text(totalGst.toFixed(2));
+        $('#gst-smr-input').val(totalGst.toFixed(2));
+    
         $('#courier-smr').text(courierCostTotal.toFixed(2));
         $('#courier-smr-input').val(courierCostTotal.toFixed(2));
-        $('#handling-smr').text(handlingCost.toFixed(2));
-        $('#handling-smr-input').val(handlingCost.toFixed(2));
-        let grossAmount = (totalPrice - totalDiscount) + gstAmount + courierCostTotal + handlingCost;
+    
+        $('#handling-smr').text(handlingCostTotal.toFixed(2));
+        $('#handling-smr-input').val(handlingCostTotal.toFixed(2));
+    
         $('#gross-amount-smr').text(grossAmount.toFixed(2));
         $('#gross-amount-smr-input').val(grossAmount.toFixed(2));
     }
@@ -687,5 +744,45 @@ function validateSecondStep() {
     });
     return isValid;
 }
+</script>
+<script>
+// function updateCloseButtons() {
+//     $('.CollectionCloneItems .close-button').show();
+//     $('.CollectionCloneItems:first .close-button').hide();
+// }
+
+// $(document).ready(function () {
+//     updateCloseButtons();
+// });
+
+$(document).on('click', '.close-button', function () {
+
+    let parent = $(this).closest('.CollectionCloneItems');
+    let index = parent.data('set-index');
+
+    if (index == 0) {
+        return false;
+    }
+
+    parent.remove();
+});
+function updateCloseButtons() {
+
+    $('.CollectionCloneItems').each(function () {
+
+        let index = $(this).data('set-index');
+
+        if (index == 0) {
+            $(this).find('.close-button').hide();
+        } else {
+            $(this).find('.close-button').show();
+        }
+
+    });
+}
+
+$(document).ready(function () {
+    updateCloseButtons();
+});
 </script>
 @endsection

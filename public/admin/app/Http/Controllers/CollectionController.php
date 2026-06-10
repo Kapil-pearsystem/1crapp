@@ -56,7 +56,7 @@ class CollectionController extends Controller
         }
         $collection->title = $request->title;
         $collection->total = $request->total;
-        $collection->discount = $request->discount;
+        $collection->discount = $request->total_discount;
         $collection->final_total = $request->final_total;
         $collection->courier = $request->courier;
         $collection->handling = $request->handling;
@@ -72,7 +72,7 @@ class CollectionController extends Controller
             foreach ($itemIds as $setIndex => $itemId) {
                 if (empty($itemId)) continue;  // nothing selected in this set
 
-                $postalType = $request->type[$setIndex]             ?? null;
+                $postalType = $request->type[$setIndex] ?? null;
                 $catId  = $request->mail_category[$setIndex] ?? $request->gift_category[$setIndex] ?? null;
 
                 $collectionItems[] = [
