@@ -69,6 +69,7 @@ use App\Http\Controllers\CorePageController;
 use App\Http\Controllers\FooterController;
 use App\Http\Controllers\CollectionController;
 use App\Http\Controllers\CampaignController;
+use App\Http\Controllers\AuthTempController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -1008,5 +1009,13 @@ Route::middleware('auth')->prefix('compliances')->name('compliances.')->group(fu
     Route::get('/', [FooterController::class, 'compliances'])->name('index');
     Route::post('/save', [FooterController::class, 'save_compliances'])->name('save');
     Route::delete('/{id}/delete', [FooterController::class, 'destroy_compliances'])->name('destroy');
+});
+
+
+Route::middleware(['auth','plan_permission'])->prefix('admin-emails')->name('admin-emails.')->group(function(){
+    Route::get('/', [AuthTempController::class, 'index'])->name('index');
+    Route::get('/edit/{id}', [AuthTempController::class, 'edit'])->name('edit');
+    Route::post('/store', [AuthTempController::class, 'store'])->name('store');
+    Route::get('/view/{id}', [AuthTempController::class, 'view'])->name('view');
 });
 

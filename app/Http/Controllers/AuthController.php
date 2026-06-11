@@ -784,4 +784,27 @@ class AuthController extends Controller
     public function setting(){
         return view('dashboard.setting');
     }
+    public function authMail(){
+        $data['name'] = 'Test User';
+        $data['email'] = 'Test Email';
+        $data['password'] = 'Test Password';
+       $updatePassword = view('front.Mail.update-password-mail', compact('data'))->render();
+       echo $updatePassword;
+       echo '<hr>';
+       $data = [
+            'name'     => 'Test User',
+            'email'    => 'test@yopmail.com',
+            'mobile'   => '9895869789',
+            'password' => 'User@123'
+        ];
+        $registration = view('front.Mail.registration-successfully-mail', compact('data'))->render();
+        echo $registration;
+       echo '<hr>';
+       $data = [
+                'code' => '1214',
+                'source' => 'dfafs'
+            ];
+        $verification = view('front.Mail.verification-code', compact('data'))->render();
+        echo $verification;
+    }
 }

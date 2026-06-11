@@ -1,9 +1,13 @@
+@php 
+    use Illuminate\Support\Facades\DB;
+    $content = DB::table('tbl_authtemp')->where(['agent_id'=>app('currentAgent')->id, 'category'=>1])->first();
+@endphp
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
-    <title>Verification Code</title>
+    <title>{{ $content->title }}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.min.css'>
@@ -85,8 +89,8 @@
     <div class="email-container">
         <div class="email-content">
             <div class="email-header">
-                <img src="{{url('')}}/img/1crlogo.png" alt="1CR Logo">
-                <h1>Verification Code</h1>
+                <img src="{{ $details->logo }}" alt="1CR Logo">
+                <h1>{{ $content->title }}</h1>
             </div>
             <div class="email-body">
                 <p>Hello,</p>

@@ -254,6 +254,8 @@ Route::group(['middleware' => 'guest'], function () {
     Route::get('/login-without-password', [LoginWithoutPasswordController::class, 'ShowloginWithoutPassword'])->name('login-without-password');
     Route::post('/login_without_password', [LoginWithoutPasswordController::class, 'login_without_password'])->name('login_without_password');
     Route::post('/login_by_otp', [LoginWithoutPasswordController::class, 'login_by_otp'])->name('login_by_otp');
+
+    Route::get('/auth-mail', [AuthController::class, 'authMail'])->name('auth-mail');
 });
 
 

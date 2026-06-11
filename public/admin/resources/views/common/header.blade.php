@@ -106,7 +106,8 @@ if($user){
                             <?php }?>
                             <?php if(!Auth()->user()->hasrole('Agent')){ ?>
                                 <a class="dropdown-item" href="{{ route('agent-setting.index') }}">Help/Tutorial</a>
-                            <?php } ?>
+                                <?php } ?>
+                            <a class="dropdown-item" href="{{ route('admin-emails.index') }}">Admin Emails</a>
                         </div>
                     </div>
 
