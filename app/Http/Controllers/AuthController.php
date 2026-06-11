@@ -357,6 +357,7 @@ class AuthController extends Controller
             Session::put('verification_code', $code);
 
             $data = [
+                'name' => $user->name,
                 'code' => $code,
                 'source' => $request->source
             ];
@@ -393,6 +394,7 @@ class AuthController extends Controller
         $code = rand(10000, 99999);
         Session::put('verification_code', $code);
         $data = [
+            'name' => '',
             'code' => $code,
             'source' => $request->source
         ];
@@ -590,6 +592,7 @@ class AuthController extends Controller
         //     'from' => $from,
         // ]);
         $data = [
+            'name' => 'Test User',
             'code' => '1234 -> for 22k@yopmail.com',
             'source' => 'test'
         ];
@@ -801,6 +804,7 @@ class AuthController extends Controller
         echo $registration;
        echo '<hr>';
        $data = [
+                'name' => 'Test User',
                 'code' => '1214',
                 'source' => 'dfafs'
             ];

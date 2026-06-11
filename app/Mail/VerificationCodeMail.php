@@ -3,32 +3,30 @@
 namespace App\Mail;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\DB;
 
 class VerificationCodeMail extends Mailable
 {
     use Queueable, SerializesModels;
+
     public $data;
-    /**
-     * Create a new message instance.
-     *
-     * @return void
-     */
+    public $content;
+
     public function __construct(array $data)
     {
         $this->data = $data;
-        $this->subject = '1CR APP - '.$data['source'].' Verification Code';
+        $this->content = DB::table('tbl_authtemp')->where(['agent_id' => app('currentAgent')->id, 'category' => 2])->first();
+        $this->subject = $this->content->subject ?? '1CR APP - ' . ($data['source'] ?? '') . ' Verification Code';
     }
 
-    /**
-     * Build the message.
-     *
-     * @return $this
-     */
     public function build()
     {
-        return $this->view('front.Mail.verification-code')->with('data', $this->data)->subject($this->subject);
+        return $this->subject($this->subject)->view('front.Mail.verification-code')
+                    ->with([
+                        'data' => $this->data,
+                        'content' => $this->content
+                    ]);
     }
 }

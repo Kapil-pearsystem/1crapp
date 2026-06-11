@@ -1,7 +1,3 @@
-@php 
-    use Illuminate\Support\Facades\DB;
-    $content = DB::table('tbl_authtemp')->where(['agent_id'=>app('currentAgent')->id, 'category'=>1])->first();
-@endphp
 <!DOCTYPE html>
 <html lang="en">
 
@@ -89,20 +85,19 @@
     <div class="email-container">
         <div class="email-content">
             <div class="email-header">
-                <img src="{{ $details->logo }}" alt="1CR Logo">
+                <img src="{{ $content->logo }}" alt="1CR Logo">
                 <h1>{{ $content->title }}</h1>
             </div>
             <div class="email-body">
-                <p>Hello,</p>
-                <p>Please use the verification code below to {{ $data['source'] }}.</p>
+                <p>Hello {{ $data['name']??'' }},</p>
+                {!! $content->top_content !!}
                 <div class="code">
                     <p><strong style="font-size: 130%">{{ $data['code'] }}</strong></p>
                 </div>
-                <p>If you didn’t request this, you can ignore this email.</p>
-                <p>Thanks,<br>The 1CR APP Team</p>
+                {!! $content->bottom_content !!}
             </div>
             <div class="email-footer">
-                <p>&copy; 2024 1CR APP. All rights reserved.</p>
+                <p>{!! $content->copyright_text !!}</p>
             </div>
         </div>
     </div>
