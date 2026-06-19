@@ -91,7 +91,7 @@ Auth::routes(['register' => false]);
 Route::get('/home', [HomeController::class, 'index'])->name('home');
 Route::get('/dashboard-user-graph', [HomeController::class, 'userGraph'])->name('dashboard.user.graph');
 Route::get('/enquiry-list', [HomeController::class, 'enquiry_list'])->name('enquiry-list');
-// Route::get('/master-list', [HomeController::class, 'master_list'])->name('master-list');
+Route::get('/end-users', [CustomerController::class, 'end_users'])->name('end-users');
 Route::get('/master-list',[HomeController::class,'master_list'])->name('master-list');
 
 Route::post('/master-list/filter',[HomeController::class,'master_list_filter'])->name('master.list.filter');

@@ -187,7 +187,7 @@ $finalUrl = $scheme . '://' . $host;
 				<div class="accordion_body" style="display: none;">
 				 <div class="user_listst_links">
 				   <ul>
-					<li><a href="#">Lists</a></li>
+					<li><a href="{{ route('end-users') }}">Lists</a></li>
 				   </ul>
 				 </div>
 				</div>
