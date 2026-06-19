@@ -14,7 +14,12 @@ class AuthTempController extends Controller
         $this->middleware('auth');
     }
     public function index(){
-        $lists =  AuthTempCategoryModel::with('template')->get();
+        // dd(AuthTempModel::where('category', 5)->first()->toArray());
+        $lists =  AuthTempCategoryModel::with('template')->where('status', 1);
+        if(auth()->user()->role_id == 1){
+            $lists = $lists->orWhere('status', 2);
+        }
+        $lists = $lists->get();
         // dd($lists);
         return view('auth-temp.index',compact('lists'));
     }
@@ -66,6 +71,9 @@ class AuthTempController extends Controller
     {
         $category = AuthTempCategoryModel::findOrFail($cat_id);
         $details = AuthTempModel::where(['category' => $cat_id, 'agent_id' => auth()->id()])->first();
+        if(is_null($details)){
+            return redirect()->route('admin-emails.index')->with(['error' => 'No Mail Data Found!']);
+        }
         $data = view(
             'mail-temp.admin-preview-mail.' . $category->tempFileName,
             compact('details')

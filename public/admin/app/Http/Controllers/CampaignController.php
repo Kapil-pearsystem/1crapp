@@ -93,7 +93,7 @@ class CampaignController extends Controller
         $campaign->status = $request->status;
         $campaign->save();
         if($request->status == '1') {
-            CampaignSchedule::where('campaign_id', $campaign->id)->update(['status' => 'processing']);
+            CampaignSchedule::where('campaign_id', $campaign->id)->update(['status' => 'pending']);
         } else {
             CampaignSchedule::where('campaign_id', $campaign->id)->update(['status' => 'pending']);
         }
@@ -115,6 +115,7 @@ class CampaignController extends Controller
     public function delete($coll_id, $camp_id)
     {
         $campaign = CampaignModel::findOrFail($camp_id);
+        CampaignSchedule::where('campaign_id', $camp_id)->delete();
         $campaign->delete();
         return redirect()->back()->with('success', 'Campaign deleted successfully');
     }

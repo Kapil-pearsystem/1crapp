@@ -7,5 +7,7 @@ use App\Http\Controllers\FormLeadsController;
 //     return $request->user();
 // });
 
-Route::post('/save-leads', [FormLeadsController::class, 'store'])->name('api.save-leads');
+// Route::post('/save-leads', [FormLeadsController::class, 'testRequest'])->name('save-leads');
+Route::post('api/save-leads', [FormLeadsController::class, 'store'])->name('api.save-leads');
+Route::post('/save-leads', [FormLeadsController::class, 'store'])->name('save-leads');
 

@@ -6,11 +6,13 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\DB;
 
 class LoginWithoutPasswordMail extends Mailable
 {
     use Queueable, SerializesModels;
     public $data;
+    public $content;
     /**
      * Create a new message instance.
      *
@@ -19,6 +21,8 @@ class LoginWithoutPasswordMail extends Mailable
     public function __construct(array $data)
     {
         $this->data = $data;
+        $this->content = DB::table('tbl_authtemp')->where(['agent_id' => app('currentAgent')->id, 'category' => 5])->first();
+        $this->subject = $this->content->subject ?? '1CR APP Login OTP';
     }
 
     /**
@@ -28,6 +32,9 @@ class LoginWithoutPasswordMail extends Mailable
      */
     public function build()
     {
-        return $this->view('front.Mail.otp-send')->with('data', $this->data)->subject('1CR APP Login OTP');
+        return $this->view('front.Mail.otp-send')->with(
+            ['data' => $this->data,
+                'content' => $this->content
+            ])->subject('1CR APP Login OTP');
     }
 }

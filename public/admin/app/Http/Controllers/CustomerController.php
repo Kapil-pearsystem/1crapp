@@ -73,6 +73,51 @@ class CustomerController extends Controller
         // dd('hello');
         return view('customer.index', ['users' => $users, 'agentdetail' => $agentdetail]);
     }
+    public function end_users(Request $request)
+    {
+        if(auth()->user()->role_id != 1){
+            return redirect()->back()->with('error', 'You have not permission to access this page');
+        }
+        $users = Customer::leftJoin('agents', 'agents.id', '=', 'users.agent_id')
+            ->leftJoin('tbl_contact', 'tbl_contact.id', '=', 'users.contact_id')
+            ->leftJoin('tbl_tags', 'tbl_tags.id', '=', 'users.tag_id')
+            ->select('users.*', 'agents.first_name', 'agents.last_name', 'agents.company_id', 'tbl_contact.name as list_name','tbl_tags.name as tag_name')
+            ->where('agents.role_id', '!=', 1)
+            ->orderBy('users.id', 'DESC')
+            ->get();
+        return view('customer.end-users', ['users' => $users]);
+    }
+    public function updateEndUserStatus($user_id, $status, $reason=null)
+    {
+        // Validation
+        $validate = Validator::make([
+            'user_id'   => $user_id,
+            'status'    => $status
+        ], [
+            'user_id'   =>  'required|exists:users,id',
+            'status'    =>  'required|in:0,1',
+        ]);
+
+        // If Validations Fails
+        if($validate->fails()){
+            return redirect()->route('end-users')->with('error', $validate->errors()->first());
+        }
+
+        try {
+            DB::beginTransaction();
+            // Update Status
+            Customer::whereId($user_id)->update(['status' => $status]);
+
+            // Commit And Redirect on index with Success Message
+            DB::commit();
+            return redirect()->route('end-users')->with('success','Success ! End User status Updated Successfully.');
+        } catch (\Throwable $th) {
+
+            // Rollback & Return Error Message
+            DB::rollBack();
+            return redirect()->back()->with('error', $th->getMessage());
+        }
+    }
     /**
      * Show the form for creating a new customer.
      *
@@ -192,7 +237,7 @@ class CustomerController extends Controller
         $customer->first_name = $names['first_name'];
         $customer->middle_name = $names['middle_name'];
         $customer->last_name = $names['last_name'];
-        // dd($customer);
+        // dd($contacts);
         // Return the customer data to the view
         return view('customermanagement.edit-customer-profile', compact('customer','tags','contacts','cdos', 'customer_lists', 'customer_tags'));
     }

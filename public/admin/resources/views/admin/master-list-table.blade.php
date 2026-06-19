@@ -9,6 +9,10 @@
  
     <td>{{ $list->email }}</td>
     <td>{{ $list->phone }}</td>
+    <td>{{ $list->cdo_name }}</td>
+    <td>{{ $list->source }}</td>
+    <td>{{ $list->ps_name }}</td>
+    <td>Address.. <a href="#"><i class="fas fa-external-link-alt" aria-hidden="true"></i></a></td>
     <td> Check Now <a href="#"><i class="fas fa-external-link-alt" aria-hidden="true"></i></a></td>
     <td>
         <select class="form-control" onchange="nextStep(this,{{ $list->id }})">

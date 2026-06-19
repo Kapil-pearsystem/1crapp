@@ -87,35 +87,26 @@ new DataTable( '#example-table-theme', {
 
 function getPlan()
 {
- 
-	
-	  $.ajax({
-				type: "GET",
-				cache: false,
-				url: "{{route('billing.planlist')}}",
-			
-				success: function (response) {
-					$('#plan-list-data').html(response); 
-				}
-			});
-	
-	
+    $.ajax({
+    	type: "GET",
+    	cache: false,
+    	url: "{{route('billing.planlist')}}",
+    	success: function (response) {
+    		$('#plan-list-data').html(response); 
+    	}
+    });
 }
 function getdetail(id)
 {
- 
-	
-	  $.ajax({
-				type: "GET",
-				cache: false,
-				url: "{{url('billing/detail')}}/"+id,
-			
-				success: function (response) {
-					$('#plandetail').html(response); 
-				}
-			});
-	
-	
+    $.ajax({
+    	type: "GET",
+    	cache: false,
+    	url: "{{url('billing/detail')}}/"+id,
+    
+    	success: function (response) {
+    		$('#plandetail').html(response); 
+    	}
+    });
 }
 
 

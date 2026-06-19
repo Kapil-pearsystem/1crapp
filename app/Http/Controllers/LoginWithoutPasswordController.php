@@ -66,12 +66,16 @@ class LoginWithoutPasswordController extends Controller
         $loginData = array();
 
         $user = User::where('token', $token)->first();
+
         if ($user) {
+            if($user->agent_id != app('currentAgent')->id){
+                return redirect()->route('login')->with('fail', '<center>Login details are not valid.</center>');
+            }
             $loginData['email'] = $user->email;
             $loginData['password'] = $user->password;
             if ($user->otp == $userotp) {
                 if (Auth::loginUsingId($user->id)) {
-                    return redirect()->route('property-list',['buy_and_sell'])->with('success', 'You are successfully logged in.');
+                    return redirect()->route('user-home')->with('success', 'You have logged in successfully!');
                 } else {
                     return redirect()->route('login-without-password')->with('fail', 'Login Failed!');
                 }

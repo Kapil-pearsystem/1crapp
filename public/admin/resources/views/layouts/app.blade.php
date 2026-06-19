@@ -1636,7 +1636,7 @@ font-weight: 600;
     @yield('modals')
 
     
-    @if(auth()->user()->role_id != 1)
+    @if(optional(auth()->user())->role_id != 1)
         {!! DB::table('adb_dashboard')->where('chatbot_code_enable', 1)->value('chatbot_code') !!}
     @endif
     <!-- Bootstrap core JavaScript-->

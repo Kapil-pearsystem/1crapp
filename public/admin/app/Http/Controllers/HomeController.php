@@ -13,6 +13,7 @@ use App\Models\FormSourceModel;
 use App\Models\FileDriveModel;
 use App\Models\AdbSettingsModel;
 use App\Models\JoinCommunityModel;
+use App\Models\FormModel;
 use Illuminate\Http\Request;
 use App\Rules\MatchOldPassword;
 use Illuminate\Support\Facades\DB;
@@ -793,186 +794,319 @@ class HomeController extends Controller
             ->get();
         return view('admin.master-list', compact('lists'));
     }
-    // public function master_list(Request $request)
-    // {
-    //     $list_name = '';
-    //     $tag_name = '';
-    //     $lists = Customer::select(
-    //         'users.id',
-    //         'users.name',
-    //         'tbl_enquiry.customer_id',
-    //         'users.memberid',
-    //         'users.email',
-    //         'users.mobile as phone',
-    //         'tbl_enquiry.message',
-    //         'tbl_enquiry.created_at',
-    //         'tbl_enquiry.status',
-    //         'tbl_formsource.title as source',
-    //         'product_services.prod_name as ps_name',
-    //         'tbl_cdo.name as cdo_name',
-    //         'users.created_at'
-    //     )
-    //     ->leftJoin('tbl_enquiry','users.id','=','tbl_enquiry.customer_id')
-    //     ->leftJoin('tbl_user_list','tbl_user_list.user_id','=','users.id')
-    //     ->leftJoin('tbl_user_tags','tbl_user_tags.user_id','=','users.id')
-    //     ->leftJoin('tbl_form','tbl_form.id','=','tbl_enquiry.form_id')
-    //     ->leftJoin('tbl_formsource','tbl_formsource.id','=','tbl_form.source_id')
-    //     ->leftJoin('product_services','product_services.id','=','tbl_enquiry.ps_id')
-    //     ->leftJoin('tbl_cdo','tbl_cdo.id','=','tbl_enquiry.cdo_id')
-    //     ->where('users.agent_id',auth()->id());
-
-    //     if($request->list){
-    //         $contact = ContactModel::select('id','name')->where('id',$request->list)->first();
-    //         $list_name = $contact->name ?? '';
-    //         $lists->where('tbl_user_list.list_id',$request->list);
-    //     }
-    //     if($request->tag){
-    //         $tag = TagsModel::select('id','name')->where('id',$request->tag)->first();
-    //         $tag_name = $tag->name ?? '';
-    //         $lists->where('tbl_user_tags.tag_id',$request->tag);
-    //     }
-
-    //     $lists = $lists
-    //         ->distinct('users.id')
-    //         ->orderBy('users.id','DESC')
-    //         ->get();
-    //     // dd($lists);
-    //     $tags = TagsModel::select('id','name')->where('created_by',auth()->user()->id)->get();
-    //     $contacts = ContactModel::select('id','name')->where('created_by',auth()->user()->id)->get();
-    //     // dd($lists, $tags);
-    //     return view('admin.master-list', compact('lists', 'list_name','tag_name', 'tags', 'contacts'));
-    // }
+    
     public function master_list(Request $request)
     {
+        $agent_id  = $request->agent ?? '';
+        $agentdetail = User::where('id', request('agent'))->first();
         $list_name = '';
-        $tag_name = '';
+        $tag_name  = '';
+    
+        // ── Base query ──────────────────────────────────────────────────────────
         $lists = Customer::select(
-            'users.id',
-            'users.name',
-            'tbl_enquiry.customer_id',
-            'users.memberid',
-            'users.email',
-            'users.mobile as phone',
-            'tbl_enquiry.message',
-            'tbl_enquiry.created_at',
-            'tbl_enquiry.status',
-            'tbl_formsource.title as source',
-            'product_services.prod_name as ps_name',
-            'tbl_cdo.name as cdo_name',
-            'users.created_at'
-        )
-        ->leftJoin('tbl_enquiry','users.id','=','tbl_enquiry.customer_id')
-        ->leftJoin('tbl_user_list','tbl_user_list.user_id','=','users.id')
-        ->leftJoin('tbl_user_tags','tbl_user_tags.user_id','=','users.id')
-        ->leftJoin('tbl_form','tbl_form.id','=','tbl_enquiry.form_id')
-        ->leftJoin('tbl_formsource','tbl_formsource.id','=','tbl_form.source_id')
-        ->leftJoin('product_services','product_services.id','=','tbl_enquiry.ps_id')
-        ->leftJoin('tbl_cdo','tbl_cdo.id','=','tbl_enquiry.cdo_id')
-        ->where('users.agent_id',auth()->id());
-
-        if($request->list){
-            $contact = ContactModel::select('id','name')->where('id',$request->list)->first();
+                'users.id',
+                'users.name',
+                'users.memberid',
+                'users.email',
+                'users.mobile              as phone',
+                'users.created_at',
+                'tbl_enquiry.customer_id',
+                'tbl_enquiry.message',
+                'tbl_enquiry.created_at   as enquiry_date',
+                'tbl_enquiry.status',
+                'tbl_formsource.title     as source',
+                'product_services.prod_name as ps_name',
+                'tbl_cdo.name             as cdo_name'
+            )
+            ->leftJoin(
+                DB::raw('(
+                    SELECT MAX(id) as last_enquiry_id, customer_id
+                    FROM tbl_enquiry
+                    GROUP BY customer_id
+                ) latest_enquiry'),
+                'latest_enquiry.customer_id', '=', 'users.id'
+            )
+            ->leftJoin('tbl_enquiry',      'tbl_enquiry.id',      '=', 'latest_enquiry.last_enquiry_id')
+            ->leftJoin('tbl_form',         'tbl_form.id',         '=', 'tbl_enquiry.form_id')
+            ->leftJoin('tbl_formsource',   'tbl_formsource.id',   '=', 'tbl_form.source_id')
+            ->leftJoin('product_services', 'product_services.id', '=', 'tbl_enquiry.ps_id')
+            ->leftJoin('tbl_cdo',          'tbl_cdo.id',          '=', 'tbl_enquiry.cdo_id');
+    
+        // ── Agent filter ────────────────────────────────────────────────────────
+        if (auth()->user()->role_id == 1 && !empty($agent_id)) {
+            $lists->where('users.agent_id', $agent_id);
+        } else {
+            $lists->where('users.agent_id', auth()->id());
+        }
+    
+        // ── List filter (whereExists — no join, no duplicates) ──────────────────
+        if ($request->filled('list')) {
+            $contact   = ContactModel::select('id', 'name')->find($request->list);
             $list_name = $contact->name ?? '';
-            $lists->where('tbl_user_list.list_id',$request->list);
+    
+            $lists->whereExists(function ($q) use ($request) {
+                $q->select(\DB::raw(1))
+                    ->from('tbl_user_list')
+                    ->whereColumn('tbl_user_list.user_id', 'users.id')
+                    ->where('tbl_user_list.list_id', $request->list);
+            });
         }
-        if($request->tag){
-            $tag = TagsModel::select('id','name')->where('id',$request->tag)->first();
+    
+        // ── Tag filter (whereExists — no join, no duplicates) ───────────────────
+        if ($request->filled('tag')) {
+            $tag      = TagsModel::select('id', 'name')->find($request->tag);
             $tag_name = $tag->name ?? '';
-            $lists->where('tbl_user_tags.tag_id',$request->tag);
+    
+            $lists->whereExists(function ($q) use ($request) {
+                $q->select(\DB::raw(1))
+                    ->from('tbl_user_tags')
+                    ->whereColumn('tbl_user_tags.user_id', 'users.id')
+                    ->where('tbl_user_tags.tag_id', $request->tag);
+            });
         }
-
-        $lists = $lists
-            ->distinct('users.id')
-            ->orderBy('users.id','DESC')
-            // ->get();
-            ->paginate(20);
-
-        $tags = TagsModel::where(
-                'created_by',
-                auth()->id()
-            )
-            ->get();
-
-        $contacts = ContactModel::where(
-                'created_by',
-                auth()->id()
-            )
-            ->get();
-
-        return view(
-            'admin.master-list',
-            compact(
-                'lists',
-                'list_name',
-                'tag_name',
-                'tags',
-                'contacts'
-            )
-        );
+    
+        // ── Final query ─────────────────────────────────────────────────────────
+        // distinct() removed — no longer needed without the problematic joins
+        $lists = $lists->distinct('users.id')
+            ->orderByDesc('users.id')
+            ->paginate(20)
+            ->appends($request->all());
+            
+        // dd($lists);
+    
+        // ── Sidebar data ────────────────────────────────────────────────────────
+        $tags     = TagsModel::where('created_by', auth()->id())->get();
+        $contacts = ContactModel::where('created_by', auth()->id())->get();
+        $forms = FormModel::select('id', 'form_name as name')->where('created_by', auth()->id())->get();
+        // dd($lists);
+        return view('admin.master-list', compact(
+            'agent_id',
+            'lists',
+            'forms',
+            'list_name',
+            'tag_name',
+            'tags',
+            'agentdetail',
+            'contacts'
+        ));
     }
     public function master_list_filter(Request $request)
     {
-        $filters = json_decode($request->filters, true);
-        $query = Customer::select('users.*', 'users.mobile as phone', 'agents.first_name as agent_first_name', 'agents.last_name as agent_last_name', 'agents.company_id')
-            ->leftJoin('agents', 'agents.id', 'users.agent_id')
-            ->leftJoin('tbl_user_list', 'tbl_user_list.user_id', '=', 'users.id')
-            ->leftJoin('tbl_user_tags', 'tbl_user_tags.user_id', '=', 'users.id')
-            ->where('users.agent_id', auth()->id());
-
-        /*
-        Included filters
-        */
+        $agent_id = $request->agent_id;
+        $filters  = json_decode($request->filters, true);
+    
+        // ── Base query ──────────────────────────────────────────────────────────
+        $query = Customer::select(
+                'users.id',
+                'users.name',
+                'users.memberid',
+                'users.email',
+                'users.mobile              as phone',
+                'users.created_at',
+                'tbl_enquiry.customer_id',
+                'tbl_enquiry.message',
+                'tbl_enquiry.created_at   as enquiry_date',
+                'tbl_enquiry.status',
+                'tbl_formsource.title     as source',
+                'product_services.prod_name as ps_name',
+                'tbl_cdo.name             as cdo_name'
+            )
+            ->leftJoin(
+                DB::raw('(
+                    SELECT MAX(id) as last_enquiry_id, customer_id
+                    FROM tbl_enquiry
+                    GROUP BY customer_id
+                ) latest_enquiry'),
+                'latest_enquiry.customer_id', '=', 'users.id'
+            )
+            ->leftJoin('tbl_enquiry',      'tbl_enquiry.id',      '=', 'latest_enquiry.last_enquiry_id')
+            ->leftJoin('tbl_form',         'tbl_form.id',         '=', 'tbl_enquiry.form_id')
+            ->leftJoin('tbl_formsource',   'tbl_formsource.id',   '=', 'tbl_form.source_id')
+            ->leftJoin('product_services', 'product_services.id', '=', 'tbl_enquiry.ps_id')
+            ->leftJoin('tbl_cdo',          'tbl_cdo.id',          '=', 'tbl_enquiry.cdo_id');
+    
+        // ── Agent filter ────────────────────────────────────────────────────────
+        if (auth()->user()->role_id == 1 && !empty($agent_id)) {
+            $query->where('users.agent_id', $agent_id);
+        } else {
+            $query->where('users.agent_id', auth()->id());
+        }
+    
+        // ── Included filters ────────────────────────────────────────────────────
         if (!empty($filters['included'])) {
-
             $query->where(function ($q) use ($filters) {
                 foreach ($filters['included'] as $index => $item) {
-                    $method = 'where';
-                    if ($index > 0) {
-                        $method = strtolower($item['logic']) == 'or' ? 'orWhere' : 'where';
-                    }
-
+    
+                    $method = ($index > 0 && strtolower($item['logic']) === 'or')
+                        ? 'orWhere'
+                        : 'where';
+    
                     $q->$method(function ($sub) use ($item) {
-                        if ($item['type'] == 'list') {
-                            $sub->where('tbl_user_list.list_id', $item['val']);
+    
+                        // ── List ────────────────────────────────────────────────
+                        if ($item['type'] === 'list') {
+                            $sub->whereExists(function ($e) use ($item) {
+                                $e->select(DB::raw(1))
+                                    ->from('tbl_user_list')
+                                    ->whereColumn('tbl_user_list.user_id', 'users.id')
+                                    ->where('tbl_user_list.list_id', $item['val']);
+                            });
                         }
-                        if ($item['type'] == 'tag') {
-                            $sub->where('tbl_user_tags.tag_id', $item['val']);
+    
+                        // ── Tag ─────────────────────────────────────────────────
+                        if ($item['type'] === 'tag') {
+                            $sub->whereExists(function ($e) use ($item) {
+                                $e->select(DB::raw(1))
+                                    ->from('tbl_user_tags')
+                                    ->whereColumn('tbl_user_tags.user_id', 'users.id')
+                                    ->where('tbl_user_tags.tag_id', $item['val']);
+                            });
+                        }
+    
+                        // ── Form ────────────────────────────────────────────────
+                        if ($item['type'] === 'form') {
+                            $form = FormModel::select('tag_id', 'list_id')->find($item['val']);
+                            if ($form) {
+                                $sub->where(function ($q) use ($form) {
+                                    if (!empty($form->tag_id)) {
+                                        $q->whereExists(function ($e) use ($form) {
+                                            $e->select(DB::raw(1))
+                                                ->from('tbl_user_tags')
+                                                ->whereColumn('tbl_user_tags.user_id', 'users.id')
+                                                ->where('tbl_user_tags.tag_id', $form->tag_id);
+                                        });
+                                    }
+                                    if (!empty($form->list_id)) {
+                                        $q->orWhereExists(function ($e) use ($form) {
+                                            $e->select(DB::raw(1))
+                                                ->from('tbl_user_list')
+                                                ->whereColumn('tbl_user_list.user_id', 'users.id')
+                                                ->where('tbl_user_list.list_id', $form->list_id);
+                                        });
+                                    }
+                                });
+                            }
+                        }
+    
+                        // ── Status ──────────────────────────────────────────────
+                        if ($item['type'] === 'status') {
+                            $statusMap = [
+                                'active'       => 1,
+                                'inactive'     => 0,
+                                'unsubscribed' => 2,
+                                'bounced'      => 3,
+                            ];
+                            $statusVal = $statusMap[$item['val']] ?? null;
+                            if (!is_null($statusVal)) {
+                                $sub->where('users.status', $statusVal);
+                            }
+                        }
+    
+                        // ── Date Range ──────────────────────────────────────────
+                        // val format: "2024-01-01 to 2024-12-31"
+                        if ($item['type'] === 'date-range') {
+                            $parts = explode(' to ', $item['val']);
+                            if (count($parts) === 2) {
+                                $start = trim($parts[0]);
+                                $end   = trim($parts[1]);
+                                $sub->whereBetween('users.created_at', [
+                                    $start . ' 00:00:00',
+                                    $end   . ' 23:59:59',
+                                ]);
+                            }
                         }
                     });
                 }
             });
         }
-        /*
-        Excluded filters
-        */
+    
+        // ── Excluded filters ────────────────────────────────────────────────────
         if (!empty($filters['excluded'])) {
             foreach ($filters['excluded'] as $item) {
-                if ($item['type'] == 'list') {
-                    $query->whereNotIn(
-                        'users.id',
-                        function ($q) use ($item) {
-                            $q->select('user_id')
-                                ->from('tbl_user_list')
-                                ->where('list_id', $item['val']);
-                        }
-                    );
+    
+                // ── List ────────────────────────────────────────────────────────
+                if ($item['type'] === 'list') {
+                    $query->whereNotExists(function ($e) use ($item) {
+                        $e->select(DB::raw(1))
+                            ->from('tbl_user_list')
+                            ->whereColumn('tbl_user_list.user_id', 'users.id')
+                            ->where('tbl_user_list.list_id', $item['val']);
+                    });
                 }
-                if ($item['type'] == 'tag') {
-                    $query->whereNotIn(
-                        'users.id',
-                        function ($q) use ($item) {
-                            $q->select('user_id')
-                                ->from('tbl_user_tags')
-                                ->where('tag_id',  $item['val']);
-                        }
-                    );
+    
+                // ── Tag ─────────────────────────────────────────────────────────
+                if ($item['type'] === 'tag') {
+                    $query->whereNotExists(function ($e) use ($item) {
+                        $e->select(DB::raw(1))
+                            ->from('tbl_user_tags')
+                            ->whereColumn('tbl_user_tags.user_id', 'users.id')
+                            ->where('tbl_user_tags.tag_id', $item['val']);
+                    });
+                }
+    
+                // ── Form ────────────────────────────────────────────────────────
+                if ($item['type'] === 'form') {
+                    $form = FormModel::select('tag_id', 'list_id')->find($item['val']);
+                    if ($form) {
+                        $query->where(function ($q) use ($form) {
+                            if (!empty($form->tag_id)) {
+                                $q->whereNotExists(function ($e) use ($form) {
+                                    $e->select(DB::raw(1))
+                                        ->from('tbl_user_tags')
+                                        ->whereColumn('tbl_user_tags.user_id', 'users.id')
+                                        ->where('tbl_user_tags.tag_id', $form->tag_id);
+                                });
+                            }
+                            if (!empty($form->list_id)) {
+                                $q->whereNotExists(function ($e) use ($form) {
+                                    $e->select(DB::raw(1))
+                                        ->from('tbl_user_list')
+                                        ->whereColumn('tbl_user_list.user_id', 'users.id')
+                                        ->where('tbl_user_list.list_id', $form->list_id);
+                                });
+                            }
+                        });
+                    }
+                }
+    
+                // ── Status ──────────────────────────────────────────────────────
+                if ($item['type'] === 'status') {
+                    $statusMap = [
+                        'active'       => 1,
+                        'inactive'     => 0,
+                        'unsubscribed' => 2,
+                        'bounced'      => 3,
+                    ];
+                    $statusVal = $statusMap[$item['val']] ?? null;
+                    if (!is_null($statusVal)) {
+                        $query->where('users.status', '!=', $statusVal);
+                    }
+                }
+    
+                // ── Date Range ──────────────────────────────────────────────────
+                // Exclude users created within this date range
+                if ($item['type'] === 'date-range') {
+                    $parts = explode(' to ', $item['val']);
+                    if (count($parts) === 2) {
+                        $start = trim($parts[0]);
+                        $end   = trim($parts[1]);
+                        $query->whereNotBetween('users.created_at', [
+                            $start . ' 00:00:00',
+                            $end   . ' 23:59:59',
+                        ]);
+                    }
                 }
             }
         }
-        $lists = $query->distinct('users.id')->orderBy('users.id', 'DESC')->paginate(20);
+    
+        // ── Final query ─────────────────────────────────────────────────────────
+        $lists = $query
+            ->orderByDesc('users.id')
+            ->paginate(20);
+    
         return view('admin.master-list-table', compact('lists'))->render();
     }
-
+    
     public function delete_master_list(Request $request)
     {
         $ids = $request->list_ids;

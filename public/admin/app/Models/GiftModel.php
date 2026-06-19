@@ -11,4 +11,10 @@ class GiftModel extends Model
     protected $table = 'tbl_gift';
     public $timestamps = true;
     protected $fillable = ['id', 'category', 'title', 'image', 'thumbnail', 'ribbon','description', 'mrp','discount', 'coupon_code','coupon_discount', 'status', 'created_by','created_at','updated_at'];
+    
+     public function giftcategory()
+    {
+        return $this->belongsTo(GiftCategoryModel::class, 'category', 'id');
+    }
+    
 }

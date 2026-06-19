@@ -60,7 +60,7 @@ if ($admin) {
                             <td>{{ $user->email }}</td>
                             <td>{{ $user->mobile_number }}</td>
                             @if(!$admin)
-                            <td><u><a href="{{ url('customer') }}?agent={{ $user->id }}">{{ \App\Helper\Helper::getMyCustomer($user->id) }}</a></u></td>
+                            <td><u><a href="{{ url('master-list') }}?agent={{ $user->id }}">{{ \App\Helper\Helper::getMyCustomer($user->id) }}</a></u></td>
                             @else
                             <td>{{ $user->roles ? $user->roles->pluck('name')->first() : 'N/A' }}</td>
                             @endif

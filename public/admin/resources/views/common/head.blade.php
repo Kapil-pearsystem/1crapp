@@ -252,7 +252,7 @@
                         <button type="button" class="toggle-btn" data-type="yearly">Yearly</button>
                     </div>
                 </div>
-                <?php /*
+                
 				<div id="plan-list-data" class="prc_box_listst monthly">
 					
 					@foreach($subscription_plan as $list)
@@ -367,7 +367,7 @@
 					</div>
 					<!---- End List ----->
 					@endforeach
-				</div> */?>
+				</div> 
 			</div>
 		</div>
 	</div>

@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Password Recovery</title>
+    <title>{{ $content->title }}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.min.css'>
@@ -90,14 +90,12 @@
     <div class="email-container">
         <div class="email-content">
             <div class="email-header">
-                <img src="{{url('')}}/img/1crlogo.png" alt="1CR Logo">
-                <h1>Password Recovery</h1>
+                <img src="{{ $content->logo }}" alt="1CR Logo">
+                <h1>{{ $content->title }}</h1>
             </div>
             <div class="email-body">
-                <h1>Password Recovery for 1CR APP</h1>
                 <p>Hello, {{ $data['name'] }}!</p>
-                <p>We received a request to Recover your password. and you can now log in using with your old password below.</p>
-                
+                {!! $content->top_content !!}
                 <div class="credentials">
                     <p><strong>Your Username:</strong> {{ $data['email'] }}</p>
                     <p><strong>Your Password:</strong> {{ $data['password'] }}</p>
@@ -106,13 +104,10 @@
                 <p>To log in, click the button below:</p>
                 <p><a href="{{ route('login') }}" class="btn btn-primary" style="background-color: #01508f; color: white; padding: 10px 15px; border-radius: 5px; display: inline-block;">Login to Your Account</a></p>
 
-                <p>We’re excited to have you on board! If you have any questions or need assistance, feel free to contact our support team.</p>
-                <p>Enjoy exploring our platform and making the most out of your experience.</p>
-
-                <p>Best Regards,<br>The 1CR APP Team</p>
+                {!! $content->bottom_content !!}
             </div>
             <div class="email-footer">
-                <p>&copy; 2024 1CR APP. All rights reserved.</p>
+                <p>{!! $content->copyright_text !!}</p>
             </div>
         </div>
     </div>

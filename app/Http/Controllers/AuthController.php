@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
@@ -77,7 +78,7 @@ class AuthController extends Controller
     public function showLoginForm()
     {
         $agentId = app('currentAgent')->id;
-        $agentId = 78;
+        // $agentId = 78;
         Cache::put('agent_id', $agentId, 60); // 60 minutes 'created_by' => $agentId,
         $logincms = DB::table('tbl_logincms')->where(['created_by' => $agentId, 'status' => 1])->first();
         if (!is_null($logincms)) {
@@ -115,9 +116,12 @@ class AuthController extends Controller
         if ($user->status == 0) {
             return redirect()->route('login')->with('fail', '<center>Your account has been Blocked by Administrator<br><a href="'.url('login').'" style="color: blue;">Click here</a> to learn more!</center>');
         }
+        if($user->agent_id != app('currentAgent')->id){
+            return redirect()->route('login')->with('fail', '<center>Login details are not valid.</center>');
+        }
         // dd($user);
         // Attempt to authenticate with the email or username and password
-        if (\Auth::attempt(['email' => $request->email, 'password' => $request->password]) || \Auth::attempt(['user_name' => $request->email, 'password' => $request->password])) {
+        if (\Auth::attempt(['email' => $request->email, 'password' => $request->password, 'agent_id' => app('currentAgent')->id]) || \Auth::attempt(['user_name' => $request->email, 'password' => $request->password])) {
             $previous_loc = '';
             $previous_loc = Session::get('redirect_link');
             Session::put('redirect_link','');
@@ -125,6 +129,7 @@ class AuthController extends Controller
                 return redirect()->away($previous_loc);
             }
             // return redirect()->route('prices').with('success', 'You have logged in successfully!');
+            
             if(app('currentAgent')->id == 8){
                 return redirect('/')
                     ->with('success', 'You have logged in successfully!');
@@ -153,10 +158,16 @@ class AuthController extends Controller
         $is_referral = false;
         $validator = Validator::make($request->all(),[
             'name'=>'required',
-            'email'=>'required|email|unique:users,email',
             'mobile'=>'required',
             'password'=>'required',
             'security_code'=>'required',
+            'email' => [
+                'required',
+                'email',
+                Rule::unique('users', 'email')->where(function ($query) {
+                    return $query->where('agent_id', app('currentAgent')->id);
+                }),
+            ],
         ], [
              'email.unique' => 'The email address you entered is already in use. Please try logging in <a class="text-info text-justify" href="'.route('login').'">Login</a> or use a different email address.'
         ]);
@@ -211,7 +222,11 @@ class AuthController extends Controller
             return redirect()->route('register')->with('fail', 'Customer details are not valid');
         }
         try {
-            if (\Auth::attempt($request->only('email', 'password'))) {
+            if (\Auth::attempt([
+                    'email' => $request->email,
+                    'password' => $request->password,
+                    'agent_id' => app('currentAgent')->id
+                ])) {
 
                 $maildata = [
                     'name'     => $request->name,
@@ -348,16 +363,16 @@ class AuthController extends Controller
         ]);
         $token = Str::random(32);
         $code = rand(10000, 99999);
-        $user = User::where('email', $request->email)->first();
-        if ($user) {
-            $user = User::find($user->id);
+        $user1 = User::where('email', $request->email)->first();
+        if ($user1) {
+            $user = User::find($user1->id);
             $user->otp = $code;
             $user->token = $token;
             $user->update();
             Session::put('verification_code', $code);
 
             $data = [
-                'name' => $user->name,
+                'name' => $user1->name,
                 'code' => $code,
                 'source' => $request->source
             ];
@@ -382,7 +397,13 @@ class AuthController extends Controller
     public function email_verification(Request $request): JsonResponse
     {
         $validator = Validator::make($request->all(),[
-            'email' => 'required|email|unique:users,email',
+            'email'         => [
+                'required',
+                'email',
+                Rule::unique('users', 'email')->where(function ($query) {
+                    return $query->where('agent_id', app('currentAgent')->id);
+                }),
+            ],
         ]);
         if ($validator->fails()) {
 
@@ -444,7 +465,7 @@ class AuthController extends Controller
             }
 
             // Check if the user exists in your database
-            $user = User::where('email', $facebookUser->getEmail())->first();
+            $user = User::where(['email'=> $facebookUser->getEmail(), 'agent_id' => app('currentAgent')->id])->first();
             // dd($facebookUser);
             if (is_null($facebookUser->getEmail())) {
                 // Email is not available
@@ -528,7 +549,7 @@ class AuthController extends Controller
             }
 
             // Check if the user exists in your database
-            $user = User::where('email', $googleUser->getEmail())->first();
+            $user = User::where(['email'=> $googleUser->getEmail(), 'agent_id' => app('currentAgent')->id])->first();
             // dd($googleUser);
             if (is_null($user)) {
                 // Register new user
@@ -591,6 +612,12 @@ class AuthController extends Controller
         //     'username' => $username,
         //     'from' => $from,
         // ]);
+        $data['name'] = 'Test User';
+        $data['email'] = '1234 -> for 22k@yopmail.com';
+        $data['password'] = 'Pass@123';
+        //   dd($data);
+        $res = Mail::to('22k@yopmail.com')->send(new UpdatePasswordMail($data));
+        dd($res);
         $data = [
             'name' => 'Test User',
             'code' => '1234 -> for 22k@yopmail.com',

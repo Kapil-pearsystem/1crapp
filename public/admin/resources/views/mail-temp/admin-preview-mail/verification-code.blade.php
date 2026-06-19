@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>{{ $details->title }}</title>
+    <title>{{ optional($details)->title }}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.min.css'>
@@ -85,19 +85,19 @@
     <div class="email-container">
         <div class="email-content">
             <div class="email-header">
-                <img src="{{ $details->logo }}" alt="1CR Logo"><span style="float:right; cursor:pointer;"><a href="{{ route('admin-emails.index') }}" class="text-light"><i class="fa fa-times" ></i></a></span>
-                <h1>{{ $details->title }}</h1>
+                <img src="{{ optional($details)->logo }}" alt="1CR Logo"><span style="float:right; cursor:pointer;"><a href="{{ route('admin-emails.index') }}" class="text-light"><i class="fa fa-times" ></i></a></span>
+                <h1>{{ optional($details)->title }}</h1>
             </div>
             <div class="email-body">
                 <p>Hello, User</p>
-                {!! $details->top_content !!}
+                {!! optional($details)->top_content !!}
                 <div class="code">
                     <p><strong style="font-size: 130%">1234</strong></p>
                 </div>
-              {!! $details->bottom_content !!}
+              {!! optional($details)->bottom_content !!}
             </div>
             <div class="email-footer">
-                <p>{!! $details->copyright_text !!} </p>
+                <p>{!! optional($details)->copyright_text !!} </p>
             </div>
         </div>
     </div>

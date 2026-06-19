@@ -118,7 +118,7 @@ class ForgotPasswordController extends Controller
          $data['name'] = $user->name;
          $data['email'] = $user->email;
          $data['password'] = $request->input('new_password');
-         // dd($user);
+        //  dd($data);
           Mail::to($user->email)->send(new UpdatePasswordMail($data));
           // -------------------mail-------------------------------
         return redirect()->route('login')->with('success', 'Password updated successfully!');

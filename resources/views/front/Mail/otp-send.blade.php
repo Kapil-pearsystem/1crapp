@@ -1,50 +1,106 @@
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
-    <title>Verification Code</title>
+    <title>{{ $content->title }}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.min.css'>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-    <link rel='stylesheet' href="{{ url('') }}/css/stylenew.css">
-</head>
+    <style>
+        body {
+            font-family: Helvetica, Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+        }
 
-<body style="font-family: Helvetica, Arial, sans-serif; margin: 0px; padding: 0px; background-color: #ffffff;">
-    <table role="presentation"
-      style="width: 100%; border-collapse: collapse; border: 0px; border-spacing: 0px; font-family: Arial, Helvetica, sans-serif; background-color: rgb(239, 239, 239);">
-      <tbody>
-        <tr>
-          <td align="center" style="padding: 1rem 2rem; vertical-align: top; width: 100%;">
-            <table role="presentation" style="max-width: 600px; border-collapse: collapse; border: 0px; border-spacing: 0px; text-align: left;">
-              <tbody>
-                <tr>
-                  <td style="padding: 40px 0px 0px;">
-                    <div style="text-align: left;">
-                      <div style="padding-bottom: 20px;">
-                        <img src="{{url('')}}/img/logo 1.png" alt="Company" style="width: 56px;">
-                    </div>
-                    </div>
-                    <div style="padding: 20px; background-color: rgb(255, 255, 255);">
-                      <div style="color: rgb(0, 0, 0); text-align: left;">
-                        <h1 style="margin: 1rem 0">Verification code</h1>
-                        <p style="padding-bottom: 16px">Please use the verification code below to sign in.</p>
-                        <p style="padding-bottom: 16px"><strong style="font-size: 130%">{{ $data['otp'] }}</strong></p>
-                        <p style="padding-bottom: 16px">If you didn’t request this, you can ignore this email.</p>
-                        <p style="padding-bottom: 16px">Thanks,<br>The 1CR Team</p>
-                      </div>
-                    </div>
-                    <div style="padding-top: 20px; color: rgb(153, 153, 153); text-align: center;">
-                      {{-- <p style="padding-bottom: 16px">Made with ♥ in Paris</p> --}}
-                    </div>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </body>
+        .email-container {
+            width: 100%;
+            padding: 2rem 0;
+            background-color: #f5f5f5;
+        }
+
+        .email-content {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .email-header {
+            padding: 20px;
+            background: linear-gradient(135deg, #01508f 0%, #003b6f 100%);
+            text-align: center;
+        }
+
+        .email-header img {
+            width: 80px;
+            height: auto;
+        }
+
+        .email-header h1 {
+            color: #ffffff;
+            font-size: 24px;
+            margin: 10px 0 0;
+        }
+
+        .email-body {
+            padding: 30px;
+            color: #333333;
+        }
+
+        .email-body h1 {
+            color: #01508f;
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        .email-body p {
+            font-size: 16px;
+            line-height: 1.5;
+            margin-bottom: 20px;
+        }
+
+        .email-body .code {
+            background-color: #f9f9f9;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .email-footer {
+            padding: 20px;
+            text-align: center;
+            color: #999999;
+            font-size: 14px;
+            background-color: #f5f5f5;
+        }
+    </style>
+</head>
+<body>
+    <div class="email-container">
+        <div class="email-content">
+            <div class="email-header">
+                <img src="{{ $content->logo }}" alt="1CR Logo">
+                <h1>{{ $content->title }}</h1>
+            </div>
+            <div class="email-body">
+                <p>Hello {{ $data['name']??'' }},</p>
+                {!! $content->top_content !!}
+                <div class="code">
+                    <p><strong style="font-size: 130%">{{ $data['otp'] }}</strong></p>
+                </div>
+                {!! $content->bottom_content !!}
+            </div>
+            <div class="email-footer">
+                <p>{!! $content->copyright_text !!}</p>
+            </div>
+        </div>
+    </div>
+</body>
 
 </html>

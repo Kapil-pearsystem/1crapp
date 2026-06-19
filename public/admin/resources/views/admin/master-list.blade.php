@@ -3,10 +3,13 @@
 use Illuminate\Support\Str;
 ?>
 @section('title', 'Master List')
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <link href="https://cdn.datatables.net/2.0.3/css/dataTables.dataTables.min.css" rel="stylesheet">
 <link href="https://cdn.datatables.net/buttons/3.0.1/css/buttons.dataTables.min.css" rel="stylesheet">
 <link rel="stylesheet"
-href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css">
+href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css"><link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.10.0/css/bootstrap-datepicker.min.css">
+
 <style>
  .flt_liststs {
     float: right;
@@ -133,6 +136,7 @@ href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css">
         <div class="row mb-4">
                 <div class="col-lg-5">
                 <h3 class="h3 mb-0 text-gray-800">Master List </h3>
+                @if(request('agent'))<span class="text-muted">Agent: </span><span class="text-info">{{ @$agentdetail->first_name }} {{ @$agentdetail->last_name }}</span>@endif
                 @if($list_name)<span class="text-muted">Filter Applied With List: </span><span class="text-info">{{ $list_name }}</span>@endif
                 @if($tag_name)<span class="text-muted">Filter Applied With Tag: </span><span class="text-info"> {{ $tag_name }}</span> @endif
                 </div>
@@ -183,9 +187,10 @@ href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css">
                                 @endif -->
                                 <th>Email</th>
                                 <th>Phone</th>
-                                <!-- <th>Company</th>
+                                 <th>Company</th>
                                 <th>Source</th>
-                                <th>Request For</th> -->
+                                <th>Request For</th>
+                                <th>Address</th>
                                 <th>Services Taken</th>
                                 <th>Next Step</th>
                                 <th>Support Ticket</th>
@@ -203,88 +208,88 @@ href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css">
         </div>
     </div>
     <!-- Modal -->
-<div class="modal fade" id="filterModal123">
-    <div class="modal-dialog modal-lg modal-dialog-centered">
-        <div class="modal-content">
-        <div class="modal-header">
-            <h5 class="modal-title">Advanced Filters</h5>
-            <button class="close" data-dismiss="modal"><span>&times;</span></button>
-        </div>
-        <div class="modal-body">
+<!--<div class="modal fade" id="filterModal">-->
+<!--    <div class="modal-dialog modal-lg modal-dialog-centered">-->
+<!--        <div class="modal-content">-->
+<!--        <div class="modal-header">-->
+<!--            <h5 class="modal-title">Advanced Filters</h5>-->
+<!--            <button class="close" data-dismiss="modal"><span>&times;</span></button>-->
+<!--        </div>-->
+<!--        <div class="modal-body">-->
             <!-- Included -->
-            <div class="filter-card">
-            <div class="sec-label">
-                Included Conditions
-            </div>
-            <div class="form-row">
-                <div class="col-md-5">
-                <select id="inc-type" class="form-control" onchange="onTypeChange('inc')">
-                    <option value="">Select Type</option>
-                    <option value="list">Subscribed to list</option>
-                    <option value="tag">Has tag</option>
-                    <option value="">Has filled form</option>
-                    <option value="">Subscribed to sequence/Collection</option>
-                    <option value="">Date Range</option>
-                    <option value="">Status</option>
-                </select>
-                </div>
-                <div class="col-md-5">
-                <select id="inc-val" class="form-control d-none">
-                    <option value="">
-                    Select Value
-                    </option>
-                </select>
-                </div>
-                <div class="col-md-2">
-                <button class="plus-btn" onclick="addCond('inc')">
-                    +
-                </button>
-                </div>
-            </div>
-            <div id="inc-conds">
-            </div>
-            </div>
+<!--            <div class="filter-card">-->
+<!--            <div class="sec-label">-->
+<!--                Included Conditions-->
+<!--            </div>-->
+<!--            <div class="form-row">-->
+<!--                <div class="col-md-5">-->
+<!--                <select id="inc-type" class="form-control" onchange="onTypeChange('inc')">-->
+<!--                    <option value="">Select Type</option>-->
+<!--                    <option value="list">Subscribed to list</option>-->
+<!--                    <option value="tag">Has tag</option>-->
+<!--                    <option value="form">Has filled form</option>-->
+<!--                    <option value="">Subscribed to sequence/Collection</option>-->
+<!--                    <option value="date-range">Date Range</option>-->
+<!--                    <option value="">Status</option>-->
+<!--                </select>-->
+<!--                </div>-->
+<!--                <div class="col-md-5" id="date-range-container">-->
+<!--                    <select id="inc-val" class="form-control d-none">-->
+<!--                        <option value="">-->
+<!--                        Select Value-->
+<!--                        </option>-->
+<!--                    </select>-->
+<!--                </div>-->
+<!--                <div class="col-md-2">-->
+<!--                <button class="plus-btn" onclick="addCond('inc')">-->
+<!--                    +-->
+<!--                </button>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--            <div id="inc-conds">-->
+<!--            </div>-->
+<!--            </div>-->
             <!-- Excluded -->
-            <div class="filter-card">
-            <div class="sec-label">
-                Excluded Conditions
-            </div>
-            <div class="form-row">
-                <div class="col-md-5">
-                <select id="exc-type" class="form-control" onchange="onTypeChange('exc')">
-                    <option value="">Select Type</option>
-                    <option value="list">Subscribed to list</option>
-                    <option value="tag">Has tag</option>
-                    <option value="">Has filled form</option>
-                    <option value="">Subscribed to sequence/Collection</option>
-                    <option value="">Date Range</option>
-                    <option value="">Status</option>
-                </select>
-                </div>
-                <div class="col-md-5">
-                <select id="exc-val" class="form-control d-none">
-                    <option value="">
-                    Select Value
-                    </option>
-                </select>
-                </div>
-                <div class="col-md-2">
-                <button class="plus-btn" onclick="addCond('exc')">
-                    +
-                </button>
-                </div>
-            </div>
-            <div id="exc-conds">
-            </div>
-            </div>
-        </div>
-        <div class="modal-footer">
-            <button class="btn btn-outline-secondary" onclick="resetAll()">Reset</button>
-            <button class="btn open-btn" onclick="applyFilters()">Apply </button>
-        </div>
-        </div>
-    </div>
-</div>
+<!--            <div class="filter-card">-->
+<!--            <div class="sec-label">-->
+<!--                Excluded Conditions-->
+<!--            </div>-->
+<!--            <div class="form-row">-->
+<!--                <div class="col-md-5">-->
+<!--                <select id="exc-type" class="form-control" onchange="onTypeChange('exc')">-->
+<!--                    <option value="">Select Type</option>-->
+<!--                    <option value="list">Subscribed to list</option>-->
+<!--                    <option value="tag">Has tag</option>-->
+<!--                    <option value="form">Has filled form</option>-->
+<!--                    <option value="">Subscribed to sequence/Collection</option>-->
+<!--                    <option value="date-range">Date Range</option>-->
+<!--                    <option value="">Status</option>-->
+<!--                </select>-->
+<!--                </div>-->
+<!--                <div class="col-md-5">-->
+<!--                <select id="exc-val" class="form-control d-none">-->
+<!--                    <option value="">-->
+<!--                    Select Value-->
+<!--                    </option>-->
+<!--                </select>-->
+<!--                </div>-->
+<!--                <div class="col-md-2">-->
+<!--                <button class="plus-btn" onclick="addCond('exc')">-->
+<!--                    +-->
+<!--                </button>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--            <div id="exc-conds">-->
+<!--            </div>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--        <div class="modal-footer">-->
+<!--            <button class="btn btn-outline-secondary" onclick="resetAll()">Reset</button>-->
+<!--            <button class="btn open-btn" onclick="applyFilters()">Apply </button>-->
+<!--        </div>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</div>-->
 <div class="modal fade" id="filterModal">
     <div class="modal-dialog modal-lg modal-dialog-centered">
         <div class="modal-content">
@@ -316,9 +321,9 @@ href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css">
                                 <option value="">Select Value</option>
                             </select>
                             {{-- date range inputs --}}
-                            <div id="inc-date-wrap" class="d-none d-flex gap-2">
-                                <input type="text" id="inc-start-date" class="form-control" placeholder="Start Date">
-                                <input type="text" id="inc-end-date"   class="form-control" placeholder="End Date">
+                            <div id="inc-date-wrap" class="d-none gap-2 row" >
+                                <input type="text" id="inc-start-date" class="form-control col-6" placeholder="Start Date">
+                                <input type="text" id="inc-end-date"   class="form-control col-6" placeholder="End Date">
                             </div>
                         </div>
                         <div class="col-md-2">
@@ -346,9 +351,9 @@ href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css">
                             <select id="exc-val" class="form-control d-none">
                                 <option value="">Select Value</option>
                             </select>
-                            <div id="exc-date-wrap" class="d-none d-flex gap-2">
-                                <input type="text" id="exc-start-date" class="form-control" placeholder="Start Date">
-                                <input type="text" id="exc-end-date"   class="form-control" placeholder="End Date">
+                            <div id="exc-date-wrap" class="d-none row gap-2">
+                                <input type="text" id="exc-start-date" class="form-control col-6" placeholder="Start Date">
+                                <input type="text" id="exc-end-date"   class="form-control col-6" placeholder="End Date">
                             </div>
                         </div>
                         <div class="col-md-2">
@@ -634,15 +639,17 @@ href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css">
         const data = JSON.parse(el.getAttribute('data-message'));
         // console.log(data);
          $('.enquiry_message').html(spin_data());
-        var htmlData = `<p><strong>Name: </strong>${data.name}</p>
-                        <p><strong>Email: </strong>${data.email}</p>
-                        <p><strong>Phone: </strong>${data.phone}</p>
-                        <p><strong>Company: </strong>${data.cdo_name}</p>
-                        <p><strong>Source: </strong>${data.source}</p>
-                        <p><strong>Request For: </strong>${data.ps_name}</p>
-                        <hr>
-                        <p><strong>Message: </strong></p>
-                        <p>${data.message}</p>`;
+        var htmlData = `<p><strong>Message: </strong></p>
+                        <p>${data.message}</p>`; 
+        // var htmlData = `<p><strong>Name: </strong>${data.name}</p>
+        //                 <p><strong>Email: </strong>${data.email}</p>
+        //                 <p><strong>Phone: </strong>${data.phone}</p>
+        //                 <p><strong>Company: </strong>${data.cdo_name}</p>
+        //                 <p><strong>Source: </strong>${data.source}</p>
+        //                 <p><strong>Request For: </strong>${data.ps_name}</p>
+        //                 <hr>
+        //                 <p><strong>Message: </strong></p>
+        //                 <p>${data.message}</p>`;
         $('.enquiry_message').html(htmlData);
     }
     function nextStep(stepValue, id){
@@ -810,215 +817,167 @@ new DataTable('#example-table-theme', {
 </script>
 <script>
     /* Laravel data */
-    const opts = {
-      list: [
-        @foreach($contacts as $contact)
-        {
-          id: "{{ $contact->id }}",
-          name: "{{ $contact->name }}"
-        },
-        @endforeach
-      ],
-      tag: [
-        @foreach($tags as $tag)
-        {
-          id: "{{ $tag->id }}",
-          name: "{{ $tag->name }}"
-        },
-        @endforeach
-      ]
-    };
-    const labels = {
-      list: 'Subscribed to list',
-      tag: 'Has tag',
-      0: 'Has filled form',
-      1: 'Subscribed to sequence/Collection',
-       2: 'Date Range',
-       3: 'Status'
-    };
+    // const opts = {
+    //   list: [
+    //     @foreach($contacts as $contact)
+    //         {
+    //           id: "{{ $contact->id }}",
+    //           name: "{{ $contact->name }}"
+    //         },
+    //     @endforeach
+    //   ],
+    //   tag: [
+    //     @foreach($tags as $tag)
+    //         {
+    //           id: "{{ $tag->id }}",
+    //           name: "{{ $tag->name }}"
+    //         },
+    //     @endforeach
+    //   ],
+    //   form: [
+    //     @foreach($forms as $form)
+    //         {
+    //           id: "{{ $form->id }}",
+    //           name: "{{ $form->name }}"
+    //         },
+    //     @endforeach
+    //   ]
+    // };
     
-    let state = {
-      inc: [],
-      exc: []
-    };
-    let uid = 0;
-    function onTypeChange(prefix) {
-      let type = $("#" + prefix + "-type").val();
-      let box = $("#" + prefix + "-val");
-      if (!type) {
-        box.addClass("d-none");
-        return;
-      }
-      box.html(
-        '<option value="">Select Value</option>'
-      );
-      opts[type].forEach(item => {
-        box.append(
-          `<option value="${item.id}">
-${item.name}
-</option>`
-        );
-      });
-      box.removeClass("d-none");
-    }
-    function addCond(prefix) {
-      let type = $("#" + prefix + "-type").val();
-      let val = $("#" + prefix + "-val").val();
-      if (!type || !val) {
-        alert(
-          'Select type and value'
-        );
-        return;
-      }
-      state[prefix].push({
-        id: uid++,
-        type: type,
-        val: val,
-        logic: 'AND'
-      });
-      render(prefix);
-    }
-    function render(prefix) {
-      let html = '';
-      state[prefix].forEach((item, index) => {
-        if (index > 0) {
-          html += `
-<div class="logic-sep">
-<button
-class="logic-btn ${item.logic == 'AND' ? 'active' : ''}"
-onclick="setLogic(
-'${prefix}',
-${item.id},
-'AND'
-)">
-AND
-</button>
-<button
-class="logic-btn ${item.logic == 'OR' ? 'active' : ''}"
-onclick="setLogic(
-'${prefix}',
-${item.id},
-'OR'
-)">
-OR
-</button>
-</div>
-`;
-        }
-        html += `
-<div class="condition-row">
-<div class="form-row align-items-center">
-<div class="col-md-4">
-<select class="form-control"
-onchange="
-changeType(
-'${prefix}',
-${item.id},
-this.value
-)
-">
-${Object.entries(labels)
-            .map(([k, v]) =>
-              `<option
-value="${k}"
-${item.type == k ? 'selected' : ''}>
-${v}
-</option>`
-            ).join('')}
-</select>
-</div>
-<div class="col-md-7">
-<select class="form-control"
-onchange="
-changeVal(
-'${prefix}',
-${item.id},
-this.value
-)
-">
-<option value="">
-Select Value
-</option>
-${opts[item.type]
-            .map(v =>
-              `<option
-value="${v.id}"
-${v.id == item.val ? 'selected' : ''}>
-${v.name}
-</option>`
-            ).join('')}
-</select>
-</div>
-<div class="col-md-1">
-<button class="rm-btn"
-onclick="
-removeCond(
-'${prefix}',
-${item.id}
-)
-">
-×
-</button>
-</div>
-</div>
-</div>
-`;
-      });
-      $("#" + prefix + "-conds").html(html);
-    }
-    function setLogic(
-      prefix,
-      id,
-      logic
-    ) {
-      state[prefix]
-        .find(
-          x => x.id == id
-        ).logic = logic;
-      render(prefix);
-    }
-    function changeType(
-      prefix,
-      id,
-      type
-    ) {
-      let item = state[prefix]
-        .find(
-          x => x.id == id
-        );
-      item.type = type;
-      item.val = '';
-      render(prefix);
-    }
-    function changeVal(
-      prefix,
-      id,
-      val
-    ) {
-      state[prefix]
-        .find(
-          x => x.id == id
-        ).val = val;
-    }
-    function removeCond(
-      prefix,
-      id
-    ) {
-      state[prefix] = state[prefix]
-        .filter(
-          x => x.id != id
-        );
-      render(prefix);
-    }
-    function resetAll() {
-      state = {
-        inc: [],
-        exc: []
-      };
-      render('inc');
-      render('exc');
-      $("#output-box").hide();
-    }
+    // const labels = {
+    //   list: 'Subscribed to list',
+    //   tag: 'Has tag',
+    //   form: 'Has filled form',
+    //   daterange: 'date-range'
+    // };
+    
+    // let state = {
+    //   inc: [],
+    //   exc: []
+    // };
+    // let uid = 0;
+    
+    // function onTypeChange(prefix) {
+    //   let type = $("#" + prefix + "-type").val();
+    //   let box = $("#" + prefix + "-val");
+    //   if (!type) {
+    //     box.addClass("d-none");
+    //     return;
+    //   }
+    // //   if(type == 'date-range'){
+    // //     //   box.addClass("d-none");
+    // //     //     let html = `
+    // //     //         <div class="date-range-wrapper mt-2">
+    // //     //             <input type="date" class="form-control mb-2 start-date" name="start_date" placeholder="Start Date">
+    // //     //             <input type="date" class="form-control end-date" name="end_date" placeholder="End Date">
+    // //     //         </div>
+    // //     //     `;
+    // //     // $('#date-range-container').html(html);
+    // //   }
+    //     if(type == 'date-range'){
+
+    //         $('.date-range-wrapper').remove();
+    //         $("#" + prefix + "-conds").html(`
+    //             <div class="date-range-wrapper mt-2 d-flex">
+    //                 <input type="text"
+    //                       class="form-control start-date mb-2"
+    //                       placeholder="Start Date">
+        
+    //                 <input type="text"
+    //                       class="form-control end-date"
+    //                       placeholder="End Date">
+    //             </div>
+    //         `);
+    //         // box.after();
+        
+    //         $('.date-range-wrapper').datepicker({
+    //             format: 'yyyy-mm-dd',
+    //             autoclose: true,
+    //             todayHighlight: true,
+    //             inputs: $('.date-range-wrapper .start-date, .date-range-wrapper .end-date')
+    //         });
+        
+    //         box.addClass("d-none");
+        
+    //     }
+    //     else{
+    //       box.html('<option value="">Select Value</option>');
+    //       opts[type].forEach(item => {
+    //         box.append(`<option value="${item.id}">${item.name}</option>`);
+    //       });
+    //       box.removeClass("d-none");
+    //     }
+    // }
+    // function addCond(prefix) {
+    //   let type = $("#" + prefix + "-type").val();
+    // //   alert(type);
+    //   let val = $("#" + prefix + "-val").val();
+    //   if (!type || !val) {
+    //     alert(
+    //       'Select type and value'
+    //     );
+    //     return;
+    //   }
+    //   state[prefix].push({
+    //     id: uid++,
+    //     type: type,
+    //     val: val,
+    //     logic: 'AND'
+    //   });
+    //   render(prefix);
+    // }
+    // function render(prefix) {
+    //   let html = '';
+    //   state[prefix].forEach((item, index) => {
+    //     if (index > 0) {
+    //       html += `
+    //             <div class="logic-sep">
+    //                 <button class="logic-btn ${item.logic == 'AND' ? 'active' : ''}" onclick="setLogic('${prefix}', ${item.id}, 'AND')">AND </button>
+    //                 <button class="logic-btn ${item.logic == 'OR' ? 'active' : ''}" onclick="setLogic('${prefix}', ${item.id}, 'OR')">OR </button>
+    //             </div>`;
+    //     }
+    //     html += `
+    //     <div class="condition-row">
+    //     <div class="form-row align-items-center">
+    //     <div class="col-md-4">
+    //     <select class="form-control" onchange="changeType('${prefix}', ${item.id}, this.value)">
+    //     ${Object.entries(labels).map(([k, v]) =>`<option value="${k}"${item.type == k ? 'selected' : ''}>${v}</option>`).join('')}</select></div>
+    //     <div class="col-md-7">
+    //     <select class="form-control"
+    //     onchange="changeVal('${prefix}', ${item.id}, this.value)">
+    //     <option value="">Select Value </option>
+    //     ${opts[item.type].map(v =>`<option value="${v.id}" ${v.id == item.val ? 'selected' : ''}>${v.name}</option>`).join('')}</select></div>
+    //         <div class="col-md-1"><button class="rm-btn"onclick="removeCond('${prefix}', ${item.id})">×</button></div>
+    //     </div></div>`;
+    //   });
+    //   $("#" + prefix + "-conds").html(html);
+    // }
+    // function setLogic(prefix, id, logic) {
+    //   state[prefix].find(x => x.id == id).logic = logic;
+    //   render(prefix);
+    // }
+    // function changeType(prefix, id, type) {
+    //   let item = state[prefix].find(x => x.id == id);
+    //   item.type = type;
+    //   item.val = '';
+    //   render(prefix);
+    // }
+    // function changeVal(prefix, id, val) {
+    //   state[prefix].find(x => x.id == id).val = val;
+    // }
+    // function removeCond(prefix, id) {
+    //   state[prefix] = state[prefix].filter(x => x.id != id);
+    //   render(prefix);
+    // }
+    // function resetAll() {
+    //   state = {
+    //     inc: [],
+    //     exc: []
+    //   };
+    //   render('inc');
+    //   render('exc');
+    //   $("#output-box").hide();
+    // }
     // function applyFilters() {
     //   let payload = {
     //     included: state.inc,
@@ -1040,6 +999,7 @@ ${item.id}
             type: "POST",
             data: {
                 _token: "{{ csrf_token() }}",
+                agent_id: "{{ $agent_id }}",
                 filters: JSON.stringify(payload)
             },
             beforeSend: function () {
@@ -1254,4 +1214,299 @@ $(document).on('click', '.close-btn', function () {
     );
 });
 </script>
+
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.10.0/js/bootstrap-datepicker.min.js"></script>
+<script>
+@if(isset(request()->list) || isset(request()->tag))
+$('.delete-btn').hide();
+@endif
+
+$('.date-picker').datepicker({
+    format: 'yyyy-mm-dd',
+    autoclose: true,
+    todayHighlight: true
+});
+</script>
+<script>
+/* ── Laravel data passed from blade ── */
+const opts = {
+    list: [
+        @foreach($contacts as $contact)
+            { id: "{{ $contact->id }}", name: "{{ $contact->name }}" },
+        @endforeach
+    ],
+    tag: [
+        @foreach($tags as $tag)
+            { id: "{{ $tag->id }}", name: "{{ $tag->name }}" },
+        @endforeach
+    ],
+    form: [
+        @foreach($forms as $form)
+            { id: "{{ $form->id }}", name: "{{ $form->name }}" },
+        @endforeach
+    ],
+    // Status options — fixed values, no DB needed
+    status: [
+        { id: 'active',       name: 'Active'       },
+        { id: 'inactive',     name: 'Inactive'      },
+    ]
+};
+
+const labels = {
+    list:       'Subscribed to list',
+    tag:        'Has tag',
+    form:       'Has filled form',
+    status:     'Status',
+    'date-range': 'Date Range',
+};
+
+let state = { inc: [], exc: [] };
+let uid   = 0;
+
+/* ── Type dropdown change ───────────────────────────────────────────────── */
+function onTypeChange(prefix) {
+    const type      = $('#' + prefix + '-type').val();
+    const valSel    = $('#' + prefix + '-val');
+    const dateWrap  = $('#' + prefix + '-date-wrap');
+
+    // Reset both inputs
+    valSel.addClass('d-none').html('<option value="">Select Value</option>');
+    dateWrap.addClass('d-none');
+    $('#' + prefix + '-start-date, #' + prefix + '-end-date').val('');
+
+    if (!type) return;
+
+    if (type === 'date-range') {
+        dateWrap.removeClass('d-none');
+        // Init Bootstrap datepicker on the two inputs
+        $('#' + prefix + '-start-date, #' + prefix + '-end-date').datepicker({
+            format:         'yyyy-mm-dd',
+            autoclose:      true,
+            todayHighlight: true,
+        });
+    } else {
+        // list / tag / form / status all use the select
+        opts[type].forEach(item => {
+            valSel.append(`<option value="${item.id}">${item.name}</option>`);
+        });
+        valSel.removeClass('d-none');
+    }
+}
+
+/* ── Add condition ──────────────────────────────────────────────────────── */
+function addCond(prefix) {
+    const type = $('#' + prefix + '-type').val();
+    if (!type) { alert('Please select a condition type.'); return; }
+
+    let val, label;
+
+    if (type === 'date-range') {
+        const start = $('#' + prefix + '-start-date').val();
+        const end   = $('#' + prefix + '-end-date').val();
+        if (!start || !end) { alert('Please select both start and end dates.'); return; }
+        val   = start + ' to ' + end;   // stored as "2024-01-01 to 2024-12-31"
+        label = val;
+    } else {
+        val = $('#' + prefix + '-val').val();
+        if (!val) { alert('Please select a value.'); return; }
+        label = opts[type].find(x => x.id == val)?.name ?? val;
+    }
+
+    state[prefix].push({ id: uid++, type, val, label, logic: 'AND' });
+
+    // Reset top row
+    $('#' + prefix + '-type').val('');
+    $('#' + prefix + '-val').addClass('d-none').html('<option value="">Select Value</option>');
+    $('#' + prefix + '-date-wrap').addClass('d-none');
+    $('#' + prefix + '-start-date, #' + prefix + '-end-date').val('');
+
+    render(prefix);
+}
+
+/* ── Render conditions list ─────────────────────────────────────────────── */
+function render(prefix) {
+    let html = '';
+
+    state[prefix].forEach((item, index) => {
+
+        // AND / OR separator
+        if (index > 0) {
+            html += `
+            <div class="logic-sep">
+                <button class="logic-btn ${item.logic === 'AND' ? 'active' : ''}"
+                    onclick="setLogic('${prefix}', ${item.id}, 'AND')">AND</button>
+                <button class="logic-btn ${item.logic === 'OR' ? 'active' : ''}"
+                    onclick="setLogic('${prefix}', ${item.id}, 'OR')">OR</button>
+            </div>`;
+        }
+
+        // Build value cell based on type
+        let valueCell = '';
+
+        if (item.type === 'date-range') {
+            // Show two date inputs pre-filled
+            const [start, end] = item.val.split(' to ');
+            valueCell = `
+            <div class="d-flex gap-2">
+                <input readonly type="text" class="form-control form-control-sm"
+                    value="${start}"
+                    onchange="changeDateVal('${prefix}', ${item.id}, 'start', this.value)">
+                <input readonly type="text" class="form-control form-control-sm"
+                    value="${end}"
+                    onchange="changeDateVal('${prefix}', ${item.id}, 'end', this.value)">
+            </div>`;
+        } else {
+            // Dropdown for list / tag / form / status
+            const options = (opts[item.type] || [])
+                .map(v => `<option disabled value="${v.id}" ${v.id == item.val ? 'selected' : ''}>${v.name}</option>`)
+                .join('');
+            valueCell = `
+            <select readonly class="form-control form-control-sm"
+                onchange="changeVal('${prefix}', ${item.id}, this.value)">
+                <option value="">Select Value</option>
+                ${options}
+            </select>`;
+        }
+
+        html += `
+        <div class="condition-row">
+            <div class="form-row align-items-center">
+                <div class="col-md-4">
+                    <select readonly class="form-control form-control-sm"
+                        onchange="changeType('${prefix}', ${item.id}, this.value)">
+                        ${Object.entries(labels)
+                            .map(([k, v]) => `<option  value="${k}" ${item.type === k ? '' : 'disabled'} ${item.type === k ? 'selected' : ''}>${v}</option>`)
+                            .join('')}
+                    </select>
+                </div>
+                <div class="col-md-7">${valueCell}</div>
+                <div class="col-md-1">
+                    <button class="rm-btn" onclick="removeCond('${prefix}', ${item.id})">×</button>
+                </div>
+            </div>
+        </div>`;
+    });
+
+    $('#' + prefix + '-conds').html(html);
+}
+
+/* ── State helpers ──────────────────────────────────────────────────────── */
+function setLogic(prefix, id, logic) {
+    state[prefix].find(x => x.id == id).logic = logic;
+    render(prefix);
+}
+
+function changeType(prefix, id, type) {
+    const item = state[prefix].find(x => x.id == id);
+    item.type  = type;
+    item.val   = '';
+    item.label = '';
+    render(prefix);
+}
+
+function changeVal(prefix, id, val) {
+    const item  = state[prefix].find(x => x.id == id);
+    item.val    = val;
+    item.label  = opts[item.type]?.find(x => x.id == val)?.name ?? val;
+}
+
+function changeDateVal(prefix, id, part, value) {
+    const item  = state[prefix].find(x => x.id == id);
+    let [start, end] = item.val.split(' to ');
+    if (part === 'start') start = value;
+    if (part === 'end')   end   = value;
+    item.val   = start + ' to ' + end;
+    item.label = item.val;
+}
+
+function removeCond(prefix, id) {
+    state[prefix] = state[prefix].filter(x => x.id != id);
+    render(prefix);
+}
+
+function resetAll() {
+    state = { inc: [], exc: [] };
+    render('inc');
+    render('exc');
+    ['inc', 'exc'].forEach(p => {
+        $('#' + p + '-type').val('');
+        $('#' + p + '-val').addClass('d-none').html('<option value="">Select Value</option>');
+        $('#' + p + '-date-wrap').addClass('d-none');
+        $('#' + p + '-start-date, #' + p + '-end-date').val('');
+    });
+}
+
+/* ── Apply / AJAX ───────────────────────────────────────────────────────── */
+function applyFilters() {
+    const payload = { included: state.inc, excluded: state.exc };
+
+    $.ajax({
+        url:  "{{ route('master.list.filter') }}",
+        type: 'POST',
+        data: {
+            _token:   "{{ csrf_token() }}",
+            agent_id: "{{ $agent_id }}",
+            filters:  JSON.stringify(payload)
+        },
+        beforeSend: function () {
+            $('#master-list-body').html(
+                `<tr><td colspan="7" class="text-center">
+                    <div class="spinner-border spinner-border-sm text-primary" role="status"></div>
+                    Loading...
+                </td></tr>`
+            );
+        },
+        success: function (response) {
+            $('#master-list-body').html(response);
+            $('#filterModal').modal('hide');
+        },
+        error: function () {
+            alert('Something went wrong. Please try again.');
+        }
+    });
+}
+
+
+$('#inc-start-date, #inc-end-date').datepicker({
+    format: 'yyyy-mm-dd',
+    autoclose: true,
+    todayHighlight: true,
+    endDate: new Date() // max = today
+});
+
+$('#inc-start-date').on('changeDate', function(e){
+
+    // disable previous dates in end date
+    $('#inc-end-date').datepicker(
+        'setStartDate',
+        e.date
+    );
+
+    // clear end date if already selected
+    $('#inc-end-date').val('');
+
+});
+$('#exc-start-date, #exc-end-date').datepicker({
+    format: 'yyyy-mm-dd',
+    autoclose: true,
+    todayHighlight: true,
+    endDate: new Date() // max = today
+});
+
+$('#exc-start-date').on('changeDate', function(e){
+
+    // disable previous dates in end date
+    $('#exc-end-date').datepicker(
+        'setStartDate',
+        e.date
+    );
+
+    // clear end date if already selected
+    $('#exc-end-date').val('');
+
+});
+</script>
+
 @endsection

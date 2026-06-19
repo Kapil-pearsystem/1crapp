@@ -136,7 +136,7 @@
                                                                             
                                                                             <li>
                                                                                 <select class="al_slt_partss schedule-day get-filter-data @if($ikey == 0) d-none @endif" name="schedule_day[{{ $item->set_index }}]">
-                                                                                    <option value="">Select day(s)</option>
+                                                                                    <option value="0">Same Day(s)</option>
                                                                                     @for($i = 1; $i <= 30; $i++)
                                                                                     <option value="{{ $i }}" @if($item->schedule_day == $i) selected @endif>
                                                                                         {{ $i }}
@@ -147,12 +147,12 @@
                                                                             <li>
                                                                                 <select class="al_slt_partss schedule-time" name="schedule_time[{{ $item->set_index }}]">
                                                                                     <option value="">Select time</option>
-                                                                                    <option value="00:00:00"  @if($item->schedule_time == '00:00:00') selected @endif>12:00 AM</option>
-                                                                                    <option value="04:00:00"  @if($item->schedule_time == '04:00:00') selected @endif>04:00 AM</option>
-                                                                                    <option value="08:00:00"  @if($item->schedule_time == '08:00:00') selected @endif>08:00 AM</option>
-                                                                                    <option value="12:00:00"  @if($item->schedule_time == '12:00:00') selected @endif>12:00 PM</option>
-                                                                                    <option value="16:00:00"  @if($item->schedule_time == '16:00:00') selected @endif>04:00 PM</option>
-                                                                                    <option value="20:00:00"  @if($item->schedule_time == '20:00:00') selected @endif>08:00 PM</option>
+                                                                                    <option value="00:00:00"  @if($item->schedule_time == '00:00:00') selected @endif>00:00</option>
+                                                                                    <option value="04:00:00"  @if($item->schedule_time == '04:00:00') selected @endif>04:00</option>
+                                                                                    <option value="08:00:00"  @if($item->schedule_time == '08:00:00') selected @endif>08:00</option>
+                                                                                    <option value="12:00:00"  @if($item->schedule_time == '12:00:00') selected @endif>12:00</option>
+                                                                                    <option value="16:00:00"  @if($item->schedule_time == '16:00:00') selected @endif>16:00</option>
+                                                                                    <option value="20:00:00"  @if($item->schedule_time == '20:00:00') selected @endif>20:00</option>
                                                                                 </select>
                                                                             </li>
                                                                         </ul>
@@ -696,15 +696,69 @@ function validateFirstStep(e) {
     }
     return true;
 }
+// function validateSecondStep() {
+//     let isValid = true;
+//     $('.CollectionCloneItems').each(function (index) {
+//         let type = $(this).find('.type-selector').val();
+//         if (!type) {
+//             alert('Please select type for all items.');
+//             isValid = false;
+//             return false;
+//         }
+//         if (type == '1') {
+//             let mailCategory = $(this).find('.mail-category-select').val();
+//             if (!mailCategory) {
+//                 alert('Please select mail category for all email items.');
+//                 isValid = false;
+//                 return false;
+//             }
+//         } else if (type == '2') {
+//             let giftCategory = $(this).find('.gift-category-select').val();
+//             if (!giftCategory) {
+//                 alert('Please select gift category for all gift items.');
+//                 isValid = false;
+//                 return false;
+//             }
+//         }
+//         // Skip days validation for first item
+//         if (index > 0) {
+//             let days = $(this).find('.schedule-day').val();
+//             if (!days) {
+//                 alert('Please select schedule day for all items.');
+//                 isValid = false;
+//                 return false;
+//             }
+//         }
+//         let ScheduleTime = $(this).find('.schedule-time').val();
+//         if (!ScheduleTime) {
+//             alert('Please select schedule time for all items.');
+//             isValid = false;
+//             return false;
+//         }
+//         // Validate item selection for current block
+//         if ($(this).find('.ck_bx_box:checked').length === 0) {
+//             alert('Please select at least one item.');
+//             isValid = false;
+//             return false;
+//         }
+//     });
+//     return isValid;
+// }
 function validateSecondStep() {
     let isValid = true;
+
+    let previousDay = null;
+    let previousTime = null;
+
     $('.CollectionCloneItems').each(function (index) {
         let type = $(this).find('.type-selector').val();
+
         if (!type) {
             alert('Please select type for all items.');
             isValid = false;
             return false;
         }
+
         if (type == '1') {
             let mailCategory = $(this).find('.mail-category-select').val();
             if (!mailCategory) {
@@ -720,28 +774,60 @@ function validateSecondStep() {
                 return false;
             }
         }
+
+        let days = $(this).find('.schedule-day').val();
+
         // Skip days validation for first item
         if (index > 0) {
-            let days = $(this).find('.schedule-day').val();
             if (!days) {
                 alert('Please select schedule day for all items.');
                 isValid = false;
                 return false;
             }
+        } else {
+            days = days || '0';
         }
+
+        let ScheduleTime = $(this).find('.schedule-time').val();
+
+        if (!ScheduleTime) {
+            alert('Please select schedule time for all items.');
+            isValid = false;
+            return false;
+        }
+
+        // Day & Time sequence validation
+        if (previousDay !== null) {
+
+            // Day cannot be less than previous day
+            if (parseInt(days) < parseInt(previousDay)) {
+                alert('Schedule day cannot be less than the previous schedule day.');
+                isValid = false;
+                return false;
+            }
+
+            // Same day => time must be greater than previous time
+            if (
+                parseInt(days) === parseInt(previousDay) &&
+                ScheduleTime <= previousTime
+            ) {
+                alert('For the same day, schedule time must be greater than the previous schedule time.');
+                isValid = false;
+                return false;
+            }
+        }
+
+        previousDay = days;
+        previousTime = ScheduleTime;
+
         // Validate item selection for current block
         if ($(this).find('.ck_bx_box:checked').length === 0) {
             alert('Please select at least one item.');
             isValid = false;
             return false;
         }
-        let ScheduleTime = $(this).find('.schedule-time').val();
-        if (!ScheduleTime) {
-            alert('Please select schedule time for all items.');
-            isValid = false;
-            return false;
-        }
     });
+
     return isValid;
 }
 </script>

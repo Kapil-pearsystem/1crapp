@@ -69,7 +69,7 @@ $giftCategories = \App\Models\GiftCategoryModel::select('id', 'name')->orderBy('
                                 </li>
                                 <li>
                                     <select class="al_slt_partss schedule-day d-none" name="schedule_day[__SET_INDEX__]" value="0">
-                                        <option value="">Select day(s)</option>
+                                        <option value="0">Same Day(s)</option>
                                         @for($i = 1; $i <= 30; $i++)
                                         <option value="{{ $i }}">
                                             {{ $i }}
@@ -80,12 +80,12 @@ $giftCategories = \App\Models\GiftCategoryModel::select('id', 'name')->orderBy('
                                 <li>
                                     <select class="al_slt_partss schedule-time" name="schedule_time[__SET_INDEX__]">
                                         <option value="">Select time</option>
-                                        <option value="00:00:00">12:00 AM</option>
-                                        <option value="04:00:00">04:00 AM</option>
-                                        <option value="08:00:00">08:00 AM</option>
-                                        <option value="12:00:00">12:00 PM</option>
-                                        <option value="16:00:00">04:00 PM</option>
-                                        <option value="20:00:00">08:00 PM</option>
+                                        <option value="00:00:00">00:00</option>
+                                        <option value="04:00:00">04:00</option>
+                                        <option value="08:00:00">08:00</option>
+                                        <option value="12:00:00">12:00</option>
+                                        <option value="16:00:00">16:00 </option>
+                                        <option value="20:00:00">20:00</option>
                                     </select>
                                 </li>
                             </ul>

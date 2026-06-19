@@ -70,6 +70,7 @@ use App\Http\Controllers\FooterController;
 use App\Http\Controllers\CollectionController;
 use App\Http\Controllers\CampaignController;
 use App\Http\Controllers\AuthTempController;
+use App\Http\Controllers\PlanPermissionController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -492,8 +493,10 @@ Route::middleware(['auth'])->prefix('collection')->name('collection.')->group(fu
     Route::post('/filter', [CollectionController::class, 'filter'])->name('filter');
     Route::get('/edit/{id}', [CollectionController::class, 'edit'])->name('edit');
     Route::get('/delete/{id}', [CollectionController::class, 'delete'])->name('delete');
+    Route::get('/view-campaign', [CollectionController::class, 'getGiftMail'])->name('view-campaign');
 
 });
+
 Route::middleware(['auth'])->prefix('collection/{id}/campaigns')->name('collection.campaigns.')->group(function(){
     Route::get('/', [CampaignController::class, 'index'])->name('index');
     Route::post('/save', [CampaignController::class, 'save'])->name('save');
@@ -926,6 +929,9 @@ Route::middleware(['auth', 'plan_permission'])->prefix('plan-type')->name('plan-
     Route::post('/store', [PlanTypeController::class, 'store'])->name('store');
     Route::get('/delete/{id}', [PlanTypeController::class, 'delete'])->name('delete');
 });
+Route::middleware(['auth'])->prefix('plan-permission')->name('plan-permission.')->group(function(){
+    Route::get('/', [PlanPermissionController::class, 'index'])->name('index');
+});
 
 Route::middleware('auth')->prefix('appointment-booking')->name('appointment-booking.')->group(function(){
     Route::get('/', [AppointmentBookingController::class, 'index'])->name('index');
@@ -1012,7 +1018,7 @@ Route::middleware('auth')->prefix('compliances')->name('compliances.')->group(fu
 });
 
 
-Route::middleware(['auth','plan_permission'])->prefix('admin-emails')->name('admin-emails.')->group(function(){
+Route::middleware(['auth'])->prefix('admin-emails')->name('admin-emails.')->group(function(){
     Route::get('/', [AuthTempController::class, 'index'])->name('index');
     Route::get('/edit/{id}', [AuthTempController::class, 'edit'])->name('edit');
     Route::post('/store', [AuthTempController::class, 'store'])->name('store');
