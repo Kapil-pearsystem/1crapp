@@ -494,6 +494,7 @@ Route::middleware(['auth'])->prefix('collection')->name('collection.')->group(fu
     Route::get('/edit/{id}', [CollectionController::class, 'edit'])->name('edit');
     Route::get('/delete/{id}', [CollectionController::class, 'delete'])->name('delete');
     Route::get('/view-campaign', [CollectionController::class, 'getGiftMail'])->name('view-campaign');
+    Route::get('/processCampaigns', [CollectionController::class, 'processCampaigns'])->name('processCampaigns');
 
 });
 

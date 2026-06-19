@@ -55,26 +55,26 @@ class CampaignController extends Controller
         $campaign->created_by = Auth::id();
         $campaign->save();
 
-        CampaignSchedule::where('campaign_id', $campaign->id)->delete();
-        $items = CollectionItemModel::where('collection_id', $id)->get();
-        $startDate = $campaign->start_date;
-        if($startDate){
-            foreach ($items as $item) {
-                $startDate = date('Y-m-d', strtotime($startDate . ' + ' . $item->schedule_day . ' days'));
-                $schedule = new CampaignSchedule();
-                $schedule->campaign_id = $campaign->id;
-                $schedule->type = $item->postal_type == '1' ? 'email' : 'gift';
-                $schedule->item_id = $item->id;
-                $schedule->start_date = $startDate;
-                $schedule->schedule_time = $item->schedule_time;
-                $schedule->status = 'pending';
-                $schedule->save();
-            }
-            $totalDays = CollectionItemModel::where('collection_id', $id)->sum('schedule_day') ?? 0;
-            $endDate = date('Y-m-d', strtotime($startDate . ' + ' . $totalDays . ' days'));
-            CampaignSchedule::where('campaign_id', $campaign->id)->update(['end_date' => $endDate]);
-            $msg .= ' & scheduled';
-        }
+        // CampaignSchedule::where('campaign_id', $campaign->id)->delete();
+        // $items = CollectionItemModel::where('collection_id', $id)->get();
+        // $startDate = $campaign->start_date;
+        // if($startDate){
+        //     foreach ($items as $item) {
+        //         $startDate = date('Y-m-d', strtotime($startDate . ' + ' . $item->schedule_day . ' days'));
+        //         $schedule = new CampaignSchedule();
+        //         $schedule->campaign_id = $campaign->id;
+        //         $schedule->type = $item->postal_type == '1' ? 'email' : 'gift';
+        //         $schedule->item_id = $item->id;
+        //         $schedule->start_date = $startDate;
+        //         $schedule->schedule_time = $item->schedule_time;
+        //         $schedule->status = 'pending';
+        //         $schedule->save();
+        //     }
+        //     $totalDays = CollectionItemModel::where('collection_id', $id)->sum('schedule_day') ?? 0;
+        //     $endDate = date('Y-m-d', strtotime($startDate . ' + ' . $totalDays . ' days'));
+        //     CampaignSchedule::where('campaign_id', $campaign->id)->update(['end_date' => $endDate]);
+        //     $msg .= ' & scheduled';
+        // }
 
         return redirect()->back()->with('success', 'Campaign '.$msg. ' successfully!');
     }

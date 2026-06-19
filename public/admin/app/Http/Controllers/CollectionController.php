@@ -19,11 +19,10 @@ use Illuminate\Support\Str;
 use Illuminate\Validation\Rules\Password;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
-
-
 use App\Models\CampaignSchedule;
 use App\Models\CampaignModel;
 use App\Models\Customer;
+use App\Models\CampaignDeliveryLog;
 use App\Models\UserGiftModel;
 use App\Models\AuthTempModel;
 use App\Mail\CampaignCustomerMail;
@@ -76,16 +75,13 @@ class CollectionController extends Controller
         $collection->status = 1;
         $collection->created_by = Auth::id();
         $collection->save();
-
         $collectionItems = [];
         $itemIds = $request->item_id ?? [];   // keyed by set index
         if (!empty($itemIds) && is_array($itemIds)) {
             foreach ($itemIds as $setIndex => $itemId) {
                 if (empty($itemId)) continue;  // nothing selected in this set
-
                 $postalType = $request->type[$setIndex] ?? null;
                 $catId  = $request->mail_category[$setIndex] ?? $request->gift_category[$setIndex] ?? null;
-
                 $collectionItems[] = [
                     'collection_id' => $collection->id,
                     'set_index'     => $setIndex,
@@ -107,20 +103,16 @@ class CollectionController extends Controller
         if(!empty($collectionItems)){
             CollectionItemModel::insert($collectionItems);
         }
-
         return redirect()->route('collection.index')->with('success', $msg);
     }
     private function generateSeqID(){
-        
         $seqID = 'SEQ-' . strtoupper(Str::random(8)); // Generate a random sequence ID
         $collection = CollectionModel::where('seqID', $seqID)->exists();
         if($collection){
             return $this->generateSeqID(); // Regenerate if it already exists
         }
         return $seqID;
-
     }
-
     public function filter(Request $request)
     {
         // Validate the incoming request data
@@ -139,7 +131,6 @@ class CollectionController extends Controller
                 'errors' => $validator->errors(),
             ]);
         }
-        
         // Extract filter parameters
         $setIndex = $request->input('set_index');
         $postalType = $request->input('postal_type');
@@ -166,11 +157,9 @@ class CollectionController extends Controller
         //     ],
         //     'message' => 'Filter applied successfully.',
         // ]);
-        
         $collectionItems = CollectionItemModel::where('collection_id', $collectionId)->get();
         $s_mail_ids = $collectionItems->where('postal_type', 1)->pluck('item_id')->toArray()??[];
         $s_gift_ids = $collectionItems->where('postal_type', 2)->pluck('item_id')->toArray()??[];
-        
         $data = '';
         $count = 0;
         if($postalType == 1){
@@ -193,7 +182,6 @@ class CollectionController extends Controller
             //     $mailData->where('tbl_giftmail.discount', '<=', $discount);
             // }
             // $mailData->offset($offset)->limit($limit);
-            
             if (!is_null($s_mail_ids) && count($s_mail_ids) > 0) {
                 $mailData = $mailData->orderByRaw("FIELD(tbl_giftmail.id, " . implode(',', $s_mail_ids) . ") DESC")
                 ->orderBy('tbl_giftmail.id');
@@ -249,7 +237,6 @@ class CollectionController extends Controller
             'message' => 'Filter applied successfully.',
         ]);
     }
-
     public function edit(Request $request, $id){
         $config = GiftConfigModel::pluck('price', 'key')->toArray();
         $collection = CollectionModel::find($id);
@@ -265,32 +252,24 @@ class CollectionController extends Controller
     public function delete(Request $request, $id)
     {
         $collection = CollectionModel::find($id);
-    
         if (!$collection || $collection->created_by != Auth::id()) {
             return redirect()->back()->with('error', 'Collection not found.');
         }
-    
         // Get campaign IDs for this collection
         $campaignIds = CampaignModel::where('coll_id', $id)->pluck('id')->toArray();
-    
         // Delete campaign schedules
         CampaignSchedule::whereIn('campaign_id', $campaignIds)->delete();
-    
         // Delete campaigns
         CampaignModel::where('coll_id', $id)->delete();
-    
         // Delete collection items
         CollectionItemModel::where('collection_id', $id)->delete();
-    
         // Delete collection
         $collection->delete();
-    
         return redirect()->route('collection.index')->with('success', 'Collection deleted successfully.');
     }
     public function getGiftMail(){
             $fromTime = now()->copy()->subHours(2)->format('H:i:s');
             $toTime   = now()->copy()->addHours(2)->format('H:i:s');
-    
             // Log::info("Searching schedules between {$fromTime} and {$toTime}");
             // dd($fromTime, $toTime);
              $items = CampaignSchedule::where('status', 'pending')
@@ -298,64 +277,44 @@ class CollectionController extends Controller
                 // ->whereBetween('schedule_time', [$fromTime, $toTime])
                 ->get();
                 dd($items);
-    
             // Log::info('Schedules found: '.$items->count());
-    
             foreach ($items as $item) {
-    
                 // Log::info("Processing Schedule ID: {$item->id}");
-    
                 // email
                 // if ($item->type == 'email') {
                 //     Log::info("Email schedule detected");
-    
                 //     $collectionItem = CollectionItemModel::find($item->item_id);
-    
                 //     if (!$collectionItem) {
                 //         Log::error("Collection Item not found: {$item->item_id}");
                 //         continue;
                 //     }
-    
                 //     Log::info("Collection Item Found: {$collectionItem->id}");
-    
                 //     if ($collectionItem->postal_type != '1') {
                 //         Log::info("Postal type is not email");
                 //         continue;
                 //     }
-    
                 //     $campaign = CampaignModel::find($item->campaign_id);
-    
                 //     if (!$campaign) {
                 //         Log::error("Campaign not found: {$item->campaign_id}");
                 //         continue;
                 //     }
-    
                 //     Log::info("Campaign Found: {$campaign->id}");
-    
                 //     $customers = Customer::join('tbl_user_list', 'tbl_user_list.user_id', '=', 'users.id')
                 //         ->where('users.agent_id', $campaign->created_by)
                 //         ->where('tbl_user_list.list_id', $campaign->list_id)
                 //         ->distinct()
                 //         ->select('users.name', 'users.email')
                 //         ->get();
-    
                 //     Log::info("Customers Found: ".$customers->count());
-    
                 //     if ($customers->isNotEmpty()) {
-    
                 //         $mail = GiftMailModel::find($collectionItem->item_id);
-    
                 //         if (!$mail) {
                 //             Log::error("Gift Mail not found: {$collectionItem->item_id}");
                 //             continue;
                 //         }
-    
                 //         Log::info("Gift Mail Found: {$mail->id}");
-    
                 //         $maildata = $mail->toArray();
-    
                 //         foreach ($customers as $customer) {
-                            
                 //             $maildata = [
                 //                 'name' => $customer->name,
                 //                 'logo' => $mail->logo,
@@ -364,16 +323,12 @@ class CollectionController extends Controller
                 //                 'subject' => $mail->subject,
                 //             ];
                 //             Log::info("Sending mail to: {$customer->email}");
-    
                 //             try {
                 //                 Mail::to($customer->email)
                 //                     ->cc(['1crappcampaign@yopmail.com'])
                 //                     ->send(new CampaignCustomerMail($maildata));
-    
                 //                 Log::info("Mail Sent Successfully: {$customer->email}");
-    
                 //             } catch (\Exception $e) {
-    
                 //                 Log::error("Mail Failed: {$customer->email}");
                 //                 Log::error($e->getMessage());
                 //             }
@@ -384,41 +339,33 @@ class CollectionController extends Controller
                 // }else{
                     // gift
                     // Log::info("Gift schedule detected");
-    
                     $collectionGiftItem = CollectionItemModel::find($item->item_id);
                     // dd($item->item_id);
                     if (!$collectionGiftItem) {
                         // Log::error("Collection Item not found: {$item->item_id}");
                         continue;
                     }
-    
                     // Log::info("Collection Item Found: {$collectionGiftItem->id}");
-    
                     if ($collectionGiftItem->postal_type != '2') {
                         Log::info("Postal type is not gift");
                         continue;
                     }
-    
                     $campaign = CampaignModel::find($item->campaign_id);
                     $collection = CollectionModel::withCount('gifts')->find($collectionGiftItem->collection_id);
                     if (!$campaign) {
                         // Log::error("Campaign not found: {$item->campaign_id}");
                         continue;
                     }
-    
                     // Log::info("Campaign Found: {$campaign->id}");
-    
                     $customers = Customer::join('tbl_user_list', 'tbl_user_list.user_id', '=', 'users.id')
                         ->where('users.agent_id', $campaign->created_by)
                         ->where('tbl_user_list.list_id', $campaign->list_id)
                         ->distinct()
                         ->select('users.id','users.memberid', 'users.name', 'users.email')
                         ->get();
-    
                     // Log::info("Customers Found: ".$customers->count());
                     $total_customer = $customers->count();
                     if ($customers->isNotEmpty()) {
-    
                         $gift = GiftModel::with('giftcategory')->find($collectionGiftItem->item_id);
                         $thankyouStatus = false;
                         $tyc_category = 'TYC';
@@ -443,9 +390,7 @@ class CollectionController extends Controller
                         $adminmail = AuthTempModel::where('category', 5)->first();
                         // $maildata = $adminmail->toArray();
                         foreach ($customers as $customer) {
-                        
                             // try {
-                        
                             //     Log::info("Processing Gift For Customer ID: {$customer->id}");
                                 $mrp = (float) $gift->mrp;
                                 $discount = (float) $gift->discount;
@@ -466,15 +411,11 @@ class CollectionController extends Controller
                             //         'price'    => round($finalPrice, 2),
                             //         'status'   => 'pending',
                             //     ]);
-                        
                             //     Log::info(
                             //         "Gift Order Created | Customer: {$customer->id} | Gift: {$gift->id} | Price: {$finalPrice}"
                             //     );
-                        
                             // } catch (\Exception $e) {
-                        
                             //     Log::error("Gift Order Creation Failed");
-                        
                             //     Log::error([
                             //         'customer_id' => $customer->id ?? null,
                             //         'gift_id'     => $gift->id ?? null,
@@ -482,7 +423,6 @@ class CollectionController extends Controller
                             //         'file'        => $e->getFile(),
                             //         'line'        => $e->getLine(),
                             //     ]);
-                        
                             //     continue;
                             // }
                             // dd($adminmail);
@@ -521,37 +461,172 @@ class CollectionController extends Controller
                             // dd($maildata);
                             return view('mail-temp.admin-gift-mail',['data'=> $maildata]);
                             Log::info("Sending mail to: {$customer->email}");
-    
                             try {
                                 Mail::to($customer->email)
                                     ->cc(['1crappcampaigngift@yopmail.com'])
                                     ->send(new AdminGiftMail($maildata));
-    
                                 Log::info("Gift Mail Sent Successfully: {$customer->email}");
-    
                             } catch (\Exception $e) {
-    
                                 Log::error("Mail Failed: {$customer->email}");
                                 Log::error($e->getMessage());
                             }
                         }
-                        
                     } else {
                         Log::warning("No customers found for Campaign ID: {$campaign->id}");
                     }
-                    
                 // }
-    
                 // $item->update([
                 //     'status' => 'completed',
                 //     'sent_at' => now(),
                 // ]);
-    
                 // Log::info("Schedule Completed: {$item->id}");
             }
-    
             // Log::info('Gift Mail Cron Finished Successfully');
-    
-        
+    }
+    public function processCampaigns()
+    {
+        $campaigns = CampaignModel::where('status', '1')->get();
+        foreach ($campaigns as $campaign) {
+            // dd($campaign->coll_id);
+            $collectionItems = CollectionItemModel::where(
+                'collection_id',
+                $campaign->coll_id
+            )
+            ->orderBy('schedule_day')
+            ->orderBy('schedule_time')
+            ->get();
+            // if($collectionItems->isNotEmpty()){
+            //     dd($collectionItems);
+            // }
+            $customers = Customer::join(
+                    'tbl_user_list',
+                    'tbl_user_list.user_id',
+                    '=',
+                    'users.id'
+                )
+                ->where('tbl_user_list.list_id', $campaign->list_id)
+                ->select(
+                    'users.id',
+                    'users.name',
+                    'users.email',
+                    'tbl_user_list.created_at as joined_at'
+                )
+                ->get();
+                
+            // if($customers->isNotEmpty()){
+            //     dd($customers);
+            // }
+            foreach ($customers as $customer) {
+                $sentItemIds = CampaignDeliveryLog::where(
+                    'campaign_id',
+                    $campaign->id
+                )
+                ->where(
+                    'user_id',
+                    $customer->id
+                )
+                ->pluck('collection_item_id')
+                ->toArray();
+                foreach ($collectionItems as $indexItem=>$item) {
+                    
+                    if (in_array($item->id, $sentItemIds)) {
+                        continue;
+                    }
+                    if ($indexItem > 0) {
+                        $prevItemId = $collectionItems[$indexItem - 1]->id;
+                        if (!CampaignDeliveryLog::where([
+                            'campaign_id'       => $campaign->id,
+                            'user_id'           => $customer->id,
+                            'collection_item_id'=> $prevItemId,
+                        ])->exists()) {
+                            continue;
+                        }
+                    }
+                    /*
+                    * User list me kab add hua tha
+                    */
+                    // $userStartDate = \Carbon\Carbon::parse($customer->joined_at);
+                    $userStartDate = Carbon::parse($campaign->start_date);
+                    /*
+                    * Is item ko kab jana chahiye
+                    */
+                    $sendDate = $userStartDate->copy()->addDays($item->schedule_day);
+                    /*
+                    * Date match nahi hui
+                    */
+                    // dd($userStartDate, $sendDate);
+                    if (!now()->isSameDay($sendDate)) {
+                        continue;
+                    }
+                    /*
+                    * Time check
+                    */
+                    // dd($item);
+                   if ($item->schedule_time) {
+                        $scheduleToday = Carbon::createFromFormat(
+                            'Y-m-d H:i:s',
+                            now()->format('Y-m-d') . ' ' . $item->schedule_time
+                        );
+                        $fromTime = now()->copy()->subHours(2);
+                        $toTime   = now()->copy()->addHours(2);
+                        // dd($scheduleToday, $fromTime, $toTime); 
+                        if (!$scheduleToday->between($fromTime, $toTime)) {
+                            continue;
+                        }
+                    }
+                    // dd($item);
+                    /*
+                    * MAIL
+                    */
+                    if ($item->postal_type == '1') {
+                        // $this->sendCampaignMail(
+                        //     $campaign,
+                        //     $customer,
+                        //     $item
+                        // );
+                        CampaignDeliveryLog::create([
+                            'campaign_id' => $campaign->id,
+                            'user_id' => $customer->id,
+                            'collection_item_id' => $item->id,
+                            'type' => 'mail',
+                            'sent_at' => now(),
+                        ]);
+                    }
+                    /*
+                    * GIFT
+                    */
+                    if ($item->postal_type == '2') {
+                        // $this->sendGiftMail(
+                        //     $campaign,
+                        //     $customer,
+                        //     $item
+                        // );
+                        CampaignDeliveryLog::create([
+                            'campaign_id' => $campaign->id,
+                            'user_id' => $customer->id,
+                            'collection_item_id' => $item->id,
+                            'type' => 'gift',
+                            'sent_at' => now(),
+                        ]);
+                    }
+                }
+            }
+        }
+    }
+    private function sendCampaignMail($campaign, $customer, $collectionItem) {
+        $mail = GiftMailModel::find(
+            $collectionItem->item_id
+        );
+        if (!$mail) {
+            return;
+        }
+        $maildata = [
+            'name' => $customer->name,
+            'logo' => $mail->logo,
+            'mail_title' => $mail->title,
+            'mail' => $mail,
+            'subject' => $mail->subject,
+        ];
+        Mail::to($customer->email)->send(new CampaignCustomerMail($maildata));
     }
 }
