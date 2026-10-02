@@ -34,7 +34,7 @@ use Illuminate\Support\Facades\DB;
                                 <i class="fas fa-users fa-2x text-gray-300"></i>
                             </div>
                             <div class="h5 mb-0 font-weight-bold text-gray-800">
-                                {{ $campaign->list_count }}
+                                {{ count($users) }}
                             </div>
                             <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
                                 Contacts
@@ -68,14 +68,14 @@ use Illuminate\Support\Facades\DB;
                             </div>
                             <div class="row">
                                 <div class="col-6 h5 mb-0 font-weight-bold text-gray-800">
-                                    {{ DB::table('agents')->where('role_id', 2)->count() }}
+                                    {{ $campaign->total_gifts_sent }}
                                     </br>
                                     <div class="text-xs font-weight-bold text-primary text-uppercase mb-1 ">
-                                        Gift Sent
+                                        Order Placed
                                     </div>
                                 </div>
                                 <div class="col-6 h5 mb-0 font-weight-bold text-gray-800">
-                                    {{ DB::table('agents')->where('role_id', 2)->count() }}
+                                    {{ $campaign->total_gifts_delivered }}
                                     </br> 
                                     <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
                                         Gift Delivered
@@ -106,7 +106,7 @@ use Illuminate\Support\Facades\DB;
                                 <i class="fas fa-envelope fa-2x text-gray-300"></i>
                             </div>
                             <div class="h5 mb-0 font-weight-bold text-gray-800">
-                                {{ DB::table('agents')->where('role_id', 2)->count() }}
+                                {{ $campaign->total_mails_sent }}
                             </div>
                             <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
                                 Email Sent
@@ -161,7 +161,7 @@ use Illuminate\Support\Facades\DB;
                                             <small></small>
                                         </label>
                                     </td>
-                                    <td>View Details <a href="#" target="_blank"><i class="fas fa-external-link-alt" aria-hidden="true"></i></a></td>
+                                    <td>View Details <a href="{{ route('collection.campaigns.user-report', ['id'=>$collection->id,'camp_id'=>$campaign->id, 'user_id'=>$urow->id]) }}" target="_blank"><i class="fas fa-external-link-alt" aria-hidden="true"></i></a></td>
                                 @endforeach
                             </tbody>
                         </table>

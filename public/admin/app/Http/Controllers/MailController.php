@@ -217,10 +217,17 @@ class MailController extends Controller
         //  return redirect()->route('mail-category.index')->with('error','Unable to delete the mail category as it is currently in use.');
      }
     public function testmail(){
+        // dd('test');
         $to = '24k@yopmail.com';
         $data['name'] = 'abc';
         $data['email'] = 'abc@gmail.com';
         $data['phone'] = '9878767656';
+        $data['agent_subject'] = 'Test Mail';
+        $data['mail_logo'] = 'https://1cr.in/public/uploads/1689140919_1cr-logo.png';
+        $data['source'] = 'Test Source';
+        $data['cdo'] = 'Test Source';
+        $data['ps_name'] = 'Test Source';
+        $data['message'] = 'Test Source';
         Mail::to($to)->send(new AgentLeadMail($data));
         dd($to);
     }

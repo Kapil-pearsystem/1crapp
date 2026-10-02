@@ -10,5 +10,6 @@ class CampaignDeliveryLog extends Model
         'collection_item_id',
         'type',
         'sent_at',
+        'status',
     ];
 }

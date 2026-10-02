@@ -24,6 +24,7 @@ class CollectionItemModel extends Model
         'tyc_id',
         'schedule_day',
         'schedule_time',
+        'after_days',
         'created_by',
     ];
 
@@ -38,4 +39,30 @@ class CollectionItemModel extends Model
     {
         return $this->belongsTo(CollectionModel::class, 'collection_id');
     }
+    public function gift()
+    {
+        return $this->belongsTo(
+            GiftModel::class,
+            'item_id',
+            'id'
+        );
+    }
+    
+    public function mail()
+    {
+        return $this->belongsTo(
+            GiftMailModel::class,
+            'item_id',
+            'id'
+        );
+    }
+    public function log()
+    {
+        return $this->hasOne(
+            CampaignDeliveryLog::class,
+            'collection_item_id',
+            'item_id'
+        );
+    }
+    
 }

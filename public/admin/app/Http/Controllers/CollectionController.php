@@ -25,14 +25,15 @@ use App\Models\Customer;
 use App\Models\CampaignDeliveryLog;
 use App\Models\UserGiftModel;
 use App\Models\AuthTempModel;
+use App\Models\SmtpSetting;
 use App\Mail\CampaignCustomerMail;
-use App\Mail\AdminGiftMail;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Log;
 // use App\Helper\Helper as Helper;
 class CollectionController extends Controller
 {
     public function index(){
+       
         $lists = CollectionModel::withCount('emails', 'gifts')->orderBy('id','DESC')->where('created_by', Auth::id())->get();
         return view('collection.index',compact('lists'));
     }
@@ -40,7 +41,7 @@ class CollectionController extends Controller
         $config = GiftConfigModel::pluck('price', 'key')->toArray();
         // dd($config);
         $mailCategories = MailCategoryModel::select('id', 'title as name')->orderBy('id','DESC')->where('status', 1)->where('created_by', Auth::id())->get();
-        $giftCategories = GiftCategoryModel::select('id', 'name')->orderBy('id','DESC')->where('status', 1)->where('created_by', Auth::id())->get();
+        $giftCategories = GiftCategoryModel::select('id', 'name')->orderBy('id','DESC')->where('status', 1)->get();
         // dd($mailCategories, $giftCategories);
         $categories = GiftCategoryModel::all();
         //  $thankyou_card = ThankYouCardModel::where('status',1)->get();
@@ -78,7 +79,10 @@ class CollectionController extends Controller
         $collectionItems = [];
         $itemIds = $request->item_id ?? [];   // keyed by set index
         if (!empty($itemIds) && is_array($itemIds)) {
+            $after_days = 0;
             foreach ($itemIds as $setIndex => $itemId) {
+                $schedule_day = $request->schedule_day[$setIndex] ?? 0;
+                $after_days += $schedule_day;
                 if (empty($itemId)) continue;  // nothing selected in this set
                 $postalType = $request->type[$setIndex] ?? null;
                 $catId  = $request->mail_category[$setIndex] ?? $request->gift_category[$setIndex] ?? null;
@@ -91,8 +95,9 @@ class CollectionController extends Controller
                     'discount'      => $request->discount[$setIndex] ?? null,
                     'thankYouStatus'=> $request->thankYouStatus[$setIndex] ?? 0,
                     'tyc_id'        => $request->tyc_id[$setIndex] ?? 0,
-                    'schedule_day'  => $request->schedule_day[$setIndex] ?? 0,
-                    'schedule_time'  => $request->schedule_time[$setIndex] ?? null,
+                    'schedule_day'  => $schedule_day,
+                    'after_days'    => $after_days,
+                    'schedule_time' => $request->schedule_time[$setIndex] ?? null,
                     'item_id'       => $itemId,
                     'created_by'    => Auth::id(),
                 ];
@@ -244,7 +249,7 @@ class CollectionController extends Controller
             return redirect()->route('collection.index')->with('error', 'Collection not found.');
         }
         $mailCategories = MailCategoryModel::select('id', 'title as name')->orderBy('id','DESC')->where('status', 1)->where('created_by', Auth::id())->get();
-        $giftCategories = GiftCategoryModel::select('id', 'name')->orderBy('id','DESC')->where('status', 1)->where('created_by', Auth::id())->get();
+        $giftCategories = GiftCategoryModel::select('id', 'name')->orderBy('id','DESC')->where('status', 1)->get();
         $collectionItems = CollectionItemModel::where('collection_id', $id)->get();
         // dd($collectionItems);
         return view('collection.create',compact('collection', 'mailCategories', 'giftCategories', 'collectionItems', 'config'));
@@ -485,6 +490,7 @@ class CollectionController extends Controller
     }
     public function processCampaigns()
     {
+        
         $campaigns = CampaignModel::where('status', '1')->get();
         foreach ($campaigns as $campaign) {
             // dd($campaign->coll_id);

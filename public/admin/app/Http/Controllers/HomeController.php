@@ -40,6 +40,9 @@ class HomeController extends Controller
      */
     public function index()
     {
+        
+        // $smtp = config('mail.mailers.smtp');
+        // dd($smtp);
         $adb_setting = AdbSettingsModel::first();
         $communities = JoinCommunityModel::orderBy('priority', 'asc')->limit(8)->get();
         return view('home', compact('adb_setting', 'communities') );

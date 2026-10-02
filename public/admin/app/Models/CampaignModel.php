@@ -39,4 +39,36 @@ class CampaignModel extends Model
     {
         return $this->belongsTo(ContactModel::class, 'list_id');
     }
+    public function logs()
+    {
+        return $this->hasMany(
+            CampaignDeliveryLog::class,
+            'campaign_id',
+            'id'
+        );
+    }
+    public function totalSentMail()
+    {
+        return $this->hasMany(
+            CampaignDeliveryLog::class,
+            'campaign_id',
+            'id'
+        )->where('type', 'mail');
+    }
+    public function totalSentGift()
+    {
+        return $this->hasMany(
+            CampaignDeliveryLog::class,
+            'campaign_id',
+            'id'
+        )->where('type', 'gift');
+    }
+    public function totalDeliveredGift()
+    {
+        return $this->hasMany(
+            CampaignDeliveryLog::class,
+            'campaign_id',
+            'id'
+        )->where(['type'=> 'gift', 'status'=>'delivered']);
+    }
 }

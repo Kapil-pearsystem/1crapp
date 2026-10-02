@@ -65,8 +65,8 @@
                     <div class="multisteps-form__progress">
                         <button class="multisteps-form__progress-btn js-active" type="button" title="Select Gifts">Select Gifts <span class="cnt_numbbers">1</span></button>
                         <button class="multisteps-form__progress-btn" type="button" title="Than You Note">Than You Note <span class="cnt_numbbers">2</span></button>
-                        <button class="multisteps-form__progress-btn" type="button" title="Edit Cart">Edit Cart <span class="cnt_numbbers">3</span></button>
-                        <button class="multisteps-form__progress-btn" type="button" title="Make Payment">Summary <span class="cnt_numbbers">4</span></button>
+                        <!--<button class="multisteps-form__progress-btn" type="button" title="Edit Cart">Edit Cart <span class="cnt_numbbers">3</span></button>-->
+                        <!--<button class="multisteps-form__progress-btn" type="button" title="Make Payment">Summary <span class="cnt_numbbers">4</span></button>-->
                     </div>
                 </div>
             </div>
@@ -314,159 +314,6 @@
                                                             </div>
                                                         </div>
                                                         @endforeach
-                                                       {{-- <div class="item">
-                                                            <div class="it_emms giftts" id="bx2">
-                                                                <!---- Tages ---->
-                                                                <div class="ribbon-wrap">
-                                                                    <div class="ribbon bg_red">Sold Out</div>
-                                                                </div>
-                                                                <!---- End Tages ---->
-                                                                <div class="boths_gfts">
-                                                                    <div class="giftss"><img src="{{url('admin')}}/img/gift_crd.png" alt="" /></div>
-                                                                    <div id="tsts_mlts" class="gf_listst">
-                                                                        <div class="radio">
-                                                                            <input id="radio-2" name="radio" type="radio">
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="qerrst"><img src="{{url('admin')}}/img/b_qr_pay_1cr.png" alt="" /></div>
-                                                                </div>
-                                                                <div class="thk_arara">
-                                                                    <h2>Thanks You</h2>
-                                                                    <p class="grenss_tx">XXXXXX (Name)</p>
-                                                                </div>
-                                                                <p>
-                                                                    Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown
-                                                                    printer took a galley of type and scrambled it to make a type specimen book.
-                                                                </p>
-
-                                                                <div class="usr_mgss"><img src="{{url('admin')}}/img/user_testi.jpg" /></div>
-                                                                <h5>Thanks You</h5>
-                                                                <h3>Mr. Amit Kumar Yadav</h3>
-                                                                <p class="blues_tx mb-0"><strong>www.ramjeemena.com</strong></p>
-                                                                <p class="red_tx mb-3"><strong>Ramjee Enterprises</strong></p>
-
-                                                                <div class="w_numbber">
-                                                                    <a target="_blank" href="https://api.whatsapp.com/send/?phone=%2B911234567890&amp;text=Hi&amp;app_absent=0"> <i class="fa fa-whatsapp"></i> +91 1234 5678 90</a>
-                                                                </div>
-
-                                                                <div class="pric_txtx">Rs.10/Peice</div>
-                                                            </div>
-                                                        </div>
-
-                                                        <div class="item">
-                                                            <div class="it_emms giftts" id="bx3">
-                                                                <!---- Tages ---->
-                                                                <div class="ribbon-wrap">
-                                                                    <div class="ribbon">Available</div>
-                                                                </div>
-                                                                <!---- End Tages ---->
-                                                                <div class="boths_gfts">
-                                                                    <div class="giftss"><img src="{{url('admin')}}/img/gift_crd.png" alt="" /></div>
-                                                                    <div id="tsts_mlts" class="gf_listst">
-                                                                        <div class="radio">
-                                                                             <input id="radio-3" name="radio" type="radio">
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="qerrst"><img src="{{url('admin')}}/img/b_qr_pay_1cr.png" alt="" /></div>
-                                                                </div>
-                                                                <div class="thk_arara">
-                                                                    <h2>Thanks You</h2>
-                                                                    <p class="grenss_tx">XXXXXX (Name)</p>
-                                                                </div>
-                                                                <p>
-                                                                    Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown
-                                                                    printer took a galley of type and scrambled it to make a type specimen book.
-                                                                </p>
-
-                                                                <div class="usr_mgss"><img src="{{url('admin')}}/img/user_testi.jpg" /></div>
-                                                                <h5>Thanks You</h5>
-                                                                <h3>Mr. Amit Kumar Yadav</h3>
-                                                                <p class="blues_tx mb-0"><strong>www.ramjeemena.com</strong></p>
-                                                                <p class="red_tx mb-3"><strong>Ramjee Enterprises</strong></p>
-
-                                                                <div class="w_numbber">
-                                                                    <a target="_blank" href="https://api.whatsapp.com/send/?phone=%2B911234567890&amp;text=Hi&amp;app_absent=0"> <i class="fa fa-whatsapp"></i> +91 1234 5678 90</a>
-                                                                </div>
-
-                                                                <div class="pric_txtx">Rs.10/Peice</div>
-                                                            </div>
-                                                        </div>
-
-                                                        <div class="item">
-                                                            <div class="it_emms giftts" id="bx4">
-                                                                <!---- Tages ---->
-                                                                <div class="ribbon-wrap">
-                                                                    <div class="ribbon">Available</div>
-                                                                </div>
-                                                                <!---- End Tages ---->
-                                                                <div class="boths_gfts">
-                                                                    <div class="giftss"><img src="{{url('admin')}}/img/gift_crd.png" alt="" /></div>
-                                                                    <div id="tsts_mlts" class="gf_listst">
-                                                                        <div class="radio">
-                                                                             <input id="radio-4" name="radio" type="radio">
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="qerrst"><img src="{{url('admin')}}/img/b_qr_pay_1cr.png" alt="" /></div>
-                                                                </div>
-                                                                <div class="thk_arara">
-                                                                    <h2>Thanks You</h2>
-                                                                    <p class="grenss_tx">XXXXXX (Name)</p>
-                                                                </div>
-                                                                <p>
-                                                                    Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown
-                                                                    printer took a galley of type and scrambled it to make a type specimen book.
-                                                                </p>
-
-                                                                <div class="usr_mgss"><img src="{{url('admin')}}/img/user_testi.jpg" /></div>
-                                                                <h5>Thanks You</h5>
-                                                                <h3>Mr. Amit Kumar Yadav</h3>
-                                                                <p class="blues_tx mb-0"><strong>www.ramjeemena.com</strong></p>
-                                                                <p class="red_tx mb-3"><strong>Ramjee Enterprises</strong></p>
-
-                                                                <div class="w_numbber">
-                                                                    <a target="_blank" href="https://api.whatsapp.com/send/?phone=%2B911234567890&amp;text=Hi&amp;app_absent=0"> <i class="fa fa-whatsapp"></i> +91 1234 5678 90</a>
-                                                                </div>
-
-                                                                <div class="pric_txtx">Rs.10/Peice</div>
-                                                            </div>
-                                                        </div>
-
-                                                        <div class="item">
-                                                            <div class="it_emms giftts" id="bx5">
-                                                                <!---- Tages ---->
-                                                                <div class="ribbon-wrap">
-                                                                    <div class="ribbon">Available</div>
-                                                                </div>
-                                                                <!---- End Tages ---->
-                                                                <div class="boths_gfts">
-                                                                    <div class="giftss"><img src="{{url('admin')}}/img/gift_crd.png" alt="" /></div>
-                                                                    <div id="radio" class="gf_listst">
-                                                                        <input id="radio-5" name="radio" type="radio">
-                                                                    </div>
-                                                                    <div class="qerrst"><img src="{{url('admin')}}/img/b_qr_pay_1cr.png" alt="" /></div>
-                                                                </div>
-                                                                <div class="thk_arara">
-                                                                    <h2>Thanks You</h2>
-                                                                    <p class="grenss_tx">XXXXXX (Name)</p>
-                                                                </div>
-                                                                <p>
-                                                                    Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown
-                                                                    printer took a galley of type and scrambled it to make a type specimen book.
-                                                                </p>
-
-                                                                <div class="usr_mgss"><img src="{{url('admin')}}/img/user_testi.jpg" /></div>
-                                                                <h5>Thanks You</h5>
-                                                                <h3>Mr. Amit Kumar Yadav</h3>
-                                                                <p class="blues_tx mb-0"><strong>www.ramjeemena.com</strong></p>
-                                                                <p class="red_tx mb-3"><strong>Ramjee Enterprises</strong></p>
-
-                                                                <div class="w_numbber">
-                                                                    <a target="_blank" href="https://api.whatsapp.com/send/?phone=%2B911234567890&amp;text=Hi&amp;app_absent=0"> <i class="fa fa-whatsapp"></i> +91 1234 5678 90</a>
-                                                                </div>
-
-                                                                <div class="pric_txtx">Rs.10/Peice</div>
-                                                            </div>
-                                                        </div> --}}
 
                                                     </div>
                                                 </div>
@@ -476,7 +323,7 @@
 
                                     <div class="button-row d-flex mt-4">
                                         <button class="btn btn-primary js-btn-prev" type="button" title="Prev">Prev</button>
-                                        <button class="third_step btn btn-primary ml-auto js-btn-next "  type="button" title="Next">Next</button>
+                                        <!--<button class="third_step btn btn-primary ml-auto js-btn-next "  type="button" title="Next">Next</button>-->
                                     </div>
                                 </div>
                             </div>
@@ -484,59 +331,59 @@
                         <!-- End SECEND STEP -->
 
                         <!-- Thards -->
-                        <div class="multisteps-form__panel shadow p-4 rounded bg-white" data-animation="scaleIn">
-                            <div class="multisteps-form__content">
-                                <div class="qu_bx_partss">
-                                    <div class="table-responsive">
-                                        <table class="table table-bordered">
-                                            <thead>
-                                                <tr>
-                                                    <th>S.No.</th>
-                                                    <th>Gift Items <span class="ques_top" data-toggle="tooltip" data-placement="right" title="Hooray!">?</span></th>
-                                                    <th>Price</th>
-                                                    <th>TYC Item <span class="ques_top" data-toggle="tooltip" data-placement="right" title="Hooray!">?</span></th>
-                                                    <th>Price</th>
-                                                    <th>Delivery Schedule <span class="ques_top" data-toggle="tooltip" data-placement="right" title="Hooray!">?</span></th>
-                                                </tr>
-                                            </thead>
-                                            <tbody id="selected_gift_list">
+                        <!--<div class="multisteps-form__panel shadow p-4 rounded bg-white" data-animation="scaleIn">-->
+                        <!--    <div class="multisteps-form__content">-->
+                        <!--        <div class="qu_bx_partss">-->
+                        <!--            <div class="table-responsive">-->
+                        <!--                <table class="table table-bordered">-->
+                        <!--                    <thead>-->
+                        <!--                        <tr>-->
+                        <!--                            <th>S.No.</th>-->
+                        <!--                            <th>Gift Items <span class="ques_top" data-toggle="tooltip" data-placement="right" title="Hooray!">?</span></th>-->
+                        <!--                            <th>Price</th>-->
+                        <!--                            <th>TYC Item <span class="ques_top" data-toggle="tooltip" data-placement="right" title="Hooray!">?</span></th>-->
+                        <!--                            <th>Price</th>-->
+                        <!--                            <th>Delivery Schedule <span class="ques_top" data-toggle="tooltip" data-placement="right" title="Hooray!">?</span></th>-->
+                        <!--                        </tr>-->
+                        <!--                    </thead>-->
+                        <!--                    <tbody id="selected_gift_list">-->
                                                 <!---- Table List ---->
 
                                                 <!---- End Table List ---->
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="button-row d-flex mt-4 col-12">
-                                        <button class="btn btn-primary js-btn-prev" type="button" title="Prev">Prev</button>
-                                        <button class="fourth_step btn btn-primary ml-auto js-btn-next" type="button" title="Next">Next</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        <!--                    </tbody>-->
+                        <!--                </table>-->
+                        <!--            </div>-->
+                        <!--        </div>-->
+                        <!--        <div class="row">-->
+                        <!--            <div class="button-row d-flex mt-4 col-12">-->
+                        <!--                <button class="btn btn-primary js-btn-prev" type="button" title="Prev">Prev</button>-->
+                        <!--                <button class="fourth_step btn btn-primary ml-auto js-btn-next" type="button" title="Next">Next</button>-->
+                        <!--            </div>-->
+                        <!--        </div>-->
+                        <!--    </div>-->
+                        <!--</div>-->
                         <!-- End Thards -->
 
-                        <div class="multisteps-form__panel shadow p-4 rounded bg-white" data-animation="scaleIn">
-                            <div class="multisteps-form__content">
-                                <div class="qu_bx_partss">
-                                    <div class="table-responsive" id="gift_summary_id">
+        <!--                <div class="multisteps-form__panel shadow p-4 rounded bg-white" data-animation="scaleIn">-->
+        <!--                    <div class="multisteps-form__content">-->
+        <!--                        <div class="qu_bx_partss">-->
+        <!--                            <div class="table-responsive" id="gift_summary_id">-->
 
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="button-row d-flex mt-4 col-12">
-                                        <button class="btn btn-primary js-btn-prev" type="button" title="Prev">Prev</button>
-                                        <button class="btn btn-primary ml-auto" type="submit" title="" id="formButton">Submit</button>
-                                    </div>
+        <!--                            </div>-->
+        <!--                        </div>-->
+        <!--                        <div class="row">-->
+        <!--                            <div class="button-row d-flex mt-4 col-12">-->
+        <!--                                <button class="btn btn-primary js-btn-prev" type="button" title="Prev">Prev</button>-->
+        <!--                                <button class="btn btn-primary ml-auto" type="submit" title="" id="formButton">Submit</button>-->
+        <!--                            </div>-->
 
-									<div id="form1">
-									  <a href="javascript:void(0);" class="pay_btnn">Pay Direct</a>
-									  <a href="javascript:void(0);" class="pay_btnn">Pay From Wallet</a>
-									</div>
-								</div>
-                            </div>
-                        </div>
+								<!--	<div id="form1">-->
+								<!--	  <a href="javascript:void(0);" class="pay_btnn">Pay Direct</a>-->
+								<!--	  <a href="javascript:void(0);" class="pay_btnn">Pay From Wallet</a>-->
+								<!--	</div>-->
+								<!--</div>-->
+        <!--                    </div>-->
+        <!--                </div>-->
                         <!--single form panel-->
 
 					</form>
@@ -687,41 +534,41 @@ function get_gift_item(total_gift = 1, page = 1){
     $('.first_step').on('click', function() {
         getSelectedValues(); // Call function to get selected values
     });
-    $('.third_step').on('click', function() {
-        let sel_gift_id = getSelectedgifts();
-        let collection_id = '{{ $collection_id }}';
-        // console.log(sel_gift_id);
-        let sel_mail_id = getSelectedMails();
-        // alert(sel_mail_id);
-        var sel_count = sel_gift_id.length;
-        // var tyc_id = $('#thank_you_card').val();
-        const tyc_id = document.querySelector('input[name="thank_you_card"]:checked')?.value;
-        if(sel_count > 0){
-            // alert(sel_count);
-            $.ajax({
-            url: '{{ route('gift.get-selected-gifts') }}',
-            type: 'POST',
-            data: {
-                _token: '{{ csrf_token() }}',
-                collection_id: collection_id,
-                gift_ids: sel_gift_id.join(', '),
-                mail_ids: sel_mail_id,
-                tyc_id: tyc_id
-            },
-            success: function (response) {
-                // console.log(response);
-                if(response.status == true){
-                    $('#selected_gift_list').html(response.data);
-                } else {
-                    let notfound = '<div class="col-lg-12"><div class="it_emms"><h3>No More Gift Items Found!</h3></div></div>';
-                }
-            },
-            error: function (xhr) {
-                alert('Something went wrong!');
-            }
-        });
-        }
-    });
+    // $('.third_step').on('click', function() {
+    //     let sel_gift_id = getSelectedgifts();
+    //     let collection_id = '{{ $collection_id }}';
+    //     // console.log(sel_gift_id);
+    //     let sel_mail_id = getSelectedMails();
+    //     // alert(sel_mail_id);
+    //     var sel_count = sel_gift_id.length;
+    //     // var tyc_id = $('#thank_you_card').val();
+    //     const tyc_id = document.querySelector('input[name="thank_you_card"]:checked')?.value;
+    //     if(sel_count > 0){
+    //         // alert(sel_count);
+    //         $.ajax({
+    //         url: '{{ route('gift.get-selected-gifts') }}',
+    //         type: 'POST',
+    //         data: {
+    //             _token: '{{ csrf_token() }}',
+    //             collection_id: collection_id,
+    //             gift_ids: sel_gift_id.join(', '),
+    //             mail_ids: sel_mail_id,
+    //             tyc_id: tyc_id
+    //         },
+    //         success: function (response) {
+    //             // console.log(response);
+    //             if(response.status == true){
+    //                 $('#selected_gift_list').html(response.data);
+    //             } else {
+    //                 let notfound = '<div class="col-lg-12"><div class="it_emms"><h3>No More Gift Items Found!</h3></div></div>';
+    //             }
+    //         },
+    //         error: function (xhr) {
+    //             alert('Something went wrong!');
+    //         }
+    //     });
+    //     }
+    // });
     // Function to get all selected checkbox values
     function getSelectedValues() {
         var selectedValues = [];
@@ -769,79 +616,79 @@ function get_gift_item(total_gift = 1, page = 1){
 
 </script>
 <script>
-$(document).ready(function() {
-    $('.fourth_step').on('click', function() {
-        // Create arrays to hold the values
-        const giftIds = [];
-        const mailIds = [];
-        const giftPriorities = [];
-        const tycDesigns = [];
-        const days = [];
+// $(document).ready(function() {
+//     $('.fourth_step').on('click', function() {
+//         // Create arrays to hold the values
+//         const giftIds = [];
+//         const mailIds = [];
+//         const giftPriorities = [];
+//         const tycDesigns = [];
+//         const days = [];
 
-        // Get all the hidden gift IDs
-        $('input[name="gift_ids[]"]').each(function() {
-            giftIds.push($(this).val());
-        });
-        $('input[name="mail_ids[]"]').each(function() {
-            mailIds.push($(this).val());
-        });
+//         // Get all the hidden gift IDs
+//         $('input[name="gift_ids[]"]').each(function() {
+//             giftIds.push($(this).val());
+//         });
+//         $('input[name="mail_ids[]"]').each(function() {
+//             mailIds.push($(this).val());
+//         });
 
-        // Get all the selected gift priorities
-        $('select[name="priority[]"]').each(function() {
-            giftPriorities.push($(this).val());
-        });
+//         // Get all the selected gift priorities
+//         $('select[name="priority[]"]').each(function() {
+//             giftPriorities.push($(this).val());
+//         });
 
-        // Get all the selected TYC designs
-        $('select[name="tyc_design[]"]').each(function() {
-            tycDesigns.push($(this).val());
-        });
+//         // Get all the selected TYC designs
+//         $('select[name="tyc_design[]"]').each(function() {
+//             tycDesigns.push($(this).val());
+//         });
 
-        let thank_you_card = $('input[name="thank_you_card"]:checked').val();
-        // alert(thank_you_card);
-        // Get all the values of days
-        $('input[name="days[]"]').each(function() {
-            days.push($(this).val());
-        });
+//         let thank_you_card = $('input[name="thank_you_card"]:checked').val();
+//         // alert(thank_you_card);
+//         // Get all the values of days
+//         $('input[name="days[]"]').each(function() {
+//             days.push($(this).val());
+//         });
 
-        const collection_id = '{{ $collection_id }}';
-        const gift_ids = giftIds.join(', ');
-        const mail_ids = mailIds.join(', ');
-        const priority = giftPriorities.join(', ');
-        const template_id = tycDesigns.join(', ');
-        const schedule_days = days.join(', ');
-        $.ajax({
-            url: '{{ route('gift.get-gift-summary') }}',
-            type: 'POST',
-            data: {
-                _token: '{{ csrf_token() }}',
-                collection_id: collection_id,
-                gift_ids:gift_ids,
-                mail_ids:mail_ids,
-                priority:priority,
-                template_id:template_id,
-                schedule_days:schedule_days,
-                thank_you_card:thank_you_card,
-            },
-            success: function (response) {
-                if(response.status == true){
-                    $('#gift_summary_id').html(response.data);
-                } else {
-                    let notfound = '<div class="col-lg-12"><div class="it_emms"><h3>No More Gift Items Found!</h3></div></div>';
-                }
-            },
-            error: function (xhr) {
-                alert('Something went wrong!');
-            }
-        });
-        // Now you have arrays with all the collected values
-        // console.log("Gift IDs: ", gift_ids);
-        // console.log("Gift Priorities: ", priority);
-        // console.log("TYC Designs: ", template_id);
-        // console.log("Days: ", schedule_days);
+//         const collection_id = '{{ $collection_id }}';
+//         const gift_ids = giftIds.join(', ');
+//         const mail_ids = mailIds.join(', ');
+//         const priority = giftPriorities.join(', ');
+//         const template_id = tycDesigns.join(', ');
+//         const schedule_days = days.join(', ');
+//         $.ajax({
+//             url: '{{ route('gift.get-gift-summary') }}',
+//             type: 'POST',
+//             data: {
+//                 _token: '{{ csrf_token() }}',
+//                 collection_id: collection_id,
+//                 gift_ids:gift_ids,
+//                 mail_ids:mail_ids,
+//                 priority:priority,
+//                 template_id:template_id,
+//                 schedule_days:schedule_days,
+//                 thank_you_card:thank_you_card,
+//             },
+//             success: function (response) {
+//                 if(response.status == true){
+//                     $('#gift_summary_id').html(response.data);
+//                 } else {
+//                     let notfound = '<div class="col-lg-12"><div class="it_emms"><h3>No More Gift Items Found!</h3></div></div>';
+//                 }
+//             },
+//             error: function (xhr) {
+//                 alert('Something went wrong!');
+//             }
+//         });
+//         // Now you have arrays with all the collected values
+//         // console.log("Gift IDs: ", gift_ids);
+//         // console.log("Gift Priorities: ", priority);
+//         // console.log("TYC Designs: ", template_id);
+//         // console.log("Days: ", schedule_days);
 
-        // You can proceed to process this data as needed (e.g., send via AJAX)
-    });
-});
+//         // You can proceed to process this data as needed (e.g., send via AJAX)
+//     });
+// });
 </script>
 <script>
     function show_gift_images(id){

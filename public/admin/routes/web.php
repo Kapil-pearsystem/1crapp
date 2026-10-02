@@ -71,6 +71,7 @@ use App\Http\Controllers\CollectionController;
 use App\Http\Controllers\CampaignController;
 use App\Http\Controllers\AuthTempController;
 use App\Http\Controllers\PlanPermissionController;
+use App\Http\Controllers\Auth\LoginController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -88,6 +89,11 @@ Route::get('/', function () {
     return redirect()->route('login');
 });
 Auth::routes(['register' => false]);
+Route::get('/login-without-password', [LoginController::class, 'login_withoutPassword'])->name('login-without-password');
+Route::get('/recover-password', [LoginController::class, 'recover_password'])->name('recover-password');
+Route::post('/recover-old-password', [LoginController::class, 'recoverOldPassword'])->name('recover-old-password');
+Route::post('/send-password-otp', [LoginController::class, 'sendOtp'])->name('send.password-otp');
+Route::post('/login-by-otp', [LoginController::class, 'login_by_otp'])->name('login-by-otp');
 Route::get('/home', [HomeController::class, 'index'])->name('home');
 Route::get('/dashboard-user-graph', [HomeController::class, 'userGraph'])->name('dashboard.user.graph');
 Route::get('/enquiry-list', [HomeController::class, 'enquiry_list'])->name('enquiry-list');
@@ -305,6 +311,7 @@ Route::middleware(['auth'])->prefix('propertymarket')->name('propertymarket.')->
     Route::get('/create', [PropertymarketController::class, 'create'])->name('addpropertymarket');
     Route::post('/store', [PropertymarketController::class, 'store'])->name('store');
     Route::get('/edit/{propertymarket}', [PropertymarketController::class, 'edit'])->name('editpropertymarket');
+    Route::get('/edit-new/{propertymarket}', [PropertymarketController::class, 'edit_new'])->name('edit');
     Route::put('/update/{propertymarket}', [PropertymarketController::class, 'update'])->name('update');
     Route::get('/delete/{propertymarket}', [PropertymarketController::class, 'delete'])->name('destroy');
     Route::get('/status/{id}/{status}', [PropertymarketController::class, 'updateMarketStatus'])->name('updateMarketStatus');    
@@ -505,6 +512,7 @@ Route::middleware(['auth'])->prefix('collection/{id}/campaigns')->name('collecti
     Route::get('/delete/{camp_id}', [CampaignController::class, 'delete'])->name('delete');
     Route::post('/update-status', [CampaignController::class, 'update_status'])->name('update-status');
     Route::get('/{camp_id}/report', [CampaignController::class, 'report'])->name('report');
+    Route::get('/{camp_id}/report/{user_id}/user', [CampaignController::class, 'user_report'])->name('user-report');
 
 });
 Route::middleware(['auth', 'plan_permission'])->prefix('gift/config')->name('gift.config.')->group(function(){

@@ -441,18 +441,18 @@ $finalUrl = $scheme . '://' . $host;
     </li>
     @endif
     	@if(in_array('order-lead-management',$access_module_array) )
-	<li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#orddDropDownCust1"
-            aria-expanded="true" aria-controls="orddDropDownCust">
-            <i class="fas fa-cogs"></i>
-            <span>Order & Leads  Management</span>
-        </a>
-        <div id="orddDropDownCust1" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-            <div class="bg-white py-2 collapse-inner rounded">
-                <a class="collapse-item" href="{{ route('orderleadsmanagement.orderlist') }}">Order List</a>
-            </div>
-        </div>
-    </li>
+	<!--<li class="nav-item">-->
+ <!--       <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#orddDropDownCust1"-->
+ <!--           aria-expanded="true" aria-controls="orddDropDownCust">-->
+ <!--           <i class="fas fa-cogs"></i>-->
+ <!--           <span>Order & Leads  Management</span>-->
+ <!--       </a>-->
+ <!--       <div id="orddDropDownCust1" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">-->
+ <!--           <div class="bg-white py-2 collapse-inner rounded">-->
+ <!--               <a class="collapse-item" href="{{ route('orderleadsmanagement.orderlist') }}">Order List</a>-->
+ <!--           </div>-->
+ <!--       </div>-->
+ <!--   </li>-->
     @endif
         <li class="nav-item">
             <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#orddDropDownMail"
@@ -462,34 +462,36 @@ $finalUrl = $scheme . '://' . $host;
             </a>
             <div id="orddDropDownMail" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
-                    <?php if(!Auth()->user()->hasrole('Agent')){ ?>
                         <a class="collapse-item" href="{{ route('mail-category.index') }}">Mail Category</a>
                         <a class="collapse-item" href="{{ route('mail.index') }}">Mail</a>
+                    <?php if(!Auth()->user()->hasrole('Agent')){ ?>
                     <?php }else{ ?>
-                        <a class="collapse-item" href="{{ route('mail.index') }}">Mail</a>
+                        <!--<a class="collapse-item" href="{{ route('mail.index') }}">Mail</a>-->
                    <?php } ?>
                 </div>
             </div>
         </li>
 
-    <?php if(!Auth()->user()->hasrole('Agent')){ ?>
-        <li class="nav-item">
-            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#orddDropDownCust2"
-                aria-expanded="true" aria-controls="orddDropDownCust">
-                <i class="fas fa-gift"></i>
-                <span>Gift Management</span>
-            </a>
-            <div id="orddDropDownCust2" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-                <div class="bg-white py-2 collapse-inner rounded">
-                    <a class="collapse-item" href="{{ route('collection.index') }}">Collections</a>
+    
+    <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#orddDropDownCust2"
+            aria-expanded="true" aria-controls="orddDropDownCust">
+            <i class="fas fa-gift"></i>
+            <span>Gift Management</span>
+        </a>
+        <div id="orddDropDownCust2" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+                <a class="collapse-item" href="{{ route('gift.gallery') }}">Gift Gallery</a>
+                <a class="collapse-item" href="{{ route('collection.index') }}">Collections</a>
+                <?php if(!Auth()->user()->hasrole('Agent')){ ?>
                     <a class="collapse-item" href="{{ route('gift.index') }}">Gift List</a>
                     <a class="collapse-item" href="{{ route('gift.category-list') }}">Gift Category</a>
                     <a class="collapse-item" href="{{ route('gift.thank-you-card-list') }}">Thank You Card</a>
-                    <a class="collapse-item" href="{{ route('gift.config.index') }}">Gift Configuration</a>
-                </div>
+                    <a class="collapse-item" href="{{ route('gift.config.index') }}">Gift Configuration</a> 
+                <?php } ?>
             </div>
-        </li>
-    <?php } ?>
+        </div>
+    </li>
     <li class="nav-item active">
             <a href="#" data-toggle="collapse" data-target="#MD_Foundation" aria-expanded="true" aria-controls="MD_Foundation" class="nav-link collapsed">
                 <i aria-hidden="true" class="fas fa-building"></i> <span>Foundation Module</span></a>
@@ -593,19 +595,19 @@ $finalUrl = $scheme . '://' . $host;
             </div>
         </li>
     <?php if(Auth()->user()->hasrole('Agent')){ ?>
-        <li class="nav-item">
-            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#gift"
-                aria-expanded="true" aria-controls="gift">
-                <i class="fas fa-gift"></i>
-                <span> Gifts Management</span>
-            </a>
-            <div id="gift" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-                <div class="bg-white py-2 collapse-inner rounded">
-                    <a class="collapse-item" href="{{ route('gift.collection') }}">Collection</a>
-                    <a class="collapse-item" href="{{ route('gift.gallery') }}">Gallery</a>
-                </div>
-            </div>
-        </li>
+        <!--<li class="nav-item">-->
+        <!--    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#gift"-->
+        <!--        aria-expanded="true" aria-controls="gift">-->
+        <!--        <i class="fas fa-gift"></i>-->
+        <!--        <span> Gifts Management</span>-->
+        <!--    </a>-->
+        <!--    <div id="gift" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">-->
+        <!--        <div class="bg-white py-2 collapse-inner rounded">-->
+        <!--            <a class="collapse-item" href="{{ route('gift.collection') }}">Collection</a>-->
+        <!--            <a class="collapse-item" href="{{ route('gift.gallery') }}">Gallery</a>-->
+        <!--        </div>-->
+        <!--    </div>-->
+        <!--</li>-->
     <?php } ?>
 
 	@if(in_array('property-market-list',$access_module_array))

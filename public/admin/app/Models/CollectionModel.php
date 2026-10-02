@@ -39,4 +39,8 @@ class CollectionModel extends Model
     {
         return $this->hasMany(CollectionItemModel::class, 'collection_id', 'id')->where('postal_type', 2);
     }
+    public function items()
+    {
+        return $this->hasMany(CollectionItemModel::class, 'collection_id', 'id');
+    }
 }

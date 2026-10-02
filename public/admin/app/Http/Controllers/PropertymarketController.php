@@ -36,9 +36,9 @@ class PropertymarketController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
-        $this->middleware('permission:property-market-list|property-market-create|property-market-edit', ['only' => ['index']]);
-        $this->middleware('permission:property-market-create', ['only' => ['create','store', 'updateStatus']]);
-        $this->middleware('permission:property-market-edit', ['only' => ['edit','update']]);
+        // $this->middleware('permission:property-market-list|property-market-create|property-market-edit', ['only' => ['index']]);
+        // $this->middleware('permission:property-market-create', ['only' => ['create','store', 'updateStatus']]);
+        // $this->middleware('permission:property-market-edit', ['only' => ['edit','update']]);
         //$this->middleware('permission:user-delete', ['only' => ['delete']]);
     }
 
@@ -298,6 +298,21 @@ class PropertymarketController extends Controller
         $prop_images = PropertyMarketDoc::where('propertymarket_id', $propertymarket->id)->get();
         // dd($prop_images);
         return view('propertymarket.add-propertymarket', ['roles' => $roles, 'admin' => 0,'category'=>$category, 'property'  => $propertymarket, 'details'=>$details,'prop_images'=>$prop_images]);
+    }
+    public function edit_new(PropertyMarket $propertymarket)
+    {
+        // $roles = Role::wherein('id',[2])->get();
+        // return view('propertymarket.edit-propertymarket')->with([
+        //     'roles' => $roles,
+        //     'propertymarket'  => $propertymarket,
+        //     'admin' => 0
+        // ]);
+        $roles = Role::wherein('id',[2])->get();
+        $category = PropertyCategoryModel::where('status', 1)->orderBy('id','DESC')->get();
+        $details = PropertyMarketDetailsModel::where('property_market_id', $propertymarket->id)->first();
+        $prop_images = PropertyMarketDoc::where('propertymarket_id', $propertymarket->id)->get();
+        // dd($prop_images);
+        return view('propertymarket.add-propertymarket-new', ['roles' => $roles, 'admin' => 0,'category'=>$category, 'property'  => $propertymarket, 'details'=>$details,'prop_images'=>$prop_images]);
     }
 
     /**

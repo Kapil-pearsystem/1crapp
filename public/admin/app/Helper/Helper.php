@@ -105,5 +105,13 @@ class Helper
             ->where('users.agent_id', auth()->id())
             ->get();
     }
+    public static function check_subdomain() {
+        $host = request()->getHost();
+        $parts = explode('.', $host);
+        // If there are more than 2 parts, it usually means there's a subdomain
+        $hasSubdomain = count($parts) > 2;
+        $subdomain = $hasSubdomain ? $parts[0] : null;
+        return $subdomain;
+    }
 
 }

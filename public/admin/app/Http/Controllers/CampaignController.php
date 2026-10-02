@@ -7,6 +7,7 @@ use App\Models\CollectionItemModel;
 use App\Models\CampaignModel;
 use App\Models\ContactModel;
 use App\Models\CampaignSchedule;
+use App\Models\Customer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
@@ -122,16 +123,38 @@ class CampaignController extends Controller
     public function report($coll_id, $camp_id)
     {
         $collection = CollectionModel::withCount(['emails', 'gifts'])->findOrFail($coll_id);
-        $campaign = CampaignModel::withCount('list')->findOrFail($camp_id);
+        $campaign = CampaignModel::withCount([
+                    'totalSentMail as total_mails_sent',
+                    'totalSentGift as total_gifts_sent',
+                    'totalDeliveredGift as total_gifts_delivered',
+                ])->findOrFail($camp_id);
         $contact = ContactModel::where('id', $campaign->list_id)->first();
         $users = DB::table('tbl_user_list')
             ->join('users', 'users.id', '=', 'tbl_user_list.user_id')
             ->where('tbl_user_list.list_id', $campaign->list_id)
             ->where(['users.status' => 1, 'users.agent_id' => Auth::id()])->select('users.*')->get();
             // dd($users);
-        // dd($campaign, $collection);
+        // dd($campaign);
         // For demonstration, we'll just return the campaign details.
         // In a real application, you'd likely want to gather more detailed statistics.
         return view('collection.campaign.report', compact('campaign', 'collection', 'contact', 'users'));
+    }
+    public function user_report($coll_id, $camp_id, $user_id)
+    {
+        $userdata = Customer::find($user_id);
+        $campaign = CampaignModel::findOrFail($camp_id);
+        $lists = CollectionItemModel::with([
+            'gift',
+            'mail',
+            'log' => function ($query) use ($user_id, $camp_id) {
+                $query->where('user_id', $user_id)
+                      ->where('campaign_id', $camp_id);
+            }
+        ])
+        ->orderBy('set_index', 'ASC')
+        ->where('collection_id', $coll_id)
+        ->get();
+        // dd($lists);
+       return view('collection.campaign.user-report', compact('campaign', 'lists', 'userdata'));
     }
 }

@@ -54,7 +54,7 @@ use Illuminate\Support\Str;
                             <td>{{ date('M d, Y H:i:s', strtotime($list->created_at)) }}</td>
                             <td>{{ $list->emails_count }}</td>
                             <td>{{ $list->gifts_count }}</td>
-                            <td>{{ $list->gross_amount }}</td>
+                            <td class="text-right">₹{{ $list->gross_amount }}</td>
                             <td>Start now <a href="{{ route('collection.campaigns.index', $list->id) }}" target="_blank"><i class="fas fa-external-link-alt" aria-hidden="true"></i></a></td>
                             <td>
                                 @if($list->status == 1)

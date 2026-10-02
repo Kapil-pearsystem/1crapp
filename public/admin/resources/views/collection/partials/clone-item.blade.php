@@ -1,6 +1,6 @@
 @php
 $mailCategories = \App\Models\MailCategoryModel::select('id', 'title as name')->orderBy('id','DESC')->where('status', 1)->where('created_by', Auth::id())->get();
-$giftCategories = \App\Models\GiftCategoryModel::select('id', 'name')->orderBy('id','DESC')->where('status', 1)->where('created_by', Auth::id())->get();
+$giftCategories = \App\Models\GiftCategoryModel::select('id', 'name')->orderBy('id','DESC')->where('status', 1)->get();
 @endphp
 <div class="CollectionCloneItems" data-set-index="__SET_INDEX__">
 

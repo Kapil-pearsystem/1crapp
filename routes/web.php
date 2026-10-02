@@ -44,6 +44,8 @@ use App\Models\QuicklyAnalyzeModel;
 /*Route::get('/', function () {
     return view('front.login');
 });*/
+
+require base_path('routes/rms-route.php');
 Route::get('/', [WebController::class, 'index']);
 Route::get('/features', [WebController::class, 'features'])->name('features');
 Route::get('/about-us', [WebController::class, 'about_us'])->name('about-us');

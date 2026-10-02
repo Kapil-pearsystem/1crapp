@@ -797,25 +797,25 @@ function validateSecondStep() {
         }
 
         // Day & Time sequence validation
-        if (previousDay !== null) {
+        // if (previousDay !== null) {
 
-            // Day cannot be less than previous day
-            if (parseInt(days) < parseInt(previousDay)) {
-                alert('Schedule day cannot be less than the previous schedule day.');
-                isValid = false;
-                return false;
-            }
+        //     // Day cannot be less than previous day
+        //     if (parseInt(days) < parseInt(previousDay)) {
+        //         alert('Schedule day cannot be less than the previous schedule day.');
+        //         isValid = false;
+        //         return false;
+        //     }
 
-            // Same day => time must be greater than previous time
-            if (
-                parseInt(days) === parseInt(previousDay) &&
-                ScheduleTime <= previousTime
-            ) {
-                alert('For the same day, schedule time must be greater than the previous schedule time.');
-                isValid = false;
-                return false;
-            }
-        }
+        //     // Same day => time must be greater than previous time
+        //     if (
+        //         parseInt(days) === parseInt(previousDay) &&
+        //         ScheduleTime <= previousTime
+        //     ) {
+        //         alert('For the same day, schedule time must be greater than the previous schedule time.');
+        //         isValid = false;
+        //         return false;
+        //     }
+        // }
 
         previousDay = days;
         previousTime = ScheduleTime;

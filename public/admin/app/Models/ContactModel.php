@@ -11,4 +11,13 @@ class ContactModel extends Model
     protected $table = 'tbl_contact';
     public $timestamps = true;
     protected $fillable = ['id', 'list_id', 'name', 'status', 'created_at', 'created_by', 'updated_by', 'updated_at'];
+    public function users()
+    {
+        return $this->belongsToMany(
+            User::class,
+            'tbl_user_list',
+            'list_id',
+            'user_id'
+        );
+    }
 }

@@ -32,6 +32,9 @@ class User extends Authenticatable
         'referral_code',
         'tag_id',
         'contact_id',
+        'otp',
+        'otp_expire_at',
+        'otp_sent_at',
     ];
     /**
      * The attributes that should be hidden for serialization.
