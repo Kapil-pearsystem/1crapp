@@ -30,7 +30,6 @@ class AuthController extends Controller
             'username' => 'required|string|max:255',
             'password' => 'required|digits:4',
         ]);
-        // dd($validatedData);
         $username = $request->username;
 
         $tenant = DB::table('rms_tenants')
@@ -40,11 +39,10 @@ class AuthController extends Controller
             })
             ->where('status', 1)
             ->first();
-
+        
         if (!$tenant) {
             return redirect()->back()->with('error', 'Invalid Credentials!');
         }
-
         if (!Hash::check($request->password, $tenant->password)) {
             return redirect()->back()->with('error', 'Invalid Credentials!');
         }

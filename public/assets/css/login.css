@@ -1,0 +1,62 @@
+/* Auth pages */
+.text-pink{color:var(--pink2)}
+.auth{
+  min-height:100vh;display:grid;place-items:center;padding:3rem 1rem;
+  background-color:#1a1b2e;
+  /* Rocks silhouette + stars + sky. Swap the whole thing for a photo with:
+     background:url('assets/img/login-bg.jpg') center/cover no-repeat; */
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 400' preserveAspectRatio='none'%3E%3Cpath fill='%2314141c' d='M0 400V120l60-40 70 50 40 90 60-30 40 60 50 140zM1440 400V160l-70-60-80 40-60-20-70 90-60 20-40 130z'/%3E%3Cpath fill='%230d0d13' d='M0 400V300l200-40 250 60 300-30 300 40 250-50 140 20v100z'/%3E%3C/svg%3E"),
+    radial-gradient(1px 1px at 20px 30px,#fff,transparent),
+    radial-gradient(1px 1px at 90px 120px,#fff,transparent),
+    radial-gradient(1.5px 1.5px at 160px 60px,#fff,transparent),
+    radial-gradient(1px 1px at 230px 170px,#fff,transparent),
+    linear-gradient(180deg,#1d3057 0%,#3d3a6b 50%,#8a4a70 78%,#1b1b24 100%);
+  background-size:100% 40%,250px 200px,250px 200px,250px 200px,250px 200px,100% 100%;
+  background-position:bottom,0 0,0 0,0 0,0 0,0 0;
+  background-repeat:no-repeat,repeat,repeat,repeat,repeat,no-repeat;
+}
+.auth-card{
+  width:100%;max-width:29rem;background:#fff;border-radius:1rem;
+  padding:0 1.75rem 2rem;margin-top:2.5rem;
+  box-shadow:0 1rem 2.5rem rgba(0,0,0,.35);
+}
+.auth-head {
+    margin: -2.25rem 0 2.25rem;
+    padding: 0.5rem 2.5rem 1.75rem;
+    border-radius: .9rem;
+    color: #fff;
+    box-shadow: 0 .75rem 1.5rem rgba(233,30,99,.35);
+    background-color: #1c5299;
+    text-align: center;
+}
+.auth-head h4{
+    margin:0;font-weight:700; 
+    color: #fff;
+}
+.auth-input{padding:1rem 1.25rem;font-size:1rem}
+.pw-wrap{position:relative}
+.pw-wrap .auth-input{padding-right:3rem}
+.pw-toggle{position:absolute;top:.85rem;right:.9rem;border:0;background:transparent;color:var(--muted);font-size:1.15rem;line-height:1}
+.pw-wrap .invalid-feedback{display:none}
+.was-validated .pw-wrap .form-control:invalid~.invalid-feedback{display:block}
+.auth-btn {
+  padding: -0.1rem 1.4rem;
+  border-radius: .5rem;
+  font-size: 1.2rem;
+  background-color: #1c5299;
+  color: #fff;
+}
+.auth-btn:hover {
+  background-color: #356bb2;
+  color: #fff;
+}
+.auth-alert{
+  display:flex;align-items:center;
+  background:linear-gradient(195deg,#ef5350,#e53935);
+  color:#fff;border:0;border-radius:.6rem;
+  font-size:.9rem;font-weight:500;
+  padding:.8rem 1rem;margin-bottom:1.25rem;
+  box-shadow:0 .25rem .75rem rgba(244,67,54,.35);
+}
+.auth-alert .btn-close{margin-left:auto;filter:invert(1) grayscale(1) brightness(2);padding:.9rem}

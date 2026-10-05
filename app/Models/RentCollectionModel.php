@@ -43,4 +43,20 @@ class RentCollectionModel extends Model
         'paid_amount'      => 'decimal:2',
         'approved_at'      => 'datetime',
     ];
+    public function payments()
+    {
+        return $this->hasMany(RentPayment::class, 'rentcollection_id');
+    }
+    public function shop()
+    {
+        return $this->belongsTo(ShopModel::class, 'shop_id');
+    }
+    public function electricity()
+    {
+        return $this->hasOne(
+            ElectricityBillModel::class,
+            'collection_id',
+            'id'
+        );
+    }
 }
