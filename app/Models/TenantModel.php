@@ -21,6 +21,7 @@ class TenantModel extends Model
         'pin',
         'password',
         'status',
+        'profile',
         'agent_id',
         'created_by',
     ];

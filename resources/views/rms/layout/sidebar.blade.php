@@ -4,8 +4,8 @@
     <a class="nav-link {{ request()->routeIs('rms.dashboard') ? 'active' : '' }}" href="{{ route('rms.dashboard') }}"><i class="bi bi-grid-fill"></i>Dashboard</a>
     <a class="nav-link {{ request()->routeIs('rms.my-property') ? 'active' : '' }}" href="{{ route('rms.my-property') }}"><i class="bi bi-table"></i>Property</a>
     <a class="nav-link {{ request()->routeIs('rms.my-payments') ? 'active' : '' }}" href="{{ route('rms.my-payments') }}"><i class="bi bi-ui-checks"></i>Rent & Payments</a>
-    <!-- <a class="nav-link" href="#"><i class="bi bi-receipt"></i>Billing</a>
-    <a class="nav-link" href="#"><i class="bi bi-person-fill"></i>Profile</a> -->
+    <a class="nav-link {{ request()->routeIs('rms.profile') ? 'active' : '' }}" href="{{ route('rms.profile') }}"><i class="bi bi-person-fill"></i>Profile</a>
+    <a class="nav-link {{ request()->routeIs('rms.pin') ? 'active' : '' }}" href="{{ route('rms.pin') }}"><i class="bi bi-receipt"></i>Settings</a>
   </nav>
   <div class="upgrade">
     <button type="button" class="btn btn-gradient w-100" data-bs-toggle="modal" data-bs-target="#logoutModal">

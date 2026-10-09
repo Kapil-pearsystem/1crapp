@@ -3,13 +3,18 @@ namespace App\Http\Controllers\rms;
 use App\Http\Controllers\Controller;
 use App\Models\RentCollectionModel;
 use App\Models\ShopModel;
+use App\Models\TenantModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rule;
+
 class DashboardController extends Controller
 {
     public function __construct()
@@ -227,13 +232,28 @@ class DashboardController extends Controller
             ->orderBy('id', 'DESC')
             ->paginate(10, ['*'], 'requests_page')
             ->withQueryString();
-        $completedLists = RentCollectionModel::with(['electricity', 'shop'])->where('tenant_id', $tenant['id'])
-            ->where('shop_id', $tenant['shop_id'])
-            ->where('status', 3)
-            ->orderBy('id', 'DESC')
-            ->paginate(10, ['*'], 'completed_page')
-            ->withQueryString();
-        // dd($requestLists, $completedLists);
+        // $completedLists = RentCollectionModel::with(['electricity', 'shop'])->where('tenant_id', $tenant['id'])
+        //     ->where('shop_id', $tenant['shop_id'])
+        //     ->where('status', 3)
+        //     ->orderBy('id', 'DESC')
+        //     ->paginate(10, ['*'], 'completed_page')
+        //     ->withQueryString();
+        $completedLists = RentCollectionModel::with([
+            'electricity',
+            'shop'
+        ])
+        ->withSum([
+            'payments as approved_payment_amount' => function ($query) {
+                $query->where('approval_status', 1);
+            }
+        ], 'payment_amount')
+        ->where('tenant_id', $tenant['id'])
+        ->where('shop_id', $tenant['shop_id'])
+        ->where('status', 3)
+        ->orderBy('id', 'DESC')
+        ->paginate(10, ['*'], 'completed_page')
+        ->withQueryString();
+        // dd($completedLists);
         $shop = DB::table('rms_shops')
             ->where('id', $tenant['shop_id'])
             ->first();
@@ -533,5 +553,97 @@ class DashboardController extends Controller
                 'error' => $e->getMessage()
             ], 500);
         }
+    }
+
+    public function profile(){
+        $user = Session::get('tenent_login');
+        $tenant = TenantModel::find($user['id']);
+        return view('rms.pages.profile', compact('tenant'));
+    }
+    public function updateProfile(Request $request)
+    {
+        $user = Session::get('tenent_login');
+        $tenant = TenantModel::find($user['id']);
+
+        // Uniqueness is checked only when the value is actually being changed,
+        // and only inside the same project. This avoids false errors when the
+        // same person has more than one tenant row (e.g. multiple shops).
+        $emailRules = ['required', 'email', 'max:255'];
+        if ($request->email !== $tenant->email) {
+            $emailRules[] = Rule::unique('rms_tenants', 'email')
+                ->where('project_id', $tenant->project_id)
+                ->ignore($tenant->id);
+        }
+
+        $mobileRules = ['required', 'digits:10'];
+        if ($request->mobile !== $tenant->mobile) {
+            $mobileRules[] = Rule::unique('rms_tenants', 'mobile')
+                ->where('project_id', $tenant->project_id)
+                ->ignore($tenant->id);
+        }
+
+        $data = $request->validate([
+            'name'   => ['required', 'string', 'max:255'],
+            'email'  => $emailRules,
+            'mobile' => $mobileRules,
+        ]);
+        // Profile image: upload new / remove existing
+        if ($request->hasFile('profile')) {
+            $this->deleteProfileFile($tenant->profile);
+ 
+            $file     = $request->file('profile');
+            $fileName = 'tenant_' . $tenant->id . '_' . time() . '.' . $file->getClientOriginalExtension();
+            $file->move(public_path('uploads/tenant_profiles'), $fileName);
+ 
+            $data['profile'] = asset('uploads/tenant_profiles/' . $fileName);
+        } elseif ($request->boolean('remove_profile')) {
+            $this->deleteProfileFile($tenant->profile);
+            $data['profile'] = null;
+        } else {
+            unset($data['profile']); // keep the existing image
+        }
+
+        $tenant->update($data);
+
+        return redirect()->route('rms.profile')
+            ->with('success', 'Profile updated successfully.');
+    }
+    private function deleteProfileFile(?string $path): void
+    {
+        if ($path && file_exists(public_path($path))) {
+            @unlink(public_path($path));
+        }
+    }
+    public function change_pin(){
+        return view('rms.pages.pin');
+    }
+    public function updatePin(Request $request)
+    {
+        $user = Session::get('tenent_login');
+        $tenant = TenantModel::find($user['id']);
+ 
+        $request->validate([
+            'current_pin' => ['required', 'digits:4'],
+            'pin'         => ['required', 'digits:4', 'confirmed', 'different:current_pin'],
+        ], [
+            'pin.different' => 'New PIN must be different from the current PIN.',
+        ]);
+ 
+        // Supports both hashed and plain-text stored PINs
+        $stored = (string) $tenant->pin;
+        $isHashed = password_get_info($stored)['algoName'] !== 'unknown';
+        $valid  = $isHashed
+            ? Hash::check($request->current_pin, $stored)
+            : hash_equals($stored, $request->current_pin);
+ 
+        if (! $valid) {
+            return back()->withErrors(['current_pin' => 'Current PIN is incorrect.']);
+        }
+ 
+        // If your login compares the PIN as plain text, use $request->pin instead of Hash::make(...)
+        $tenant->update(['pin' => $request->pin, 'password'=>Hash::make($request->pin)]);
+ 
+        return redirect()->route('rms.pin')
+            ->with('success', 'PIN updated successfully.');
     }
 }

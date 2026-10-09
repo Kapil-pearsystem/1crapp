@@ -1,3 +1,7 @@
+@php 
+ $user = Session::get('tenent_login');
+  $tenant = \App\Models\TenantModel::find($user['id']);
+@endphp
 <header class="topbar">
   <div class="d-flex align-items-center gap-3">
     <button class="icon-btn d-xl-none fs-3" id="menuBtn" aria-label="Open menu"><i class="bi bi-list"></i></button>
@@ -44,12 +48,16 @@
     <!-- User -->
     <div class="dropdown">
       <a href="#" class="user-btn" data-bs-toggle="dropdown">
-        <span class="avatar bg-g-pink">A</span>
+        <!-- <span class="avatar bg-g-pink">A</span> -->
+         <img
+            src="{{ $tenant->profile ? $tenant->profile : 'https://ui-avatars.com/api/?background=random&name=' . urlencode($tenant->name) }}"
+            alt="Profile" class="rounded-circle border"
+            style="width:35px;height:35px;object-fit:cover;">
         <i class="bi bi-chevron-down small d-none d-sm-inline"></i>
       </a>
       <ul class="dropdown-menu dropdown-menu-end shadow border-0">
-        <li><a class="dropdown-item" href="#"><i class="bi bi-person"></i>My profile</a></li>
-        <li><a class="dropdown-item" href="#"><i class="bi bi-envelope"></i>Messages</a></li>
+        <li><a class="dropdown-item" href="{{ route('rms.profile') }}"><i class="bi bi-person"></i>My profile</a></li>
+        <li><a class="dropdown-item" href="{{ route('rms.pin') }}"><i class="bi bi-key"></i>Setting</a></li>
         <li><hr class="dropdown-divider"></li>
         <li><a class="dropdown-item text-danger" href="#" data-bs-toggle="modal" data-bs-target="#logoutModal"><i class="bi bi-box-arrow-right"></i>Sign out</a></li>
       </ul>

@@ -46,13 +46,15 @@
                     @php
                         $elApplicable = $list->shop ? $list->shop->electricity_applicable : 0;
                         $dueDate = $list->shop ? $list->shop->due_day : null;
+                        $maintenance = $list->shop ? $list->shop->cleaning_cost : 0;
+                        $other_charge = $list->other_charge??0;
                         if ($elApplicable) {
                             $electricityAmount = $list->electricity ? (float) $list->electricity->electricity_cost : 0;
                         }else{
                             $electricityAmount = 0;
                         }
                         $status = (int) $list->status;
-                        $gross_due = max(0, (float) $list->basic_rent + (float) $list->cleaning_cost + $electricityAmount);
+                        $gross_due = max(0, (float) $list->basic_rent + (float) $maintenance + $electricityAmount + $other_charge);
                         $penaltyAmount = max(0, (float) $gross_due - (float) $list->paid_amount);
                         if ($isPenaltyOverride) {
                             $penalty = 0;
@@ -74,7 +76,8 @@
                         </div>
                         <div class="row g-2 mt-2">
                             <div class="col-6 col-lg-3"><div class="pay-detail"><span>Basic Rent</span><strong>₹{{ number_format((float) $list->basic_rent, 2) }}</strong></div></div>
-                            <div class="col-6 col-lg-3"><div class="pay-detail"><span>Maintenance</span><strong>₹{{ number_format((float) $list->cleaning_cost ?? 0, 2) }}</strong></div></div>
+                            <div class="col-6 col-lg-3"><div class="pay-detail"><span>Maintenance</span><strong>₹{{ number_format((float) $maintenance ?? 0, 2) }}</strong></div></div>
+                            <div class="col-6 col-lg-3"><div class="pay-detail"><span>Other Charge</span><strong>₹{{ number_format((float) $other_charge ?? 0, 2) }}</strong></div></div>
                             <div class="col-6 col-lg-3"><div class="pay-detail"><span>Electricity Bill</span><strong>₹{{ number_format($electricityAmount, 2) }}</strong></div></div>
                             <div class="col-6 col-lg-3"><div class="pay-detail"><span>Penalty</span><strong>₹{{ number_format((float) $penalty ?? 0, 2) }}</strong></div></div>
                             <div class="col-6 col-lg-3"><div class="pay-detail"><span>Gross Due</span><strong class="text-primary">₹{{ number_format((float) $gross_due, 2) }}</strong></div></div>
@@ -114,6 +117,27 @@
             {{-- ================= COMPLETED ================= --}}
             <div class="tab-pane fade" id="pane-completed" role="tabpanel">
                 @forelse($completedLists as $list)
+                    @php
+                        $elApplicable = $list->shop ? $list->shop->electricity_applicable : 0;
+                        $dueDate = $list->shop ? $list->shop->due_day : null;
+                        $maintenance = $list->shop ? $list->shop->cleaning_cost : 0;
+                        $other_charge = $list->other_charge??0;
+                        if ($elApplicable) {
+                            $electricityAmount = $list->electricity ? (float) $list->electricity->electricity_cost : 0;
+                        }else{
+                            $electricityAmount = 0;
+                        }
+                        $status = (int) $list->status;
+                        $gross_due = max(0, (float) $list->basic_rent + (float) $maintenance + $electricityAmount + $other_charge);
+                        $penaltyAmount = max(0, (float) $gross_due - (float) $list->paid_amount);
+                        if ($isPenaltyOverride) {
+                            $penalty = 0;
+                        } else {
+                            $penalty = calculateRentPenalty($penaltyAmount, $dueDate, $penaltySettings, $list->collection_year, $list->collection_month);
+                        }
+                        $gross_due += $penalty;
+                        $outstanding = max(0, (float) $gross_due - (float) $list->paid_amount);
+                    @endphp
                     <div class="pay-item">
                         <div class="d-flex justify-content-between align-items-start gap-2">
                             <div>
@@ -127,8 +151,8 @@
                             <span class="badge-s bg-g-green">Fully Paid</span>
                         </div>
                         <div class="row g-2 mt-2">
-                            <div class="col-6 col-lg-3"><div class="pay-detail"><span>Total Amount</span><strong>₹{{ number_format((float) $list->gross_due, 2) }}</strong></div></div>
-                            <div class="col-6 col-lg-3"><div class="pay-detail"><span>Paid Amount</span><strong class="up">₹{{ number_format((float) $list->paid_amount, 2) }}</strong></div></div>
+                            <div class="col-6 col-lg-3"><div class="pay-detail"><span>Total Amount</span><strong>₹{{ number_format((float) $gross_due, 2) }}</strong></div></div>
+                            <div class="col-6 col-lg-3"><div class="pay-detail"><span>Paid Amount</span><strong class="up">₹{{ number_format((float) $list->approved_payment_amount, 2) }}</strong></div></div>
                             <div class="col-6 col-lg-3"><div class="pay-detail"><span>Payment Mode</span><strong>{{ $list->payment_mode ?: '-' }}</strong></div></div>
                             <div class="col-6 col-lg-3"><div class="pay-detail"><span>Reference</span><strong class="text-break">{{ $list->reference_number ?: '-' }}</strong></div></div>
                         </div>
@@ -243,7 +267,7 @@
                                                 <button type="button" class="btn btn-outline-primary copy-btn"
                                                         data-copy-target="#upiId">Copy</button>
                                             </div>
-                                            <a href="#" id="openUpiApp"
+                                            <a href="#" id="openUpiApp" 
                                             data-payee="{{ $account->account_holder_name }}"
                                             class="btn btn-primary btn-sm w-100">
                                                 <i class="bi bi-send-fill me-1"></i> Open UPI App
@@ -485,10 +509,10 @@
             alert('Please select payment mode.');
             return;
         }
-        if (!document.getElementById('payProof').files.length) {
-            alert('Please upload payment proof.');
-            return;
-        }
+        // if (!document.getElementById('payProof').files.length) {
+        //     alert('Please upload payment proof.');
+        //     return;
+        // }
         submitBtn.disabled = true;
         submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span>Submitting...';
         form.classList.add('payment-loading');
@@ -609,9 +633,8 @@
             document.getElementById('sumTotal').textContent = inr(outstanding);
             document.getElementById('outstandingAmount').textContent = '₹' + Number(outstanding).toFixed(2);
             document.getElementById('payAmount').value = outstanding;
-            // const upi = document.getElementById('upiId').value;
-            // document.getElementById('openUpiApp').href =
-            //     `upi://pay?pa=${encodeURIComponent(upi)}&am=${outstanding}&cu=INR&tn=${encodeURIComponent('Rent ' + month + ' ' + year)}`;
+            const upi = document.getElementById('upiId').value;
+            document.getElementById('openUpiApp').href = `upi://pay?pa=${encodeURIComponent(upi)}&am=${outstanding}&cu=INR&tn=${encodeURIComponent('Rent ' + month + ' ' + year)}`;
             const upiEl = document.getElementById('upiId');
             const upiBtn = document.getElementById('openUpiApp');
             if (upiEl && upiBtn) {
@@ -816,5 +839,6 @@ function escapeHtml(value) {
         .replace(/"/g, '&quot;')
         .replace(/'/g, '&#039;');
 }
+
 </script>
 @endsection
